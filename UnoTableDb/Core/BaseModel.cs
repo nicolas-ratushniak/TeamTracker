@@ -10,12 +10,14 @@ public abstract class BaseModel
     [NotTracked]
     public ModelState ModelState { get; protected set; }
     
-    protected BaseModel(bool generateId)
+    protected BaseModel()
     {
-        if (generateId)
-        {
-            Id = Guid.NewGuid();
-        }
+        Id = Guid.NewGuid();
+    }
+    
+    protected internal BaseModel(Guid id)
+    {
+        Id = id;
     }
 
     public static bool IsModelTypeValid(Type modelType)
