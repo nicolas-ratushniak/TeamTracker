@@ -1,0 +1,3 @@
+﻿Name;OriginCity;TimesWon;TimesLost;TimesDraw;MembersCount;Id
+Dream Team;Chernivtsi;3;0;2;12;eff736a8-efdd-4820-8cda-72c10a0c8ec5
+Super Team;Chernivtsi;4;1;1;10;eff736a8-efdd-4820-8cda-72c10a0c8ec5
