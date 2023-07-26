@@ -1,4 +1,4 @@
-﻿namespace UnoTableDb;
+﻿namespace UnoTableDb.Interfaces;
 
 public interface ITableWriter<T>
 {
