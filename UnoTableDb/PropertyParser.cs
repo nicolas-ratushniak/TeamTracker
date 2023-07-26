@@ -4,19 +4,19 @@ using UnoTableDb.Exceptions;
 
 namespace UnoTableDb;
 
-public class SimpleParser<T> where T: BaseModel
+public class PropertyParser<T> where T: BaseModel
 {
     private readonly char _separator;
-    public string[]? PropertyNames { get; set; }
+    private string[]? PropertyNames { get; set; }
 
-    public SimpleParser(char valueSeparator)
+    public PropertyParser(char valueSeparator)
     {
         _separator = valueSeparator;
     }
     
-    public static string[] ParseHeader(char separator, string line)
+    public void ParsePropertyNames(string line)
     {
-        return line.Split(separator);
+        PropertyNames = line.Split(_separator);
     }
 
     public T ParseModelFromLine(string line)
@@ -39,14 +39,13 @@ public class SimpleParser<T> where T: BaseModel
                 "The number of _headers and values in a record should be the same.");
         }
         
-        // Calling a model's constructor with no Id generated
-        T result = (T)Activator.CreateInstance(typeof(T), Guid.Empty)!;
+        // Calling a model's constructor
+        var result = Activator.CreateInstance<T>();
         
-
         for (int i = 0; i < values.Length; i++)
         {
-            PropertyInfo propertyInfo = typeof(T).GetProperty(PropertyNames[i])
-                                        ?? throw new PropertyNotFoundException();
+            var propertyInfo = typeof(T).GetProperty(PropertyNames[i])
+                               ?? throw new PropertyNotFoundException();
 
             if (!propertyInfo.CanWrite)
             {
