@@ -1,11 +1,12 @@
 ﻿using UnoTableDb.Core;
+using UnoTableDb.Interfaces;
 
 namespace UnoTableDb;
 
 public class TableReader<T> : ITableReader<T> where T : BaseModel
 {
     private readonly string _filePath;
-    private readonly PropertyParser<T> _parser;
+    private readonly IPropertyParser<T> _parser;
 
     public TableReader(string filePath, char separator)
     {
