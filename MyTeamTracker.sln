@@ -4,6 +4,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnoTableDb", "UnoTableDb\Un
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestDb", "TestDb\TestDb.csproj", "{7231FA61-6891-45CD-AEF9-FB16D0A071CD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TeamTracker.Wpf", "TeamTracker.Wpf\TeamTracker.Wpf.csproj", "{A6D4F411-53D8-49B4-AB53-71E6CB7EF52F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{7231FA61-6891-45CD-AEF9-FB16D0A071CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7231FA61-6891-45CD-AEF9-FB16D0A071CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7231FA61-6891-45CD-AEF9-FB16D0A071CD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A6D4F411-53D8-49B4-AB53-71E6CB7EF52F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A6D4F411-53D8-49B4-AB53-71E6CB7EF52F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A6D4F411-53D8-49B4-AB53-71E6CB7EF52F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A6D4F411-53D8-49B4-AB53-71E6CB7EF52F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
