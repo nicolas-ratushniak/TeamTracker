@@ -6,7 +6,7 @@ using UnoTableDb.Interfaces;
 
 namespace UnoTableDb.Core;
 
-public abstract class BaseModel : IFormattable, IParsableGeneric
+public abstract class BaseModel : IFormattable, IModelParser
 {
     private static readonly CultureInfo DefaultCulture = new("en-US");
     private readonly IEnumerable<PropertyInfo> _properties;
@@ -21,8 +21,13 @@ public abstract class BaseModel : IFormattable, IParsableGeneric
     {
         _properties = GetTrackedProperties(GetType());
     }
+
+    public static T Parse<T>(string? s)  where T : BaseModel
+    {
+        return Parse<T>(s, DefaultCulture);
+    }
     
-    public static T Parse<T>(string? s, IFormatProvider? provider)
+    public static T Parse<T>(string? s, IFormatProvider? provider)  where T : BaseModel
     {
         if (string.IsNullOrEmpty(s))
         {
@@ -78,12 +83,12 @@ public abstract class BaseModel : IFormattable, IParsableGeneric
         return result;
     }
 
-    public static bool TryParse<T>(string? s, out T result)
+    public static bool TryParse<T>(string? s, out T result)  where T : BaseModel
     {
         return TryParse(s, DefaultCulture, out result);
     }
 
-    public static bool TryParse<T>(string? s, IFormatProvider? provider, out T result)
+    public static bool TryParse<T>(string? s, IFormatProvider? provider, out T result) where T : BaseModel
     {
         result = default;
         
