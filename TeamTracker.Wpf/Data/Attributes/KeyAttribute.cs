@@ -1,4 +1,4 @@
-﻿namespace UnoTableDb.Attributes;
+﻿namespace TeamTracker.Wpf.Data.Attributes;
 
 public class KeyAttribute : Attribute
 {

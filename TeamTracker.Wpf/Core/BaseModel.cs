@@ -1,14 +1,12 @@
-﻿using System.Globalization;
-using System.Reflection;
-using UnoTableDb.Attributes;
-using UnoTableDb.Exceptions;
-using UnoTableDb.Interfaces;
+﻿using System.Reflection;
+using TeamTracker.Wpf.Data.Attributes;
+using TeamTracker.Wpf.Data.Exceptions;
 
-namespace UnoTableDb.Core;
+namespace TeamTracker.Wpf.Core;
 
-public abstract class BaseModel : IFormattable, IModelParser
+public abstract class BaseModel
 {
-    private static readonly CultureInfo DefaultCulture = new("en-US");
+    private static readonly string Separator = CultureInfo.CurrentCulture.TextInfo.ListSeparator;
     private readonly IEnumerable<PropertyInfo> _properties;
 
     [Key]
@@ -22,25 +20,14 @@ public abstract class BaseModel : IFormattable, IModelParser
         _properties = GetTrackedProperties(GetType());
     }
 
-    public static T Parse<T>(string? s)  where T : BaseModel
+    public static T ParseFromDbRecord<T>(string? record)  where T : BaseModel
     {
-        return Parse<T>(s, DefaultCulture);
-    }
-    
-    public static T Parse<T>(string? s, IFormatProvider? provider)  where T : BaseModel
-    {
-        if (string.IsNullOrEmpty(s))
+        if (string.IsNullOrEmpty(record))
         {
-            throw new InvalidOperationException("The line to be parsed should not be null or empty.");
+            throw new InvalidOperationException("The record to be parsed should not be null or empty.");
         }
-        
-        provider ??= DefaultCulture;
 
-        string separator = provider is CultureInfo culture
-            ? culture.TextInfo.ListSeparator
-            : DefaultCulture.TextInfo.ListSeparator;
-        
-        var values = s.Split(separator);
+        var values = record.Split(Separator);
         var propertyNames = GetTrackedProperties(typeof(T))
             .Select(p => p.Name).ToList();
         
@@ -67,7 +54,7 @@ public abstract class BaseModel : IFormattable, IModelParser
                         "Parse",
                         BindingFlags.Public |
                         BindingFlags.Static |
-                        BindingFlags.InvokeMethod, null, result, new object[] { values[i], provider })!;
+                        BindingFlags.InvokeMethod, null, result, null)!;
                 }
                 catch (MissingMethodException)
                 {
@@ -82,21 +69,16 @@ public abstract class BaseModel : IFormattable, IModelParser
         }
         return result;
     }
-
-    public static bool TryParse<T>(string? s, out T result)  where T : BaseModel
+    
+    public static bool TryParseFromDbRecord<T>(string? record, out T result) where T : BaseModel
     {
-        return TryParse(s, DefaultCulture, out result);
-    }
-
-    public static bool TryParse<T>(string? s, IFormatProvider? provider, out T result) where T : BaseModel
-    {
-        result = default;
+        result = default!;
         
         try
         {
-            result = Parse<T>(s, provider);
+            result = ParseFromDbRecord<T>(record);
         }
-        catch (Exception e)
+        catch (Exception)
         {
             return false;
         }
@@ -104,22 +86,9 @@ public abstract class BaseModel : IFormattable, IModelParser
         return true;
     }
 
-    public override string ToString()
+    public string ToDbRecord()
     {
-        return ToString(null, DefaultCulture);
-    }
-
-    // Honestly, the format here is for now unusable...
-    // And the formatProvider is considered as CultureInfo
-    public string ToString(string? format, IFormatProvider? formatProvider)
-    {
-        formatProvider ??= DefaultCulture;
-
-        string separator = formatProvider is CultureInfo culture
-            ? culture.TextInfo.ListSeparator
-            : DefaultCulture.TextInfo.ListSeparator;
-
-        return string.Join(separator, _properties.Select(p => p.GetValue(this)));
+        return string.Join(Separator, _properties.Select(p => p.GetValue(this)));
     }
     
     /// <summary>

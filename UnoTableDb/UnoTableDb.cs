@@ -1,59 +1,47 @@
-﻿using UnoTableDb.Core;
-using UnoTableDb.Exceptions;
-using UnoTableDb.Interfaces;
+﻿namespace UnoTableDb;
 
-namespace UnoTableDb;
-
-public class UnoTableDb<T> : IDatabase where T : BaseModel
+public class UnoTableDb : IDatabase
 {
     private readonly string _filePath;
 
     public UnoTableDb(string filePath)
     {
         _filePath = filePath ?? throw new ArgumentNullException(nameof(filePath));
-
-        if (!BaseModel.IsModelTypeValid(typeof(T)))
-        {
-            throw new InvalidModelTypeException();
-        }
     }
 
-    public IEnumerable<object> ReadRecords()
+    public IEnumerable<string> ReadRecords()
     {
-        List<BaseModel> result = new();
+        List<string> result = new();
 
         using (FileStream fs = new(_filePath, FileMode.Open))
         using (TextReader reader = new StreamReader(fs))
         {
             while (reader.Peek() > -1)
             {
-                if (BaseModel.TryParse(reader.ReadLine(), out T item))
-                {
-                    result.Add(item);
-                }
+                result.Add(reader.ReadLine());
             }
         }
 
         return result;
     }
 
-    public void AppendRecord(object item)
+    public void AppendRecord(string record)
     {
         using (FileStream fs = new(_filePath, FileMode.Append))
         using (TextWriter writer = new StreamWriter(fs))
         {
-            writer.WriteLine(item.ToString());
+            writer.WriteLine(record);
         }
     }
 
-    public void WriteRecords(IEnumerable<object> items)
+    public void WriteRecords(IEnumerable<string> records)
     {
         using (FileStream fs = new(_filePath, FileMode.Truncate))
         using (TextWriter writer = new StreamWriter(fs))
         {
-            foreach (var item in items)
+            foreach (var record in records)
             {
-                writer.WriteLine(item.ToString());
+                writer.WriteLine(record);
             }
         }
     }

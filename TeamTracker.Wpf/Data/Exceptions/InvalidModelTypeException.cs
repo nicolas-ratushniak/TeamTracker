@@ -1,4 +1,4 @@
-﻿namespace UnoTableDb.Exceptions;
+﻿namespace TeamTracker.Wpf.Data.Exceptions;
 
 public class InvalidModelTypeException : Exception
 {

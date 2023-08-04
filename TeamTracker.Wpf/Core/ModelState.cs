@@ -1,4 +1,4 @@
-﻿namespace UnoTableDb.Core;
+﻿namespace TeamTracker.Wpf.Core;
 
 public enum ModelState
 {
