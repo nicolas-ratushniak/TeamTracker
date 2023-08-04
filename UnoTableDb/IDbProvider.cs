@@ -1,6 +1,6 @@
 ﻿namespace UnoTableDb;
 
-public interface IDatabase
+public interface IDbProvider
 {
     IEnumerable<string> ReadRecords();
     void AppendRecord(string record);

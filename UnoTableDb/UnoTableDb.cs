@@ -1,6 +1,6 @@
 ﻿namespace UnoTableDb;
 
-public class UnoTableDb : IDatabase
+public class UnoTableDb : IDbProvider
 {
     private readonly string _filePath;
 
@@ -18,7 +18,7 @@ public class UnoTableDb : IDatabase
         {
             while (reader.Peek() > -1)
             {
-                result.Add(reader.ReadLine());
+                result.Add(reader.ReadLine()!);
             }
         }
 
