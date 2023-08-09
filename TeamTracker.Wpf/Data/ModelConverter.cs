@@ -13,7 +13,7 @@ public class ModelConverter<TModel> : IModelConverter<TModel> where TModel : Bas
 
     public ModelConverter(CultureInfo cultureInfo)
     {
-        if (IsModelTypeValid())
+        if (!IsModelTypeValid())
         {
             throw new InvalidModelTypeException();
         }
@@ -86,8 +86,14 @@ public class ModelConverter<TModel> : IModelConverter<TModel> where TModel : Bas
     public string ToDbRecord(TModel model)
     {
         var values = _propertyInfos
-            .Select(p => string.Format(_cultureInfo, "{0}",  p.GetValue(model)));
-        
+            .Select(p => string.Format(_cultureInfo, "{0}",  p.GetValue(model)))
+            .ToList();
+
+        if (values.Any(v => v.Contains(_separator)))
+        {
+            throw new FormatException("Property string representation shouldn't contain separator");
+        }
+
         return string.Join(_separator, values);
     }
 
