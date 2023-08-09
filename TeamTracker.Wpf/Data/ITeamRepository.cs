@@ -4,10 +4,10 @@ namespace TeamTracker.Wpf.Data;
 
 public interface ITeamRepository
 {
-    IReadOnlyList<Team> GetAllTeams();
-    Team GetTeamById(Guid id);
-    void AddTeam(Team team);
-    void UpdateTeam(Team team);
-    void RemoveTeam(Guid id);
+    IReadOnlyList<Team> GetAll();
+    Team Get(Guid id);
+    void Add(Team team);
+    void Update(Team team);
+    void Remove(Guid id);
     void SaveChanges();
 }

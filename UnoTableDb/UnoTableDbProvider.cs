@@ -1,10 +1,10 @@
 ﻿namespace UnoTableDb;
 
-public class UnoTableDb : IDbProvider
+public class UnoTableDbProvider : IDbProvider
 {
     private readonly string _filePath;
 
-    public UnoTableDb(string filePath)
+    public UnoTableDbProvider(string filePath)
     {
         _filePath = filePath ?? throw new ArgumentNullException(nameof(filePath));
     }

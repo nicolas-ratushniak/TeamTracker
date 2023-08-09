@@ -20,29 +20,24 @@ public class TeamRepository : ITeamRepository
         _changesSaved = true;
     }
 
-    public IReadOnlyList<Team> GetAllTeams()
+    public IReadOnlyList<Team> GetAll()
     {
         return _teams.AsReadOnly();
     }
 
-    public Team GetTeamById(Guid id)
+    public Team Get(Guid id)
     {
         return _teams.Find(t => t.Id == id)
                ?? throw new EntityNotFoundException();
     }
 
-    public void AddTeam(Team team)
+    public void Add(Team team)
     {
-        if (team.Id == Guid.Empty)
-        {
-            team.Id = Guid.NewGuid();
-        }
-        
         _dbProvider.AppendRecord(_modelConverter.ToDbRecord(team));
         _teams.Add(team);
     }
 
-    public void UpdateTeam(Team team)
+    public void Update(Team team)
     {
         if (!_teams.Contains(team))
         {
@@ -52,9 +47,9 @@ public class TeamRepository : ITeamRepository
         _changesSaved = false;
     }
 
-    public void RemoveTeam(Guid id)
+    public void Remove(Guid id)
     {
-        var team = GetTeamById(id);
+        var team = Get(id);
         
         _teams.Remove(team);
         _changesSaved = false;
@@ -64,7 +59,7 @@ public class TeamRepository : ITeamRepository
     {
         if (!_changesSaved)
         {
-            var records = _teams.Select(t => _modelConverter.ToDbRecord(t));
+            var records = _teams.Select(t => _modelConverter.ToDbRecord(t)).ToList();
             _dbProvider.WriteRecords(records);
         }
 
