@@ -1,6 +1,6 @@
-﻿namespace UnoTableDb;
+﻿namespace TeamTracker.Data;
 
-public interface IDbProvider
+public interface ITextBasedDb
 {
     IEnumerable<string> ReadRecords();
     void AppendRecord(string record);

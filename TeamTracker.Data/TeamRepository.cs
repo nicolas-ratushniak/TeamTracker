@@ -1,20 +1,19 @@
-﻿using TeamTracker.Wpf.Data.Exceptions;
-using TeamTracker.Wpf.Models;
-using UnoTableDb;
+﻿using TeamTracker.Data.Exceptions;
+using TeamTracker.Domain.Models;
 
-namespace TeamTracker.Wpf.Data;
+namespace TeamTracker.Data;
 
 public class TeamRepository : ITeamRepository
 {
-    private readonly IDbProvider _dbProvider;
+    private readonly ITextBasedDb _textBasedDb;
     private readonly IModelConverter<Team> _modelConverter;
 
     private readonly List<Team> _teams;
     private bool _changesSaved;
 
-    public TeamRepository(IDbProvider dbProvider, IModelConverter<Team> modelConverter)
+    public TeamRepository(ITextBasedDb textBasedDb, IModelConverter<Team> modelConverter)
     {
-        _dbProvider = dbProvider;
+        _textBasedDb = textBasedDb;
         _modelConverter = modelConverter;
         _teams = GetTeamsFromDb();
         _changesSaved = true;
@@ -33,7 +32,7 @@ public class TeamRepository : ITeamRepository
 
     public void Add(Team team)
     {
-        _dbProvider.AppendRecord(_modelConverter.ToDbRecord(team));
+        _textBasedDb.AppendRecord(_modelConverter.ToDbRecord(team));
         _teams.Add(team);
     }
 
@@ -60,7 +59,7 @@ public class TeamRepository : ITeamRepository
         if (!_changesSaved)
         {
             var records = _teams.Select(t => _modelConverter.ToDbRecord(t)).ToList();
-            _dbProvider.WriteRecords(records);
+            _textBasedDb.WriteRecords(records);
         }
 
         _changesSaved = true;
@@ -68,7 +67,7 @@ public class TeamRepository : ITeamRepository
 
     private List<Team> GetTeamsFromDb()
     {
-        return _dbProvider.ReadRecords()
+        return _textBasedDb.ReadRecords()
             .Select(record => _modelConverter.ParseFromDbRecord(record)).ToList();
     }
 }

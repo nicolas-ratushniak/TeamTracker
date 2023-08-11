@@ -1,4 +1,4 @@
-﻿namespace TeamTracker.Wpf.Data.Exceptions;
+﻿namespace TeamTracker.Data.Exceptions;
 
 public class EntityNotFoundException : Exception
 {

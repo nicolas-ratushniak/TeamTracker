@@ -1,8 +1,9 @@
-﻿using System.Reflection;
-using TeamTracker.Wpf.Core;
-using TeamTracker.Wpf.Data.Exceptions;
+﻿using System.Globalization;
+using System.Reflection;
+using TeamTracker.Data.Exceptions;
+using TeamTracker.Domain.Models;
 
-namespace TeamTracker.Wpf.Data;
+namespace TeamTracker.Data;
 
 public class ModelConverter<TModel> : IModelConverter<TModel> where TModel : BaseModel
 {

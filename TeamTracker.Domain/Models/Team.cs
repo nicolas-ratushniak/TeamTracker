@@ -1,6 +1,4 @@
-﻿using TeamTracker.Wpf.Core;
-
-namespace TeamTracker.Wpf.Models;
+﻿namespace TeamTracker.Domain.Models;
 
 public class Team : BaseModel
 {

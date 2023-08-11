@@ -1,4 +1,4 @@
-﻿namespace TeamTracker.Wpf.Core;
+﻿namespace TeamTracker.Domain.Models;
 
 public abstract class BaseModel
 {

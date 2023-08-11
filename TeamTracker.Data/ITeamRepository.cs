@@ -1,6 +1,6 @@
-﻿using TeamTracker.Wpf.Models;
+﻿using TeamTracker.Domain.Models;
 
-namespace TeamTracker.Wpf.Data;
+namespace TeamTracker.Data;
 
 public interface ITeamRepository
 {

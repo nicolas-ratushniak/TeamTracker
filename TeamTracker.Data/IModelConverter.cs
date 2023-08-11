@@ -1,4 +1,4 @@
-﻿namespace TeamTracker.Wpf.Data;
+﻿namespace TeamTracker.Data;
 
 public interface IModelConverter<TModel>
 {

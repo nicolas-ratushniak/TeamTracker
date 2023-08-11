@@ -1,10 +1,10 @@
-﻿namespace UnoTableDb;
+﻿namespace TeamTracker.Data;
 
-public class UnoTableDbProvider : IDbProvider
+public class TextFiledDb : ITextBasedDb
 {
     private readonly string _filePath;
 
-    public UnoTableDbProvider(string filePath)
+    public TextFiledDb(string filePath)
     {
         _filePath = filePath ?? throw new ArgumentNullException(nameof(filePath));
     }
