@@ -1,6 +1,5 @@
 ﻿using System.Reflection;
 using TeamTracker.Wpf.Core;
-using TeamTracker.Wpf.Data.Attributes;
 using TeamTracker.Wpf.Data.Exceptions;
 
 namespace TeamTracker.Wpf.Data;
@@ -99,8 +98,7 @@ public class ModelConverter<TModel> : IModelConverter<TModel> where TModel : Bas
 
     private static List<PropertyInfo> GetTrackedProperties()
     {
-        return typeof(TModel).GetProperties()
-            .Where(p => !Attribute.IsDefined(p, typeof(NotTrackedAttribute))).ToList();
+        return typeof(TModel).GetProperties().ToList();
     }
 
     /// <summary>
