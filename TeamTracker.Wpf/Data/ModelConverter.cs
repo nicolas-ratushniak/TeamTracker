@@ -100,7 +100,7 @@ public class ModelConverter<TModel> : IModelConverter<TModel> where TModel : Bas
     private static List<PropertyInfo> GetTrackedProperties()
     {
         return typeof(TModel).GetProperties()
-            .Where(p => Attribute.IsDefined(p, typeof(TrackedAttribute))).ToList();
+            .Where(p => !Attribute.IsDefined(p, typeof(NotTrackedAttribute))).ToList();
     }
 
     /// <summary>
