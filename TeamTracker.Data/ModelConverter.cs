@@ -98,19 +98,20 @@ public class ModelConverter<TModel> : IModelConverter<TModel> where TModel : Bas
 
     private static List<PropertyInfo> GetTrackedProperties()
     {
-        return typeof(TModel).GetProperties().ToList();
+        return typeof(TModel).GetProperties()
+            .Where(p => p.CanRead && p.CanWrite)
+            .ToList();
     }
 
     /// <summary>
     /// Checks whether a model class is valid for correct parsing and formatting
     /// </summary>
     /// <remarks>Model is considered valid if:<br />
-    /// 1. All tracked properties should have public get, set <br />
-    /// 2. The types of properties tracked should implement IParsable</remarks>
+    /// 1. The types of properties tracked should implement IParsable</remarks>
     private static bool IsModelTypeValid()
     {
         return GetTrackedProperties()
-            .All(p => p.CanRead && p.CanWrite && (p.PropertyType == typeof(string) ||
-                                                  typeof(IParsable<>).IsAssignableFrom(p.PropertyType)));
+            .All(p => p.PropertyType == typeof(string) ||
+                      typeof(IParsable<>).IsAssignableFrom(p.PropertyType));
     }
 }
