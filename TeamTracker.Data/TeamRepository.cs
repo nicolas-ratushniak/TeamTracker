@@ -1,9 +1,9 @@
-﻿using TeamTracker.Data.Exceptions;
+﻿using TeamTracker.Domain.Data;
 using TeamTracker.Domain.Models;
 
 namespace TeamTracker.Data;
 
-public class TeamRepository : ITeamRepository
+public class TeamRepository : IRepository<Team>
 {
     private readonly ITextBasedDb _textBasedDb;
     private readonly IModelConverter<Team> _modelConverter;
@@ -24,44 +24,37 @@ public class TeamRepository : ITeamRepository
         return _teams.AsReadOnly();
     }
 
-    public Team Get(Guid id)
+    public Team? Get(Guid id)
     {
-        return _teams.Find(t => t.Id == id)
-               ?? throw new EntityNotFoundException();
+        return _teams.Find(t => t.Id == id);
     }
 
     public void Add(Team team)
     {
-        _textBasedDb.AppendRecord(_modelConverter.ToDbRecord(team));
         _teams.Add(team);
+        _changesSaved = false;
     }
 
     public void Update(Team team)
     {
-        if (!_teams.Contains(team))
-        {
-            throw new EntityNotFoundException();
-        }
-
         _changesSaved = false;
     }
 
-    public void Remove(Guid id)
+    public void Remove(Team model)
     {
-        var team = Get(id);
-        
-        _teams.Remove(team);
+        _teams.Remove(model);
         _changesSaved = false;
     }
 
     public void SaveChanges()
     {
-        if (!_changesSaved)
+        if (_changesSaved)
         {
-            var records = _teams.Select(t => _modelConverter.ToDbRecord(t)).ToList();
-            _textBasedDb.WriteRecords(records);
+            return;
         }
-
+        
+        var records = _teams.Select(t => _modelConverter.ToDbRecord(t)).ToList();
+        _textBasedDb.WriteRecords(records);
         _changesSaved = true;
     }
 
