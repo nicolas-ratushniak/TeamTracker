@@ -20,16 +20,21 @@ public class TextFiledDb : ITextBasedDb
 
         var fileName = dbName + ".txt";
         _filePath = Path.Combine(folderPath, fileName);
-
-        if (!File.Exists(_filePath))
-        {
-            File.Create(_filePath);
-        }
     }
 
     public IEnumerable<string> ReadRecords()
     {
-        return File.ReadLines(_filePath);;
+        List<string> result = new();
+
+        using (TextReader reader = new StreamReader(File.Open(_filePath, FileMode.OpenOrCreate)))
+        {
+            while (reader.Peek() > -1)
+            {
+                result.Add(reader.ReadLine()!);
+            }
+        }
+
+        return result;
     }
 
     public void WriteRecords(IEnumerable<string> records)
