@@ -8,7 +8,12 @@ public class ModelConverter<TModel> : IModelConverter<TModel>
 {
     private readonly CultureInfo _cultureInfo;
     private readonly string _separator;
+
     private readonly List<PropertyInfo> _propertyInfos;
+
+    public ModelConverter() : this(CultureInfo.CurrentCulture)
+    {
+    }
 
     public ModelConverter(CultureInfo cultureInfo)
     {
@@ -30,51 +35,49 @@ public class ModelConverter<TModel> : IModelConverter<TModel>
         }
 
         var values = record.Split(_separator);
-        var result = Activator.CreateInstance<TModel>();
+        var target = Activator.CreateInstance<TModel>();
 
         for (int i = 0; i < values.Length; i++)
         {
             var propertyInfo = _propertyInfos[i];
+            var propertyType = propertyInfo.PropertyType;
+            dynamic value;
 
-            dynamic value = values[i];
-
-            if (propertyInfo.PropertyType != typeof(string))
+            if (propertyType == typeof(string))
+            {
+                value = values[i];
+            }
+            else
             {
                 try
                 {
-                    // Calling a Parse method
                     value = propertyInfo.PropertyType.InvokeMember(
                         "Parse",
                         BindingFlags.Public |
                         BindingFlags.Static |
-                        BindingFlags.InvokeMethod, null, result, new object[] { values[i], _cultureInfo })!;
-                }
-                catch (MissingMethodException)
-                {
-                    throw new InvalidModelTypeException(
-                        "The types of properties tracked should implement IParsable<> interface.");
+                        BindingFlags.InvokeMethod, null, target, new object[] { values[i], _cultureInfo })!;
                 }
                 catch (TargetInvocationException)
                 {
-                    throw new FormatException($"Cannot parse \"{values[i]}\" to {propertyInfo.PropertyType.Name}");
+                    throw new FormatException($"Cannot parse \"{values[i]}\" to {propertyType.Name}");
                 }
             }
 
-            propertyInfo.SetValue(result, value);
+            propertyInfo.SetValue(target, value);
         }
 
-        return result;
+        return target;
     }
 
     public string ToDbRecord(TModel model)
     {
         var values = _propertyInfos
-            .Select(p => string.Format(_cultureInfo, "{0}",  p.GetValue(model)))
+            .Select(p => string.Format(_cultureInfo, "{0}", p.GetValue(model)))
             .ToList();
 
         if (values.Any(v => v.Contains(_separator)))
         {
-            throw new FormatException("Property string representation shouldn't contain separator");
+            throw new FormatException("Property string representation shouldn't contain a separator");
         }
 
         return string.Join(_separator, values);
@@ -90,6 +93,6 @@ public class ModelConverter<TModel> : IModelConverter<TModel>
     {
         return typeof(TModel).GetProperties()
             .All(p => p.CanRead && p.CanWrite && p.PropertyType == typeof(string) ||
-                                              typeof(IParsable<>).IsAssignableFrom(p.PropertyType));
+                      typeof(IParsable<>).IsAssignableFrom(p.PropertyType));
     }
 }
