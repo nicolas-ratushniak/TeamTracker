@@ -1,11 +1,10 @@
 ﻿using System.Globalization;
 using System.Reflection;
 using TeamTracker.Data.Exceptions;
-using TeamTracker.Domain.Models;
 
 namespace TeamTracker.Data;
 
-public class ModelConverter<TModel> : IModelConverter<TModel> where TModel : BaseModel
+public class ModelConverter<TModel> : IModelConverter<TModel>
 {
     private readonly CultureInfo _cultureInfo;
     private readonly string _separator;
@@ -13,14 +12,14 @@ public class ModelConverter<TModel> : IModelConverter<TModel> where TModel : Bas
 
     public ModelConverter(CultureInfo cultureInfo)
     {
-        if (!IsModelTypeValid())
+        if (!ValidateModelType())
         {
             throw new InvalidModelTypeException();
         }
 
+        _propertyInfos = typeof(TModel).GetProperties().ToList();
         _cultureInfo = cultureInfo ?? throw new ArgumentNullException(nameof(cultureInfo));
         _separator = _cultureInfo.TextInfo.ListSeparator;
-        _propertyInfos = GetTrackedProperties();
     }
 
     public TModel ParseFromDbRecord(string record)
@@ -97,22 +96,16 @@ public class ModelConverter<TModel> : IModelConverter<TModel> where TModel : Bas
         return string.Join(_separator, values);
     }
 
-    private static List<PropertyInfo> GetTrackedProperties()
-    {
-        return typeof(TModel).GetProperties()
-            .Where(p => p.CanRead && p.CanWrite)
-            .ToList();
-    }
-
     /// <summary>
     /// Checks whether a model class is valid for correct parsing and formatting
     /// </summary>
     /// <remarks>Model is considered valid if:<br />
-    /// 1. The types of properties tracked should implement IParsable</remarks>
-    private static bool IsModelTypeValid()
+    /// 1. All public properties should be readable and writable 
+    /// 2. The types of properties tracked should implement IParsable</remarks>
+    private static bool ValidateModelType()
     {
-        return GetTrackedProperties()
-            .All(p => p.PropertyType == typeof(string) ||
-                      typeof(IParsable<>).IsAssignableFrom(p.PropertyType));
+        return typeof(TModel).GetProperties()
+            .All(p => p.CanRead && p.CanWrite && p.PropertyType == typeof(string) ||
+                                              typeof(IParsable<>).IsAssignableFrom(p.PropertyType));
     }
 }

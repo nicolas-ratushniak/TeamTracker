@@ -1,7 +1,8 @@
 ﻿namespace TeamTracker.Domain.Models;
 
-public class Team : BaseModel
+public class Team
 {
+    public Guid Id { get; set; }
     public string Name { get; set; } = "";
     public string OriginCity { get; set; } = "";
     public int GamesWon { get; set; }
