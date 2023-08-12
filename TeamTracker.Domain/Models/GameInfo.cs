@@ -1,8 +1,7 @@
 ﻿namespace TeamTracker.Domain.Models;
 
-public class GameInfo
+public class GameInfo : Entity
 {
-    public Guid Id { get; set; }
     public Guid CupId { get; set; }
     public Guid TeamHomeId { get; set; }
     public Guid TeamAwayId { get; set; }

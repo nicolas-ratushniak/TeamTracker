@@ -3,46 +3,46 @@ using TeamTracker.Domain.Models;
 
 namespace TeamTracker.Data;
 
-public class TeamRepository : IRepository<Team>
+public class Repository<TModel> : IRepository<TModel> where TModel : Entity
 {
     private readonly ITextBasedDb _textBasedDb;
-    private readonly IModelConverter<Team> _modelConverter;
-
-    private readonly List<Team> _teams;
+    private readonly IModelConverter<TModel> _modelConverter;
+    private readonly List<TModel> _entities;
+    
     private bool _changesSaved;
 
-    public TeamRepository(ITextBasedDb textBasedDb, IModelConverter<Team> modelConverter)
+    public Repository(ITextBasedDb textBasedDb, IModelConverter<TModel> modelConverter)
     {
         _textBasedDb = textBasedDb;
         _modelConverter = modelConverter;
-        _teams = GetTeamsFromDb();
+        _entities = GetTeamsFromDb();
         _changesSaved = true;
     }
-
-    public IReadOnlyList<Team> GetAll()
+    
+    public IReadOnlyList<TModel> GetAll()
     {
-        return _teams.AsReadOnly();
+        return _entities.AsReadOnly();
     }
 
-    public Team? Get(Guid id)
+    public TModel? Get(Guid id)
     {
-        return _teams.Find(t => t.Id == id);
+        return _entities.Find(t => t.Id == id);
     }
 
-    public void Add(Team team)
+    public void Add(TModel model)
     {
-        _teams.Add(team);
+        _entities.Add(model);
         _changesSaved = false;
     }
 
-    public void Update(Team team)
+    public void Update(TModel model)
     {
         _changesSaved = false;
     }
 
-    public void Remove(Team model)
+    public void Remove(TModel model)
     {
-        _teams.Remove(model);
+        _entities.Remove(model);
         _changesSaved = false;
     }
 
@@ -53,12 +53,12 @@ public class TeamRepository : IRepository<Team>
             return;
         }
         
-        var records = _teams.Select(t => _modelConverter.ToDbRecord(t)).ToList();
+        var records = _entities.Select(t => _modelConverter.ToDbRecord(t)).ToList();
         _textBasedDb.WriteRecords(records);
         _changesSaved = true;
     }
-
-    private List<Team> GetTeamsFromDb()
+    
+    private List<TModel> GetTeamsFromDb()
     {
         return _textBasedDb.ReadRecords()
             .Select(record => _modelConverter.ParseFromDbRecord(record)).ToList();
