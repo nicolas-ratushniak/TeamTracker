@@ -26,7 +26,7 @@ public class ModelConverter<TModel> : IModelConverter<TModel>
     {
         if (string.IsNullOrEmpty(record))
         {
-            throw new InvalidOperationException("The record to be parsed should not be null or empty.");
+            throw new ArgumentException("The record to be parsed should not be null or empty.");
         }
 
         var values = record.Split(_separator);
@@ -64,22 +64,6 @@ public class ModelConverter<TModel> : IModelConverter<TModel>
         }
 
         return result;
-    }
-
-    public bool TryParseFromDbRecord(string record, out TModel result)
-    {
-        result = default!;
-
-        try
-        {
-            result = ParseFromDbRecord(record);
-        }
-        catch (Exception)
-        {
-            return false;
-        }
-
-        return true;
     }
 
     public string ToDbRecord(TModel model)
