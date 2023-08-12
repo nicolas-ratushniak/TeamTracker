@@ -1,48 +1,44 @@
-﻿namespace TeamTracker.Data;
+﻿using System.Text.RegularExpressions;
+
+namespace TeamTracker.Data;
 
 public class TextFiledDb : ITextBasedDb
 {
     private readonly string _filePath;
 
-    public TextFiledDb(string filePath)
+    public TextFiledDb(string folderPath, string dbName)
     {
-        _filePath = filePath ?? throw new ArgumentNullException(nameof(filePath));
+        if (!Directory.Exists(folderPath))
+        {
+            throw new DirectoryNotFoundException();
+        }
+
+        if (!IsValidFileName(dbName))
+        {
+            throw new ArgumentException("Invalid DB name");
+        }
+
+        var fileName = dbName + ".txt";
+        _filePath = Path.Combine(folderPath, fileName);
+
+        if (!File.Exists(_filePath))
+        {
+            File.Create(_filePath);
+        }
     }
 
     public IEnumerable<string> ReadRecords()
     {
-        List<string> result = new();
-
-        using (FileStream fs = new(_filePath, FileMode.Open))
-        using (TextReader reader = new StreamReader(fs))
-        {
-            while (reader.Peek() > -1)
-            {
-                result.Add(reader.ReadLine()!);
-            }
-        }
-
-        return result;
-    }
-
-    public void AppendRecord(string record)
-    {
-        using (FileStream fs = new(_filePath, FileMode.Append))
-        using (TextWriter writer = new StreamWriter(fs))
-        {
-            writer.WriteLine(record);
-        }
+        return File.ReadLines(_filePath);;
     }
 
     public void WriteRecords(IEnumerable<string> records)
     {
-        using (FileStream fs = new(_filePath, FileMode.Truncate))
-        using (TextWriter writer = new StreamWriter(fs))
-        {
-            foreach (var record in records)
-            {
-                writer.WriteLine(record);
-            }
-        }
+        File.WriteAllLines(_filePath, records);
+    }
+
+    private static bool IsValidFileName(string? fileName)
+    {
+        return fileName is not null && Regex.IsMatch(fileName, "[^\"<>:/\\|?*]");
     }
 }
