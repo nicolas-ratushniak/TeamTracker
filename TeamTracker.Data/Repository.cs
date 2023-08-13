@@ -3,7 +3,7 @@ using TeamTracker.Domain.Models;
 
 namespace TeamTracker.Data;
 
-public class Repository<TModel> : IRepository<TModel> where TModel : Entity
+public class Repository<TModel> : IRepository<TModel> where TModel : ModelBase
 {
     private readonly ITextBasedDb _textBasedDb;
     private readonly IModelConverter<TModel> _modelConverter;

@@ -1,6 +1,6 @@
 ﻿namespace TeamTracker.Domain.Models;
 
-public class Team : Entity
+public class Team : ModelBase
 {
     public string Name { get; set; } = "";
     public string OriginCity { get; set; } = "";
