@@ -4,6 +4,17 @@
              xmlns:local="clr-namespace:TeamTracker.Wpf"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+        <!--Colors-->
+        <Color x:Key="ColorAccent">#AA77FF</Color>
+        <Color x:Key="ColorAccentFocused">#875FC9</Color>
+        <Color x:Key="ColorMinor">#C9EEFF</Color>
+        <Color x:Key="ColorMinorFocused">#62CDFF</Color>
+        
+        <!--Brushes-->
+        <SolidColorBrush x:Key="BrushAccent" Color="{StaticResource ColorAccent}"></SolidColorBrush>
+        <SolidColorBrush x:Key="BrushAccentFocused" Color="{StaticResource ColorAccentFocused}"></SolidColorBrush>
+        <SolidColorBrush x:Key="BrushMinor" Color="{StaticResource ColorMinor}"></SolidColorBrush>
+        <SolidColorBrush x:Key="BrushMinorFocused" Color="{StaticResource ColorMinorFocused}"></SolidColorBrush>
+        
     </Application.Resources>
 </Application>
