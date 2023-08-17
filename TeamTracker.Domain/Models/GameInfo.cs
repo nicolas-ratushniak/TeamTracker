@@ -2,7 +2,6 @@
 
 public class GameInfo : ModelBase
 {
-    public Guid SeasonId { get; set; }
     public Guid TeamHomeId { get; set; }
     public Guid TeamAwayId { get; set; }
     public int TeamHomeScore { get; set; }
