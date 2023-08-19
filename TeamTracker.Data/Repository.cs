@@ -19,9 +19,9 @@ public class Repository<TModel> : IRepository<TModel> where TModel : ModelBase
         _changesSaved = true;
     }
     
-    public IReadOnlyList<TModel> GetAll()
+    public List<TModel> GetAll()
     {
-        return _entities.AsReadOnly();
+        return _entities;
     }
 
     public TModel? Get(Guid id)

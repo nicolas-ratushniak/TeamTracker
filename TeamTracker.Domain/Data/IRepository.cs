@@ -2,7 +2,7 @@
 
 public interface IRepository<TModel>
 {
-    IReadOnlyList<TModel> GetAll();
+    List<TModel> GetAll();
     TModel? Get(Guid id);
     void Add(TModel model);
     void Update(TModel model);
