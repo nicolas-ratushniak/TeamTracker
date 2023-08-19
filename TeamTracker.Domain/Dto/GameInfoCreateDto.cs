@@ -11,10 +11,10 @@ public class GameInfoCreateDto
     public Guid TeamAwayId { get; set; }
     
     [Required]
-    [Range(0, int.MaxValue)]
+    [Range(0, 200)]
     public int TeamHomeScore { get; set; }
     
     [Required]
-    [Range(0, int.MaxValue)]
+    [Range(0, 200)]
     public int TeamAwayScore { get; set; }
 }
