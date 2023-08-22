@@ -1,7 +1,9 @@
 ﻿using System.IO;
 using System.Windows;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Serilog;
 using TeamTracker.Data;
 using TeamTracker.Domain.Data;
 using TeamTracker.Domain.Models;
@@ -23,18 +25,18 @@ public partial class App : Application
             {
                 services.AddScoped<IModelConverter<Team>, ModelConverter<Team>>();
                 services.AddScoped<IModelConverter<GameInfo>, ModelConverter<GameInfo>>();
-                services.AddScoped<ITextBasedDb, TextFiledDb>();
+                services.AddScoped<ITextBasedStorage, TextFileDbTable>();
                 
                 services.AddScoped<IRepository<Team>, Repository<Team>>(s =>
                 {
-                    var db = new TextFiledDb(Directory.GetCurrentDirectory(), "TeamsDb");
+                    var db = new TextFileDbTable(Directory.GetCurrentDirectory(), "TeamsDb");
                     var converter = s.GetRequiredService<IModelConverter<Team>>();
                     return new Repository<Team>(db, converter);
                 });
 
                 services.AddScoped<IRepository<GameInfo>, Repository<GameInfo>>(s =>
                 {
-                    var db = new TextFiledDb(Directory.GetCurrentDirectory(), "GamesDb");
+                    var db = new TextFileDbTable(Directory.GetCurrentDirectory(), "GamesDb");
                     var converter = s.GetRequiredService<IModelConverter<GameInfo>>();
                     return new Repository<GameInfo>(db, converter);
                 });

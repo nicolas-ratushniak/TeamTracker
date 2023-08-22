@@ -2,23 +2,23 @@
 
 namespace TeamTracker.Data;
 
-public class TextFiledDb : ITextBasedDb
+public class TextFileDbTable : ITextBasedStorage
 {
     private readonly string _filePath;
 
-    public TextFiledDb(string folderPath, string dbName)
+    public TextFileDbTable(string folderPath, string tableName)
     {
         if (!Directory.Exists(folderPath))
         {
             throw new DirectoryNotFoundException();
         }
 
-        if (!IsValidFileName(dbName))
+        if (!IsValidFileName(tableName))
         {
-            throw new ArgumentException("Invalid DB name");
+            throw new ArgumentException("Invalid table name");
         }
 
-        var fileName = dbName + ".txt";
+        var fileName = tableName + ".txt";
         _filePath = Path.Combine(folderPath, fileName);
     }
 

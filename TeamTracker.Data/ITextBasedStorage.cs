@@ -1,6 +1,6 @@
 ﻿namespace TeamTracker.Data;
 
-public interface ITextBasedDb
+public interface ITextBasedStorage
 {
     IEnumerable<string> ReadRecords();
     void WriteRecords(IEnumerable<string> records);
