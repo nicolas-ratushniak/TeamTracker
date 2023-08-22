@@ -1,0 +1,173 @@
+﻿<UserControl x:Class="TeamTracker.Wpf.Views.TeamsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:vm="clr-namespace:TeamTracker.Wpf.ViewModels"
+             mc:Ignorable="d"
+             d:DesignHeight="500" d:DesignWidth="1000">
+    
+    <UserControl.Resources>
+        <Style x:Key="TeamListBox" TargetType="ListBox">
+            <Setter Property="ItemTemplate">
+                <Setter.Value>
+                    <DataTemplate DataType="{x:Type vm:TeamHeaderViewModel}">
+                        <TextBlock Text="{Binding Path=FullName}" 
+                                   FontSize="16" Padding="5"/>
+                    </DataTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+
+    <Grid Margin="24">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="425" />
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="222" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <!-- Search Box -->
+        <TextBox Grid.Row="0" Grid.Column="0" FontSize="16" Margin="0,0,0,12">Search...</TextBox>
+
+        <!-- Filter Options -->
+        <Border Grid.Row="1" Grid.Column="0" BorderBrush="Black"
+                BorderThickness="1"
+                Padding="10"
+                TextBlock.FontSize="16">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <TextBlock Grid.Row="0" Margin="0,0,0,10">Sort</TextBlock>
+                <ComboBox Grid.Row="1" Margin="0,0,0,15" SelectedIndex="0">
+                    <ComboBoxItem>Default</ComboBoxItem>
+                    <ComboBoxItem>Points Asc</ComboBoxItem>
+                    <ComboBoxItem>Points Desc</ComboBoxItem>
+                    <ComboBoxItem>Team Name Asc</ComboBoxItem>
+                    <ComboBoxItem>Team Name Desc</ComboBoxItem>
+                </ComboBox>
+
+                <TextBlock Grid.Row="2" Margin="0,0,0,10">Filters</TextBlock>
+                <Grid Grid.Row="3" Margin="0,0,0,15">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="75" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="30" />
+                        <ColumnDefinition Width="25" />
+                        <ColumnDefinition Width="30" />
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Column="0">Members:</TextBlock>
+                    <TextBox Grid.Column="2"></TextBox>
+                    <TextBlock Grid.Column="3" TextAlignment="Center">&gt;</TextBlock>
+                    <TextBox Grid.Column="4"></TextBox>
+                </Grid>
+
+                <TextBlock Grid.Row="4" Margin="0,0,0,10">Advanced</TextBlock>
+                <RadioButton Grid.Row="5" Margin="0,0,0,10" VerticalContentAlignment="Center">Most Wins</RadioButton>
+                <RadioButton Grid.Row="6" VerticalContentAlignment="Center">Most Points</RadioButton>
+
+                <Grid Grid.Row="8">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="10" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <Button Grid.Column="0">Reset</Button>
+                    <Button Grid.Column="2">Apply</Button>
+                </Grid>
+            </Grid>
+        </Border>
+
+        <!-- Team List -->
+        <Border Grid.Row="1" Grid.Column="1"
+                Margin="12,0,12,0"
+                BorderBrush="Black" BorderThickness="1" >
+            <ListBox x:Name="LstTeams"
+                     ItemsSource="{Binding Path=Teams}"
+                     SelectedItem="{Binding SelectedTeam}"
+                     SelectionMode="Single"
+                     Style="{StaticResource TeamListBox}"/>
+            
+        </Border>
+
+        <!-- Team Info -->
+        <Border Grid.Row="1" Grid.Column="2"
+                Margin="12,0,0,0" BorderBrush="Black" BorderThickness="1"
+                DataContext="{Binding ElementName=LstTeams, Path=SelectedItem}">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                
+                <Label Grid.Row="0" Grid.Column="0" FontSize="20" FontWeight="Bold"
+                       Content="{Binding Path=Name}"/>
+                
+                <!-- <TextBox Grid.Row="1" Grid.Column="0" FontSize="16" -->
+                <!--          Text="Points:"/> -->
+                <!-- <TextBox Grid.Row="1" Grid.Column="0" FontSize="16" -->
+                <!--          Text="{Binding Path=Name}"/> -->
+                
+                <Label Grid.Row="2" Grid.Column="0" FontSize="16"
+                         Content="Origin City:"/>
+                <Label Grid.Row="2" Grid.Column="1" FontSize="16"
+                       Content="{Binding Path=OriginCity}"/>
+                
+                <Label Grid.Row="3" Grid.Column="0" FontSize="16"
+                       Content="Members:"/>
+                <Label Grid.Row="3" Grid.Column="1" FontSize="16"
+                       Content="{Binding Path=MembersCount}"/>
+                
+                <!-- <Label Grid.Row="4" Grid.Column="0" FontSize="16" -->
+                <!--          Text="Total Games:"/> -->
+                <!-- <Label Grid.Row="4" Grid.Column="1" FontSize="16" -->
+                <!--          Text="{Binding Path=TotalGames}"/> -->
+                
+                <Label Grid.Row="5" Grid.Column="0" FontSize="16"
+                       Content="Games Won:"/>
+                <Label Grid.Row="5" Grid.Column="1" FontSize="16"
+                       Content="{Binding Path=GamesWon}"/>
+                
+                <Label Grid.Row="6" Grid.Column="0" FontSize="16"
+                       Content="Games Lost:"/>
+                <Label Grid.Row="6" Grid.Column="1" FontSize="16"
+                       Content="{Binding Path=GamesLost}"/>
+                
+                <Label Grid.Row="7" Grid.Column="0" FontSize="16"
+                       Content="Games Drawn:"/>
+                <Label Grid.Row="7" Grid.Column="1" FontSize="16"
+                       Content="{Binding Path=GamesDrawn}"/>
+            </Grid>
+        </Border>
+
+
+    </Grid>
+</UserControl>
