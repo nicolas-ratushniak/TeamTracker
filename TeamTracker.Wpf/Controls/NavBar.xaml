@@ -58,7 +58,7 @@
             <RadioButton Grid.Column="3" 
                          Style="{StaticResource NavBarOption}" 
                          Command="{Binding Path=Navigator.UpdateCurrentViewTypeCommand}"
-                         CommandParameter="{x:Static navigation:ViewType.Games}"
+                         CommandParameter="{x:Static navigation:ViewType.Help}"
                          Content="Help"/>
         </Grid>
     </Grid>
