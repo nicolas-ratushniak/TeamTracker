@@ -1,4 +1,5 @@
-﻿using TeamTracker.Wpf.Navigation;
+﻿using Microsoft.Extensions.Logging;
+using TeamTracker.Wpf.Navigation;
 using TeamTracker.Wpf.ViewModels.Factories;
 
 namespace TeamTracker.Wpf.ViewModels;
@@ -6,6 +7,7 @@ namespace TeamTracker.Wpf.ViewModels;
 public class MainViewModel : ViewModelBase
 {
     private readonly IViewModelFactory _viewModelFactory;
+    private readonly ILogger<MainViewModel> _logger;
     private ViewModelBase _currentViewModel;
 
     public INavigator Navigator { get; }
@@ -21,18 +23,23 @@ public class MainViewModel : ViewModelBase
         }
     }
 
-    public MainViewModel(INavigator navigator, IViewModelFactory viewModelFactory)
+    public MainViewModel(INavigator navigator, IViewModelFactory viewModelFactory, ILogger<MainViewModel> logger)
     {
         _viewModelFactory = viewModelFactory;
+        _logger = logger;
         Navigator = navigator;
         
         Navigator.CurrentViewTypeChanged += Navigator_OnCurrentViewTypeChanged;
-        Navigator.SetCurrentViewType(ViewType.Teams);
+        
+        _logger.LogInformation("Setting default view");
+        CurrentViewModel = _viewModelFactory.CreateViewModel(ViewType.Teams);
     }
 
     private void Navigator_OnCurrentViewTypeChanged(object? sender, EventArgs args)
     {
         var viewTypeChangedArgs = (ViewTypeChangedEventArgs)args;
         CurrentViewModel = _viewModelFactory.CreateViewModel(viewTypeChangedArgs.NewViewType);
+        
+        _logger.LogInformation("Current view was successfully updated");
     }
 }

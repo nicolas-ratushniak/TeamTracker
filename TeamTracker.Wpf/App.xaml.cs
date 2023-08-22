@@ -1,5 +1,4 @@
-﻿using System.IO;
-using System.Windows;
+﻿using System.Windows;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -21,22 +20,29 @@ public partial class App : Application
     static App()
     {
         AppHost = Host.CreateDefaultBuilder()
-            .ConfigureServices(services =>
+            .ConfigureAppConfiguration(builder => builder.AddJsonFile("appsettings.json"))
+            .UseSerilog((context, loggerConfiguration) =>
+            {
+                loggerConfiguration.ReadFrom.Configuration(context.Configuration);
+            })
+            .ConfigureServices((context, services) =>
             {
                 services.AddScoped<IModelConverter<Team>, ModelConverter<Team>>();
                 services.AddScoped<IModelConverter<GameInfo>, ModelConverter<GameInfo>>();
                 services.AddScoped<ITextBasedStorage, TextFileDbTable>();
+
+                var dbPath = context.Configuration.GetRequiredSection("TextFileDb:DbPath").Value;
                 
                 services.AddScoped<IRepository<Team>, Repository<Team>>(s =>
                 {
-                    var db = new TextFileDbTable(Directory.GetCurrentDirectory(), "TeamsDb");
+                    var db = new TextFileDbTable(dbPath!, "TeamsTable");
                     var converter = s.GetRequiredService<IModelConverter<Team>>();
                     return new Repository<Team>(db, converter);
                 });
 
                 services.AddScoped<IRepository<GameInfo>, Repository<GameInfo>>(s =>
                 {
-                    var db = new TextFileDbTable(Directory.GetCurrentDirectory(), "GamesDb");
+                    var db = new TextFileDbTable(dbPath!, "GamesTable");
                     var converter = s.GetRequiredService<IModelConverter<GameInfo>>();
                     return new Repository<GameInfo>(db, converter);
                 });

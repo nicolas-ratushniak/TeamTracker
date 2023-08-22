@@ -5,15 +5,15 @@ namespace TeamTracker.Data;
 
 public class Repository<TModel> : IRepository<TModel> where TModel : ModelBase
 {
-    private readonly ITextBasedDb _textBasedDb;
+    private readonly ITextBasedStorage _textBasedStorage;
     private readonly IModelConverter<TModel> _modelConverter;
     private readonly List<TModel> _entities;
     
     private bool _changesSaved;
 
-    public Repository(ITextBasedDb textBasedDb, IModelConverter<TModel> modelConverter)
+    public Repository(ITextBasedStorage textBasedStorage, IModelConverter<TModel> modelConverter)
     {
-        _textBasedDb = textBasedDb;
+        _textBasedStorage = textBasedStorage;
         _modelConverter = modelConverter;
         _entities = GetTeamsFromDb();
         _changesSaved = true;
@@ -54,13 +54,13 @@ public class Repository<TModel> : IRepository<TModel> where TModel : ModelBase
         }
         
         var records = _entities.Select(t => _modelConverter.ToDbRecord(t)).ToList();
-        _textBasedDb.WriteRecords(records);
+        _textBasedStorage.WriteRecords(records);
         _changesSaved = true;
     }
     
     private List<TModel> GetTeamsFromDb()
     {
-        return _textBasedDb.ReadRecords()
+        return _textBasedStorage.ReadRecords()
             .Select(record => _modelConverter.ParseFromDbRecord(record)).ToList();
     }
 }
