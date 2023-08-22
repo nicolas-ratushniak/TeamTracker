@@ -44,6 +44,6 @@ public class TextFiledDb : ITextBasedDb
 
     private static bool IsValidFileName(string? fileName)
     {
-        return fileName is not null && Regex.IsMatch(fileName, "[^\"<>:/\\|?*]");
+        return fileName is not null && !Regex.IsMatch(fileName, "[\"<>:/\\|?*]");
     }
 }
