@@ -3,27 +3,15 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:vm="clr-namespace:TeamTracker.Wpf.ViewModels"
+             xmlns:local="clr-namespace:TeamTracker.Wpf.Views"
+             xmlns:viewComponents="clr-namespace:TeamTracker.Wpf.ViewComponents"
              mc:Ignorable="d"
              d:DesignHeight="500" d:DesignWidth="1000">
-    
-    <UserControl.Resources>
-        <Style x:Key="TeamListBox" TargetType="ListBox">
-            <Setter Property="ItemTemplate">
-                <Setter.Value>
-                    <DataTemplate DataType="{x:Type vm:TeamHeaderViewModel}">
-                        <TextBlock Text="{Binding Path=FullName}" 
-                                   FontSize="16" Padding="5"/>
-                    </DataTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-    </UserControl.Resources>
 
     <Grid Margin="24">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="425" />
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="425"/>
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
@@ -33,7 +21,10 @@
         </Grid.ColumnDefinitions>
 
         <!-- Search Box -->
-        <TextBox Grid.Row="0" Grid.Column="0" FontSize="16" Margin="0,0,0,12">Search...</TextBox>
+        <TextBox Grid.Row="0" Grid.Column="0" 
+                 FontSize="16" 
+                 Margin="0,0,0,12"
+                 Text="Search"/>
 
         <!-- Filter Options -->
         <Border Grid.Row="1" Grid.Column="0" BorderBrush="Black"
@@ -95,79 +86,13 @@
             </Grid>
         </Border>
 
-        <!-- Team List -->
-        <Border Grid.Row="1" Grid.Column="1"
-                Margin="12,0,12,0"
-                BorderBrush="Black" BorderThickness="1" >
-            <ListBox x:Name="LstTeams"
-                     ItemsSource="{Binding Path=Teams}"
-                     SelectedItem="{Binding SelectedTeam}"
-                     SelectionMode="Single"
-                     Style="{StaticResource TeamListBox}"/>
-            
-        </Border>
+        <viewComponents:TeamsList Grid.Row="1" Grid.Column="1"
+                             Margin="12,0,12,0"
+                             DataContext="{Binding TeamsList}"/>
 
-        <!-- Team Info -->
-        <Border Grid.Row="1" Grid.Column="2"
-                Margin="12,0,0,0" BorderBrush="Black" BorderThickness="1"
-                DataContext="{Binding ElementName=LstTeams, Path=SelectedItem}">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
-                
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
-                
-                <Label Grid.Row="0" Grid.Column="0" FontSize="20" FontWeight="Bold"
-                       Content="{Binding Path=Name}"/>
-                
-                <!-- <TextBox Grid.Row="1" Grid.Column="0" FontSize="16" -->
-                <!--          Text="Points:"/> -->
-                <!-- <TextBox Grid.Row="1" Grid.Column="0" FontSize="16" -->
-                <!--          Text="{Binding Path=Name}"/> -->
-                
-                <Label Grid.Row="2" Grid.Column="0" FontSize="16"
-                         Content="Origin City:"/>
-                <Label Grid.Row="2" Grid.Column="1" FontSize="16"
-                       Content="{Binding Path=OriginCity}"/>
-                
-                <Label Grid.Row="3" Grid.Column="0" FontSize="16"
-                       Content="Members:"/>
-                <Label Grid.Row="3" Grid.Column="1" FontSize="16"
-                       Content="{Binding Path=MembersCount}"/>
-                
-                <!-- <Label Grid.Row="4" Grid.Column="0" FontSize="16" -->
-                <!--          Text="Total Games:"/> -->
-                <!-- <Label Grid.Row="4" Grid.Column="1" FontSize="16" -->
-                <!--          Text="{Binding Path=TotalGames}"/> -->
-                
-                <Label Grid.Row="5" Grid.Column="0" FontSize="16"
-                       Content="Games Won:"/>
-                <Label Grid.Row="5" Grid.Column="1" FontSize="16"
-                       Content="{Binding Path=GamesWon}"/>
-                
-                <Label Grid.Row="6" Grid.Column="0" FontSize="16"
-                       Content="Games Lost:"/>
-                <Label Grid.Row="6" Grid.Column="1" FontSize="16"
-                       Content="{Binding Path=GamesLost}"/>
-                
-                <Label Grid.Row="7" Grid.Column="0" FontSize="16"
-                       Content="Games Drawn:"/>
-                <Label Grid.Row="7" Grid.Column="1" FontSize="16"
-                       Content="{Binding Path=GamesDrawn}"/>
-            </Grid>
-        </Border>
-
+        <viewComponents:TeamsDetails Grid.Row="1" Grid.Column="2" 
+                                    Margin="12,0,0,0"
+                                    DataContext="{Binding SelectedTeamDetails}"/>
 
     </Grid>
 </UserControl>

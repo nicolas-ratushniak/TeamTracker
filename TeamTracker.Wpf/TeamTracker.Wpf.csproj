@@ -25,4 +25,17 @@
       </None>
     </ItemGroup>
 
+    <ItemGroup>
+      <Page Update="ViewComponents\TeamsDetails.xaml">
+        <Generator>MSBuild:Compile</Generator>
+        <XamlRuntime>Wpf</XamlRuntime>
+        <SubType>Designer</SubType>
+      </Page>
+      <Page Update="ViewComponents\TeamsList.xaml">
+        <Generator>MSBuild:Compile</Generator>
+        <XamlRuntime>Wpf</XamlRuntime>
+        <SubType>Designer</SubType>
+      </Page>
+    </ItemGroup>
+
 </Project>
