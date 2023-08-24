@@ -8,7 +8,7 @@
              mc:Ignorable="d"
              d:DesignHeight="500" d:DesignWidth="1000">
 
-    <Grid Margin="24">
+    <Grid Margin="24,12">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="425"/>
@@ -23,7 +23,7 @@
         <!-- Search Box -->
         <TextBox Grid.Row="0" Grid.Column="0" 
                  FontSize="16" 
-                 Margin="0,0,0,12"
+                 Margin="0,0,0,24"
                  Text="Search"/>
 
         <!-- Filter Options -->
@@ -80,18 +80,33 @@
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
 
-                    <Button Grid.Column="0">Reset</Button>
-                    <Button Grid.Column="2">Apply</Button>
+                    <Button Grid.Column="0" Content="Reset" Style="{StaticResource NiceButton}"
+                            Background="#97DEFF"/>
+                    <Button Grid.Column="2" Content="Apply" Style="{StaticResource NiceButton}"/>
                 </Grid>
             </Grid>
         </Border>
+        
+        <StackPanel Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2"
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Right"
+                    Margin="0,0,0,24">
+            <Button Style="{StaticResource NiceButton}" 
+                    Margin="0,0,10,0"
+                    Content="Add"/>
+            <Button Style="{StaticResource NiceButton}" 
+                    Margin="0,0,10,0"
+                    Content="Edit"/>
+            <Button Style="{StaticResource NiceButton}"
+                    Content="Delete"/>
+        </StackPanel>
 
         <viewComponents:TeamsList Grid.Row="1" Grid.Column="1"
-                             Margin="12,0,12,0"
+                             Margin="24,0,0,0"
                              DataContext="{Binding TeamsList}"/>
 
         <viewComponents:TeamsDetails Grid.Row="1" Grid.Column="2" 
-                                    Margin="12,0,0,0"
+                                    Margin="24,0,0,0"
                                     DataContext="{Binding SelectedTeamDetails}"/>
 
     </Grid>
