@@ -20,10 +20,9 @@ public partial class App : Application
     static App()
     {
         AppHost = Host.CreateDefaultBuilder()
-            .ConfigureAppConfiguration(builder => builder.AddJsonFile("appsettings.json"))
-            .UseSerilog((context, loggerConfiguration) =>
+            .ConfigureAppConfiguration(builder =>
             {
-                loggerConfiguration.ReadFrom.Configuration(context.Configuration);
+                builder.AddJsonFile("appsettings.json");
             })
             .ConfigureServices((context, services) =>
             {
@@ -31,7 +30,7 @@ public partial class App : Application
                 services.AddScoped<IModelConverter<GameInfo>, ModelConverter<GameInfo>>();
                 services.AddScoped<ITextBasedStorage, TextFileDbTable>();
 
-                var dbPath = context.Configuration.GetRequiredSection("TextFileDb:DbPath").Value;
+                var dbPath = context.Configuration.GetRequiredSection("TeamTracker:DesignTimeDB").Value;
                 
                 services.AddScoped<IRepository<Team>, Repository<Team>>(s =>
                 {
@@ -60,6 +59,10 @@ public partial class App : Application
 
                 services.AddScoped<MainWindow>(s =>
                     new MainWindow(s.GetRequiredService<MainViewModel>()));
+            })
+            .UseSerilog((context, loggerConfiguration) =>
+            {
+                loggerConfiguration.ReadFrom.Configuration(context.Configuration);
             })
             .Build();
     }
