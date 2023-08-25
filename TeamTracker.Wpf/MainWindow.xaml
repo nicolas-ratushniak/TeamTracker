@@ -9,8 +9,13 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="600" Width="1000">
     
-    <StackPanel>
-        <controls:NavBar/>
-        <ContentControl Content="{Binding CurrentViewModel}"/>
-    </StackPanel>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        
+        <controls:NavBar Grid.Row="0"/> 
+        <ContentControl Grid.Row="1" Content="{Binding CurrentViewModel}"/>
+    </Grid>
 </Window>

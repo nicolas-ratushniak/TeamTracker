@@ -8,10 +8,10 @@
              mc:Ignorable="d"
              d:DesignHeight="500" d:DesignWidth="1000">
 
-    <Grid Margin="24,12">
+    <Grid Margin="24">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="425"/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
@@ -91,7 +91,9 @@
                     Orientation="Horizontal"
                     HorizontalAlignment="Right"
                     Margin="0,0,0,24">
+            
             <Button Style="{StaticResource NiceButton}" 
+                    Command="{Binding AddTeamCommand}"
                     Margin="0,0,10,0"
                     Content="Add"/>
             <Button Style="{StaticResource NiceButton}" 
