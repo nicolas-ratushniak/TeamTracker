@@ -10,21 +10,26 @@
     
     <UserControl.Resources>
         <Style x:Key="TeamListBox" TargetType="ListBox">
+            <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="ItemTemplate">
                 <Setter.Value>
                     <DataTemplate DataType="{x:Type viewModels:TeamListItemViewModel}">
                         <TextBlock Text="{Binding Path=FullName}" 
-                                   FontSize="16" Padding="5"/>
+                                   FontSize="18" Padding="5"/>
                     </DataTemplate>
                 </Setter.Value>
             </Setter>
         </Style>
     </UserControl.Resources>
     
-    <Border BorderBrush="Black" BorderThickness="1" >
+    <Border BorderBrush="Black" 
+            BorderThickness="1" 
+            CornerRadius="5"
+            Padding="5">
         <ListBox ItemsSource="{Binding Teams}"
                  SelectedItem="{Binding SelectedTeam}"
                  SelectionMode="Single"
+                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                  Style="{StaticResource TeamListBox}"/>
     </Border>
 </UserControl>

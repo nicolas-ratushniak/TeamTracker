@@ -30,7 +30,8 @@
         <Border Grid.Row="1" Grid.Column="0" BorderBrush="Black"
                 BorderThickness="1"
                 Padding="10"
-                TextBlock.FontSize="16">
+                TextBlock.FontSize="16"
+                CornerRadius="5">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
