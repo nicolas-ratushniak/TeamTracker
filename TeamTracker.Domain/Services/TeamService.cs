@@ -51,12 +51,16 @@ public class TeamService : ITeamService
     {
         Validator.ValidateObject(dto, new ValidationContext(dto));
 
-        if (_repository.GetAll().Any(t => t.Name == dto.Name && t.OriginCity == dto.OriginCity && t.Id == dto.Id))
+        if (_repository.GetAll().Any(t => t.Name == dto.Name && t.OriginCity == dto.OriginCity && t.Id != dto.Id))
         {
             throw new ValidationException("No way to have two identical teams in one city");
         }
 
         var team = Get(dto.Id);
+
+        team.Name = dto.Name;
+        team.OriginCity = dto.OriginCity;
+        team.MembersCount = dto.MembersCount;
         
         _repository.Update(team);
         _repository.SaveChanges();
