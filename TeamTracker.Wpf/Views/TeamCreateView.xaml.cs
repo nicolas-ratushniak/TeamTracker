@@ -2,9 +2,9 @@
 
 namespace TeamTracker.Wpf.Views;
 
-public partial class AddTeamView : UserControl
+public partial class TeamCreateView : UserControl
 {
-    public AddTeamView()
+    public TeamCreateView()
     {
         InitializeComponent();
     }

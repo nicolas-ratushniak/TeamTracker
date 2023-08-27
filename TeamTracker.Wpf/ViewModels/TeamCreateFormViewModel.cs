@@ -7,7 +7,7 @@ using TeamTracker.Wpf.Navigation;
 
 namespace TeamTracker.Wpf.ViewModels;
 
-public class AddTeamFormViewModel : ViewModelBase
+public class TeamCreateFormViewModel : ViewModelBase
 {
     private readonly ITeamService _teamService;
     private readonly INavigator _navigator;
@@ -39,14 +39,14 @@ public class AddTeamFormViewModel : ViewModelBase
     public ICommand SubmitCommand { get; }
     public ICommand CancelCommand { get; }
 
-    public AddTeamFormViewModel(ITeamService teamService, INavigator navigator)
+    public TeamCreateFormViewModel(ITeamService teamService, INavigator navigator)
     {
         _teamService = teamService;
         _navigator = navigator;
         _newTeam = new TeamCreateViewModel();
 
         SubmitCommand = new RelayCommand<object>(AddTeam, AddTeam_CanExecute);
-        CancelCommand = new RelayCommand<object>(o => _navigator.SetCurrentViewType(ViewType.Teams));
+        CancelCommand = new RelayCommand<object>(o => _navigator.UpdateCurrentViewType(ViewType.Teams));
     }
 
     private bool AddTeam_CanExecute(object obj)
@@ -67,7 +67,7 @@ public class AddTeamFormViewModel : ViewModelBase
         try
         {
             _teamService.Add(dto);
-            _navigator.SetCurrentViewType(ViewType.Teams);
+            _navigator.UpdateCurrentViewType(ViewType.Teams);
         }
         catch (ValidationException)
         {
