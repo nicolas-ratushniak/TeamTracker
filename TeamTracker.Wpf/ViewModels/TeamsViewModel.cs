@@ -1,22 +1,33 @@
 ﻿using System.ComponentModel;
-using TeamTracker.Domain.Models;
+using System.Windows.Input;
 using TeamTracker.Domain.Services;
+using TeamTracker.Wpf.Commands;
+using TeamTracker.Wpf.Navigation;
 
 namespace TeamTracker.Wpf.ViewModels;
 
 public class TeamsViewModel : ViewModelBase
 {
     private readonly ITeamService _teamService;
+    private readonly INavigator _navigator;
     public TeamsListViewModel TeamsList { get; set; }
     public TeamDetailsViewModel SelectedTeamDetails { get; set; }
 
-    public TeamsViewModel(ITeamService teamService)
+    public ICommand AddTeamCommand { get; }
+
+    public TeamsViewModel(ITeamService teamService, INavigator navigator)
     {
         _teamService = teamService;
+        _navigator = navigator;
         TeamsList = new TeamsListViewModel(teamService);
         SelectedTeamDetails = new TeamDetailsViewModel();
         
         TeamsList.PropertyChanged += TeamsList_OnPropertyChanged;
+
+        AddTeamCommand = new RelayCommand<object>(o =>
+        {
+            _navigator.SetCurrentViewType(ViewType.TeamCreate);
+        });
     }
 
     private void TeamsList_OnPropertyChanged(object? sender, PropertyChangedEventArgs e)
@@ -34,18 +45,7 @@ public class TeamsViewModel : ViewModelBase
         }
         else
         {
-            // var team = _teamService.Get(selectedTeam.Id);
-
-            var team = new Team
-            {
-                Id = default,
-                Name = "Super Team",
-                OriginCity = "Chernivtsi",
-                GamesWon = 3,
-                GamesLost = 8,
-                GamesDrawn = 0,
-                MembersCount = 12
-            };
+            var team = _teamService.Get(selectedTeam.Id);
 
             SelectedTeamDetails.Team = new TeamDetailsItemViewModel
             {

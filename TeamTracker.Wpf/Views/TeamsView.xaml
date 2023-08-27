@@ -22,6 +22,7 @@
 
         <!-- Search Box -->
         <TextBox Grid.Row="0" Grid.Column="0" 
+                 Style="{StaticResource NiceTextBox}"
                  FontSize="16" 
                  Margin="0,0,0,24"
                  Text="Search"/>
