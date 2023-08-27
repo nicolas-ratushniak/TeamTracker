@@ -1,4 +1,5 @@
-﻿using System.Windows.Input;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Windows.Input;
 using TeamTracker.Domain.Dto;
 using TeamTracker.Domain.Services;
 using TeamTracker.Wpf.Commands;
@@ -11,6 +12,18 @@ public class AddTeamFormViewModel : ViewModelBase
     private readonly ITeamService _teamService;
     private readonly INavigator _navigator;
     private TeamCreateViewModel _newTeam;
+    private string? _errorMessage;
+
+    public string? ErrorMessage
+    {
+        get => _errorMessage;
+        set
+        {
+            if (value == _errorMessage) return;
+            _errorMessage = value;
+            OnPropertyChanged();
+        }
+    }
 
     public TeamCreateViewModel NewTeam
     {
@@ -50,10 +63,15 @@ public class AddTeamFormViewModel : ViewModelBase
             OriginCity = NewTeam.OriginCity,
             MembersCount = NewTeam.MembersCount
         };
-        
-        // todo: handle possible exs
-        _teamService.Add(dto);
 
-        _navigator.SetCurrentViewType(ViewType.Teams);
+        try
+        {
+            _teamService.Add(dto);
+            _navigator.SetCurrentViewType(ViewType.Teams);
+        }
+        catch (ValidationException)
+        {
+            ErrorMessage = "Some validation error occured";
+        }
     }
 }
