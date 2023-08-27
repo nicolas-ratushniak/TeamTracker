@@ -7,5 +7,6 @@ public interface INavigator
     public ViewType? CurrentViewType { get; }
     public ICommand UpdateCurrentViewTypeCommand { get; }
     public event EventHandler CurrentViewTypeChanged;
-    public void SetCurrentViewType(ViewType newViewType);
+    public void UpdateCurrentViewType(ViewType newViewType);
+    public void UpdateCurrentViewType(ViewType newViewType, object viewParameter);
 }

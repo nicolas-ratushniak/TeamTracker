@@ -16,7 +16,7 @@ public class ViewModelFactory : IViewModelFactory
         _navigator = navigator;
     }
 
-    public ViewModelBase CreateViewModel(ViewType viewType)
+    public ViewModelBase CreateViewModel(ViewType viewType, object? viewParameter = null)
     {
         return viewType switch
         {

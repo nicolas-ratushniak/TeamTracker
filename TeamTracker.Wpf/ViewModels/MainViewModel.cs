@@ -37,8 +37,8 @@ public class MainViewModel : ViewModelBase
 
     private void Navigator_OnCurrentViewTypeChanged(object? sender, EventArgs args)
     {
-        var viewTypeChangedArgs = (ViewTypeChangedEventArgs)args;
-        CurrentViewModel = _viewModelFactory.CreateViewModel(viewTypeChangedArgs.NewViewType);
+        var viewArgs = (ViewTypeChangedEventArgs)args;
+        CurrentViewModel = _viewModelFactory.CreateViewModel(viewArgs.NewViewType, viewArgs.ViewParameter);
         
         _logger.LogInformation("Current view was successfully updated");
     }
