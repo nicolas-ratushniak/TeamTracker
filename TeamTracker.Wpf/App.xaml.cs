@@ -26,9 +26,8 @@ public partial class App : Application
             })
             .ConfigureServices((context, services) =>
             {
-                services.AddScoped<IModelConverter<Team>, ModelConverter<Team>>();
-                services.AddScoped<IModelConverter<GameInfo>, ModelConverter<GameInfo>>();
-                services.AddScoped<ITextBasedStorage, TextFileDbTable>();
+                services.AddSingleton<IModelConverter<Team>, ModelConverter<Team>>();
+                services.AddSingleton<IModelConverter<GameInfo>, ModelConverter<GameInfo>>();
 
                 var dbPath = context.Configuration.GetRequiredSection("TeamTracker:DesignTimeDB").Value;
                 

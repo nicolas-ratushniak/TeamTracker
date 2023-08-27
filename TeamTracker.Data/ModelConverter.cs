@@ -11,9 +11,7 @@ public class ModelConverter<TModel> : IModelConverter<TModel>
 
     private readonly List<PropertyInfo> _propertyInfos;
 
-    public ModelConverter() : this(CultureInfo.CurrentCulture)
-    {
-    }
+    public ModelConverter() : this(CultureInfo.CurrentCulture) { }
 
     public ModelConverter(CultureInfo cultureInfo)
     {
@@ -62,7 +60,6 @@ public class ModelConverter<TModel> : IModelConverter<TModel>
                     throw new FormatException($"Cannot parse \"{values[i]}\" to {propertyType.Name}");
                 }
             }
-
             propertyInfo.SetValue(target, value);
         }
 
@@ -88,11 +85,18 @@ public class ModelConverter<TModel> : IModelConverter<TModel>
     /// </summary>
     /// <remarks>Model is considered valid if:<br />
     /// 1. All public properties should be readable and writable 
-    /// 2. The types of properties tracked should implement IParsable</remarks>
+    /// 2. The types of properties should be string or implement generic IParsable interface</remarks>
     private static bool ValidateModelType()
     {
         return typeof(TModel).GetProperties()
             .All(p => p.CanRead && p.CanWrite && p.PropertyType == typeof(string) ||
-                      typeof(IParsable<>).IsAssignableFrom(p.PropertyType));
+                      InheritsGenericInterface(p.PropertyType, typeof(IParsable<>)));
+
+        bool InheritsGenericInterface(Type valueType, Type genericInterface)
+        {
+            return valueType.GetInterfaces().Any(x =>
+                x.IsGenericType &&
+                x.GetGenericTypeDefinition() == genericInterface);
+        }
     }
 }
