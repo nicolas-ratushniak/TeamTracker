@@ -14,6 +14,7 @@ public class TeamsViewModel : ViewModelBase
     public TeamDetailsViewModel SelectedTeamDetails { get; set; }
 
     public ICommand AddTeamCommand { get; }
+    public ICommand EditTeamCommand { get; }
 
     public TeamsViewModel(ITeamService teamService, INavigator navigator)
     {
@@ -24,10 +25,9 @@ public class TeamsViewModel : ViewModelBase
         
         TeamsList.PropertyChanged += TeamsList_OnPropertyChanged;
 
-        AddTeamCommand = new RelayCommand<object>(o =>
-        {
-            _navigator.SetCurrentViewType(ViewType.TeamCreate);
-        });
+        AddTeamCommand = new RelayCommand<object>(o => _navigator.UpdateCurrentViewType(ViewType.TeamCreate));
+        EditTeamCommand = new RelayCommand<object>(o => _navigator.UpdateCurrentViewType(ViewType.TeamUpdate, SelectedTeamDetails.Team!.Id),
+            o => SelectedTeamDetails.Team is not null);
     }
 
     private void TeamsList_OnPropertyChanged(object? sender, PropertyChangedEventArgs e)

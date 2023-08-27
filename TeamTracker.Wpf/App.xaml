@@ -120,8 +120,12 @@
             <views:HelpView/>
         </DataTemplate>
         
-        <DataTemplate DataType="{x:Type viewModels:AddTeamFormViewModel}">
-            <views:AddTeamView/>
+        <DataTemplate DataType="{x:Type viewModels:TeamCreateFormViewModel}">
+            <views:TeamCreateView/>
+        </DataTemplate>
+        
+        <DataTemplate DataType="{x:Type viewModels:TeamUpdateFormViewModel}">
+            <views:TeamUpdateView/>
         </DataTemplate>
         
     </Application.Resources>

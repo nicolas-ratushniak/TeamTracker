@@ -21,7 +21,8 @@ public class ViewModelFactory : IViewModelFactory
         return viewType switch
         {
             ViewType.Teams => new TeamsViewModel(_teamService, _navigator),
-            ViewType.TeamCreate => new AddTeamFormViewModel(_teamService, _navigator),
+            ViewType.TeamCreate => new TeamCreateFormViewModel(_teamService, _navigator),
+            ViewType.TeamUpdate => new TeamUpdateFormViewModel((Guid)viewParameter!, _teamService, _navigator),
             ViewType.Games => new GamesViewModel(_gameInfoService),
             ViewType.Help => new HelpViewModel(),
             _ => throw new InvalidOperationException("Cannot create nonexistent view model")

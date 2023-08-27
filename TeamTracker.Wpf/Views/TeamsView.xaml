@@ -99,6 +99,7 @@
                     Margin="0,0,10,0"
                     Content="Add"/>
             <Button Style="{StaticResource NiceButton}" 
+                    Command="{Binding EditTeamCommand}"
                     Margin="0,0,10,0"
                     Content="Edit"/>
             <Button Style="{StaticResource NiceButton}"
