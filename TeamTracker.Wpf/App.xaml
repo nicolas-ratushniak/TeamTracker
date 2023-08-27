@@ -17,7 +17,27 @@
         <SolidColorBrush x:Key="BrushMinor" Color="{StaticResource ColorMinor}"></SolidColorBrush>
         <SolidColorBrush x:Key="BrushMinorFocused" Color="{StaticResource ColorMinorFocused}"></SolidColorBrush>
         
-        <!-- Button Style -->
+        <!-- Text -->
+        <Style x:Key="Title" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="32"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+        </Style>
+        
+        <Style TargetType="Label">
+            <Setter Property="FontSize" Value="18"/>
+        </Style>
+        
+        <Style TargetType="TextBlock">
+            <Setter Property="FontSize" Value="18"/>
+        </Style>
+        
+        <Style x:Key="ErrorMessage" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="Foreground" Value="Crimson"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+        </Style>
+        
+        <!-- Buttons -->
         <Style x:Key="NiceButton" TargetType="Button">
             <Setter Property="Background" Value="#AA77FF"/>
             <Setter Property="Foreground" Value="#FFFFFF"/>
@@ -41,6 +61,49 @@
                     <Setter Property="Opacity" Value="0.8" />
                     <Setter Property="Cursor" Value="Hand"/>
                 </Trigger>
+                
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Opacity" Value="0.5" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        
+        <Style x:Key="CancelButton" TargetType="Button" BasedOn="{StaticResource NiceButton}">
+            <Setter Property="Background" Value="#C9EEFF"/>
+            <Setter Property="Foreground" Value="#000000"/>
+            <Setter Property="FontWeight" Value="Regular"/>
+        </Style>
+        
+        <Style x:Key="DangerButton" TargetType="Button" BasedOn="{StaticResource NiceButton}">
+            <Setter Property="Background" Value="#ed5b51"/>
+            <Setter Property="FontWeight" Value="Regular"/>
+        </Style>
+        
+        <!-- TextBox -->
+        <Style x:Key="NiceTextBox" TargetType="TextBox">
+            <Setter Property="OverridesDefaultStyle" Value="False"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="BorderBrush" Value="#858a8c"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="1"
+                                CornerRadius="5"
+                                Padding="5">
+                            <TextBox x:Name="NestedTextBox" BorderThickness="0"
+                                     FontSize="{TemplateBinding FontSize}"
+                                     Text="{Binding Text, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged}"
+                                     VerticalAlignment="Center">
+                            </TextBox>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsKeyboardFocusWithin" Value="True">
+                    <Setter Property="BorderBrush" Value="Black"/>
+                </Trigger>
             </Style.Triggers>
         </Style>
         
@@ -55,6 +118,10 @@
         
         <DataTemplate DataType="{x:Type viewModels:HelpViewModel}">
             <views:HelpView/>
+        </DataTemplate>
+        
+        <DataTemplate DataType="{x:Type viewModels:AddTeamFormViewModel}">
+            <views:AddTeamView/>
         </DataTemplate>
         
     </Application.Resources>
