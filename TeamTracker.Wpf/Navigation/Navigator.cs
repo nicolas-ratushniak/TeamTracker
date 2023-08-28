@@ -15,32 +15,21 @@ public class Navigator : INavigator
     public Navigator(ILogger<Navigator> logger)
     {
         _logger = logger;
-        UpdateCurrentViewTypeCommand = new RelayCommand<ViewType>(UpdateCurrentViewType);
+        UpdateCurrentViewTypeCommand = new RelayCommand<ViewType>(viewType => UpdateCurrentViewType(viewType, null));
     }
 
-    public void UpdateCurrentViewType(ViewType newViewType)
+    public void UpdateCurrentViewType(ViewType newViewType, object? viewParameter)
     {
         var oldViewType = CurrentViewType;
 
-        if (oldViewType != newViewType)
+        if (oldViewType == newViewType)
         {
-            _logger.LogInformation("Setting view type to {NewViewType}", newViewType);
-            
-            CurrentViewTypeChanged?.Invoke(this, new ViewTypeChangedEventArgs(oldViewType, newViewType));
-            CurrentViewType = newViewType;
+            return;
         }
-    }
 
-    public void UpdateCurrentViewType(ViewType newViewType, object viewParameter)
-    {
-        var oldViewType = CurrentViewType;
-
-        if (oldViewType != newViewType)
-        {
-            _logger.LogInformation("Setting view type to {NewViewType}/{Param}", newViewType, viewParameter);
-
-            CurrentViewTypeChanged?.Invoke(this, new ViewTypeChangedEventArgs(oldViewType, newViewType, viewParameter));
-            CurrentViewType = newViewType;
-        }
+        _logger.LogInformation("Setting view type to {NewViewType}", newViewType);
+        
+        CurrentViewType = newViewType;
+        CurrentViewTypeChanged?.Invoke(this, new ViewTypeChangedEventArgs(oldViewType, newViewType, viewParameter));
     }
 }

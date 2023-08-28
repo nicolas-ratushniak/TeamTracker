@@ -46,7 +46,7 @@ public class TeamCreateFormViewModel : ViewModelBase
         _newTeam = new TeamCreateViewModel();
 
         SubmitCommand = new RelayCommand<object>(AddTeam, AddTeam_CanExecute);
-        CancelCommand = new RelayCommand<object>(o => _navigator.UpdateCurrentViewType(ViewType.Teams));
+        CancelCommand = new RelayCommand<object>(o => _navigator.UpdateCurrentViewType(ViewType.Teams, null));
     }
 
     private bool AddTeam_CanExecute(object obj)
@@ -67,7 +67,7 @@ public class TeamCreateFormViewModel : ViewModelBase
         try
         {
             _teamService.Add(dto);
-            _navigator.UpdateCurrentViewType(ViewType.Teams);
+            _navigator.UpdateCurrentViewType(ViewType.Teams, null);
         }
         catch (ValidationException)
         {

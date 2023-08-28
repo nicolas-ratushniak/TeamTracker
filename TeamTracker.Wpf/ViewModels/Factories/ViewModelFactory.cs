@@ -16,7 +16,7 @@ public class ViewModelFactory : IViewModelFactory
         _navigator = navigator;
     }
 
-    public ViewModelBase CreateViewModel(ViewType viewType, object? viewParameter = null)
+    public ViewModelBase CreateViewModel(ViewType viewType, object? viewParameter)
     {
         return viewType switch
         {
@@ -25,7 +25,7 @@ public class ViewModelFactory : IViewModelFactory
             ViewType.TeamUpdate => new TeamUpdateFormViewModel((Guid)viewParameter!, _teamService, _navigator),
             ViewType.Games => new GamesViewModel(_gameInfoService),
             ViewType.Help => new HelpViewModel(),
-            _ => throw new InvalidOperationException("Cannot create nonexistent view model")
+            _ => throw new InvalidOperationException("Cannot create view model with this type.")
         };
     }
 }

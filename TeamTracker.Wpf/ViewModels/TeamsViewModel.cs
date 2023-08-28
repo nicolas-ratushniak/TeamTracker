@@ -20,21 +20,27 @@ public class TeamsViewModel : ViewModelBase
     public TeamsViewModel(ITeamService teamService, INavigator navigator)
     {
         _teamService = teamService;
-        var navigator1 = navigator;
         TeamsList = new TeamsListViewModel(teamService);
         SelectedTeamDetails = new TeamDetailsViewModel();
-        
+
         TeamsList.PropertyChanged += TeamsList_OnPropertyChanged;
 
-        AddTeamCommand = new RelayCommand<object>(o => navigator1.UpdateCurrentViewType(ViewType.TeamCreate));
-        EditTeamCommand = new RelayCommand<object>(o => navigator1.UpdateCurrentViewType(ViewType.TeamUpdate, SelectedTeamDetails.Team!.Id),
-            o => SelectedTeamDetails.Team is not null);
-        DeleteTeamCommand = new RelayCommand<object>(DeleteTeam_CanExecute, o => SelectedTeamDetails.Team is not null);
+        AddTeamCommand = new RelayCommand<object>(
+            _ => navigator.UpdateCurrentViewType(ViewType.TeamCreate, null));
+
+        EditTeamCommand = new RelayCommand<object>(
+            _ => navigator.UpdateCurrentViewType(ViewType.TeamUpdate, SelectedTeamDetails.Team!.Id),
+            _ => SelectedTeamDetails.Team is not null);
+
+        DeleteTeamCommand = new RelayCommand<object>(
+            DeleteTeam_Execute,
+            _ => SelectedTeamDetails.Team is not null);
     }
 
-    private void DeleteTeam_CanExecute(object obj)
+    private void DeleteTeam_Execute(object obj)
     {
-        var messageBoxResult = MessageBox.Show("Are you sure, you want to delete this team?", "caption", MessageBoxButton.YesNo, 
+        var messageBoxResult = MessageBox.Show("Are you sure, you want to delete this team?", "caption",
+            MessageBoxButton.YesNo,
             MessageBoxImage.Warning);
 
         if (messageBoxResult == MessageBoxResult.Yes)
@@ -50,7 +56,7 @@ public class TeamsViewModel : ViewModelBase
         {
             return;
         }
-        
+
         var selectedTeam = ((TeamsListViewModel)sender!).SelectedTeam;
 
         if (selectedTeam is null)

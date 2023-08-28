@@ -56,7 +56,7 @@ public class TeamUpdateFormViewModel : ViewModelBase
         };
 
         SubmitCommand = new RelayCommand<object>(EditTeam, EditTeam_CanExecute);
-        CancelCommand = new RelayCommand<object>(o => _navigator.UpdateCurrentViewType(ViewType.Teams));
+        CancelCommand = new RelayCommand<object>(_ => _navigator.UpdateCurrentViewType(ViewType.Teams, null));
     }
 
     private bool EditTeam_CanExecute(object obj)
@@ -78,7 +78,7 @@ public class TeamUpdateFormViewModel : ViewModelBase
         try
         {
             _teamService.Update(dto);
-            _navigator.UpdateCurrentViewType(ViewType.Teams);
+            _navigator.UpdateCurrentViewType(ViewType.Teams, null);
         }
         catch (ValidationException)
         {
