@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Windows.Input;
+using Microsoft.Extensions.Logging;
 using TeamTracker.Domain.Dto;
 using TeamTracker.Domain.Services;
 using TeamTracker.Wpf.Commands;
@@ -11,6 +12,7 @@ public class TeamCreateFormViewModel : ViewModelBase
 {
     private readonly ITeamService _teamService;
     private readonly INavigator _navigator;
+    private readonly ILogger<TeamCreateFormViewModel> _logger;
     private TeamCreateViewModel _newTeam;
     private string? _errorMessage;
 
@@ -39,14 +41,15 @@ public class TeamCreateFormViewModel : ViewModelBase
     public ICommand SubmitCommand { get; }
     public ICommand CancelCommand { get; }
 
-    public TeamCreateFormViewModel(ITeamService teamService, INavigator navigator)
+    public TeamCreateFormViewModel(ITeamService teamService, INavigator navigator, ILogger<TeamCreateFormViewModel> logger)
     {
         _teamService = teamService;
         _navigator = navigator;
+        _logger = logger;
         _newTeam = new TeamCreateViewModel();
 
         SubmitCommand = new RelayCommand<object>(AddTeam, AddTeam_CanExecute);
-        CancelCommand = new RelayCommand<object>(o => _navigator.UpdateCurrentViewType(ViewType.Teams, null));
+        CancelCommand = new RelayCommand<object>(_ => _navigator.UpdateCurrentViewType(ViewType.Teams, null));
     }
 
     private bool AddTeam_CanExecute(object obj)
@@ -67,10 +70,13 @@ public class TeamCreateFormViewModel : ViewModelBase
         try
         {
             _teamService.Add(dto);
+            _logger.LogInformation("\"{NewTeamName}\" was successfully added", NewTeam.Name);
+            
             _navigator.UpdateCurrentViewType(ViewType.Teams, null);
         }
         catch (ValidationException)
         {
+            _logger.LogInformation("Some validation error occured");
             ErrorMessage = "Some validation error occured";
         }
     }
