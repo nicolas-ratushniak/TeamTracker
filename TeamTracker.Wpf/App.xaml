@@ -63,7 +63,7 @@
                 </Trigger>
                 
                 <Trigger Property="IsEnabled" Value="False">
-                    <Setter Property="Opacity" Value="0.5" />
+                    <Setter Property="Opacity" Value="0.8" />
                 </Trigger>
             </Style.Triggers>
         </Style>
