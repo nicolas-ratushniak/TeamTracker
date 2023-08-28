@@ -45,6 +45,11 @@ public partial class App : Application
                     var converter = s.GetRequiredService<IModelConverter<GameInfo>>();
                     return new Repository<GameInfo>(db, converter);
                 });
+                
+                services.AddScoped<ITeamService, TeamService>();
+                services.AddScoped<IGameInfoService, GameInfoService>();
+                services.AddScoped<IViewModelFactory, ViewModelFactory>();
+                services.AddScoped<INavigator, Navigator>();
 
                 services.AddSingleton<Func<TeamsViewModel>>(s => () => new TeamsViewModel(
                     s.GetRequiredService<ITeamService>(),
@@ -68,17 +73,8 @@ public partial class App : Application
                     s.GetRequiredService<IGameInfoService>()));
 
                 services.AddSingleton<Func<HelpViewModel>>(s => () => new HelpViewModel());
-
-                services.AddScoped<ITeamService, TeamService>();
-                services.AddScoped<IGameInfoService, GameInfoService>();
-                services.AddScoped<IViewModelFactory, ViewModelFactory>();
-                services.AddScoped<INavigator, Navigator>();
-
-                services.AddTransient<TeamsViewModel>();
-                services.AddTransient<GamesViewModel>();
-                services.AddTransient<HelpViewModel>();
+                
                 services.AddTransient<MainViewModel>();
-                services.AddTransient<GamesViewModel>();
 
                 services.AddScoped<MainWindow>(s =>
                     new MainWindow(s.GetRequiredService<MainViewModel>()));
