@@ -1,34 +1,39 @@
-﻿using Microsoft.Extensions.Logging;
-using TeamTracker.Domain.Services;
-using TeamTracker.Wpf.Navigation;
+﻿using TeamTracker.Wpf.Navigation;
 
 namespace TeamTracker.Wpf.ViewModels.Factories;
 
 public class ViewModelFactory : IViewModelFactory
 {
-    private readonly ITeamService _teamService;
-    private readonly IGameInfoService _gameInfoService;
-    private readonly INavigator _navigator;
-    private readonly ILogger<TeamCreateFormViewModel> _logger;
+    private readonly Func<TeamsViewModel> _createTeamsViewModel;
+    private readonly Func<TeamCreateFormViewModel> _createTeamCreateViewModel;
+    private readonly Func<Guid, TeamUpdateFormViewModel> _createTeamUpdateViewModel;
+    private readonly Func<GamesViewModel> _createGamesViewModel;
+    private readonly Func<HelpViewModel> _createHelpViewModel;
 
-    public ViewModelFactory(ITeamService teamService, IGameInfoService gameInfoService, INavigator navigator,
-        ILogger<TeamCreateFormViewModel> logger)
+    public ViewModelFactory(
+        Func<TeamsViewModel> createTeamsViewModel,
+        Func<TeamCreateFormViewModel> createTeamCreateViewModel,
+        Func<Guid, TeamUpdateFormViewModel> createTeamUpdateViewModel,
+        Func<GamesViewModel> createGamesViewModel,
+        Func<HelpViewModel> createHelpViewModel
+    )
     {
-        _teamService = teamService;
-        _gameInfoService = gameInfoService;
-        _navigator = navigator;
-        _logger = logger;
+        _createTeamsViewModel = createTeamsViewModel;
+        _createTeamCreateViewModel = createTeamCreateViewModel;
+        _createTeamUpdateViewModel = createTeamUpdateViewModel;
+        _createGamesViewModel = createGamesViewModel;
+        _createHelpViewModel = createHelpViewModel;
     }
 
-    public ViewModelBase CreateViewModel(ViewType viewType, object? viewParameter)
+    public ViewModelBase CreateViewModel(ViewType viewType, object? viewParameter = null)
     {
         return viewType switch
         {
-            ViewType.Teams => new TeamsViewModel(_teamService, _navigator),
-            ViewType.TeamCreate => new TeamCreateFormViewModel(_teamService, _navigator, _logger),
-            ViewType.TeamUpdate => new TeamUpdateFormViewModel((Guid)viewParameter!, _teamService, _navigator),
-            ViewType.Games => new GamesViewModel(_gameInfoService),
-            ViewType.Help => new HelpViewModel(),
+            ViewType.Teams => _createTeamsViewModel(),
+            ViewType.TeamCreate => _createTeamCreateViewModel(),
+            ViewType.TeamUpdate => _createTeamUpdateViewModel((Guid)viewParameter!),
+            ViewType.Games => _createGamesViewModel(),
+            ViewType.Help => _createHelpViewModel(),
             _ => throw new InvalidOperationException("Cannot create view model with this type.")
         };
     }

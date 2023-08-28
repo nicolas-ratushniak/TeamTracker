@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Serilog;
 using TeamTracker.Data;
 using TeamTracker.Domain.Data;
@@ -44,6 +45,29 @@ public partial class App : Application
                     var converter = s.GetRequiredService<IModelConverter<GameInfo>>();
                     return new Repository<GameInfo>(db, converter);
                 });
+
+                services.AddSingleton<Func<TeamsViewModel>>(s => () => new TeamsViewModel(
+                    s.GetRequiredService<ITeamService>(),
+                    s.GetRequiredService<INavigator>()));
+                
+                services.AddSingleton<Func<TeamCreateFormViewModel>>(s => () => new TeamCreateFormViewModel(
+                    s.GetRequiredService<ITeamService>(),
+                    s.GetRequiredService<INavigator>(),
+                    s.GetRequiredService<ILogger<TeamCreateFormViewModel>>()));
+                
+                services.AddSingleton<Func<Guid, TeamUpdateFormViewModel>>(s => id => new TeamUpdateFormViewModel(
+                    id,
+                    s.GetRequiredService<ITeamService>(),
+                    s.GetRequiredService<INavigator>()));
+                
+                services.AddSingleton<Func<TeamsViewModel>>(s => () => new TeamsViewModel(
+                    s.GetRequiredService<ITeamService>(),
+                    s.GetRequiredService<INavigator>()));
+                
+                services.AddSingleton<Func<GamesViewModel>>(s => () => new GamesViewModel(
+                    s.GetRequiredService<IGameInfoService>()));
+
+                services.AddSingleton<Func<HelpViewModel>>(s => () => new HelpViewModel());
 
                 services.AddScoped<ITeamService, TeamService>();
                 services.AddScoped<IGameInfoService, GameInfoService>();
