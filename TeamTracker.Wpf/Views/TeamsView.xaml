@@ -103,6 +103,7 @@
                     Margin="0,0,10,0"
                     Content="Edit"/>
             <Button Style="{StaticResource NiceButton}"
+                    Command="{Binding DeleteTeamCommand}"
                     Content="Delete"/>
         </StackPanel>
 
