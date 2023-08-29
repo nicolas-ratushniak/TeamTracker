@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             
+
              xmlns:controls="clr-namespace:TeamTracker.Wpf.Controls"
              xmlns:viewComponents="clr-namespace:TeamTracker.Wpf.ViewComponents"
              mc:Ignorable="d"
@@ -16,80 +16,12 @@
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="222" />
-            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="2*" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <!-- Search Box -->
-        <controls:PlaceholderTextBox Grid.Row="0" Grid.Column="0"
-                                     Style="{StaticResource NicePlaceholderTextBox}"
-                                     Placeholder="Search"
-                                     Margin="0,0,0,24" />
 
-        <!-- Filter Options -->
-        <Border Grid.Row="1" Grid.Column="0" BorderBrush="Black"
-                BorderThickness="1"
-                Padding="10"
-                TextBlock.FontSize="16"
-                CornerRadius="5">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
-
-                <TextBlock Grid.Row="0" Margin="0,0,0,10">Sort</TextBlock>
-                <ComboBox Grid.Row="1" Margin="0,0,0,15" SelectedIndex="0">
-                    <ComboBoxItem>Default</ComboBoxItem>
-                    <ComboBoxItem>Points Asc</ComboBoxItem>
-                    <ComboBoxItem>Points Desc</ComboBoxItem>
-                    <ComboBoxItem>Team Name Asc</ComboBoxItem>
-                    <ComboBoxItem>Team Name Desc</ComboBoxItem>
-                </ComboBox>
-
-                <TextBlock Grid.Row="2" Margin="0,0,0,10">Filters</TextBlock>
-                <Grid Grid.Row="3" Margin="0,0,0,15">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="75" />
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="30" />
-                        <ColumnDefinition Width="25" />
-                        <ColumnDefinition Width="30" />
-                    </Grid.ColumnDefinitions>
-
-                    <TextBlock Grid.Column="0">Members:</TextBlock>
-                    <TextBox Grid.Column="2"></TextBox>
-                    <TextBlock Grid.Column="3" TextAlignment="Center">&gt;</TextBlock>
-                    <TextBox Grid.Column="4"></TextBox>
-                </Grid>
-
-                <TextBlock Grid.Row="4" Margin="0,0,0,10">Advanced</TextBlock>
-                <RadioButton Grid.Row="5" Margin="0,0,0,10" VerticalContentAlignment="Center">Most Wins</RadioButton>
-                <RadioButton Grid.Row="6" VerticalContentAlignment="Center">Most Points</RadioButton>
-
-                <Grid Grid.Row="8">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="10" />
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
-
-                    <Button Grid.Column="0" Content="Reset" Style="{StaticResource NiceButton}"
-                            Background="#97DEFF" />
-                    <Button Grid.Column="2" Content="Apply" Style="{StaticResource NiceButton}" />
-                </Grid>
-            </Grid>
-        </Border>
-
-        <StackPanel Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2"
+        <StackPanel Grid.Row="0" Grid.Column="1"
                     Orientation="Horizontal"
                     HorizontalAlignment="Right"
                     Margin="0,0,0,24">
@@ -107,11 +39,10 @@
                     Content="Delete" />
         </StackPanel>
 
-        <viewComponents:TeamsList Grid.Row="1" Grid.Column="1"
-                                  Margin="24,0,0,0"
+        <viewComponents:TeamsList Grid.Row="0" Grid.RowSpan="2" Grid.Column="0"
                                   DataContext="{Binding TeamsList}" />
 
-        <viewComponents:TeamsDetails Grid.Row="1" Grid.Column="2"
+        <viewComponents:TeamsDetails Grid.Row="1" Grid.Column="1"
                                      Margin="24,0,0,0"
                                      DataContext="{Binding SelectedTeamDetails}" />
 

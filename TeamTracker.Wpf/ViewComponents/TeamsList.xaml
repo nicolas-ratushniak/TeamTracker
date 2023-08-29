@@ -3,33 +3,138 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:local="clr-namespace:TeamTracker.Wpf.Views"
+
              xmlns:viewModels="clr-namespace:TeamTracker.Wpf.ViewModels"
+             xmlns:controls="clr-namespace:TeamTracker.Wpf.Controls"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300">
-    
+
     <UserControl.Resources>
         <Style x:Key="TeamListBox" TargetType="ListBox">
-            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="BorderThickness" Value="0" />
             <Setter Property="ItemTemplate">
                 <Setter.Value>
                     <DataTemplate DataType="{x:Type viewModels:TeamListItemViewModel}">
-                        <TextBlock Text="{Binding Path=FullName}" 
-                                   FontSize="18" Padding="5"/>
+                        <TextBlock Text="{Binding Path=FullName}"
+                                   FontSize="18" Padding="5" />
                     </DataTemplate>
                 </Setter.Value>
             </Setter>
         </Style>
     </UserControl.Resources>
-    
-    <Border BorderBrush="Black" 
-            BorderThickness="1" 
-            CornerRadius="5"
-            Padding="5">
-        <ListBox ItemsSource="{Binding Teams}"
-                 SelectedItem="{Binding SelectedTeam}"
-                 SelectionMode="Single"
-                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                 Style="{StaticResource TeamListBox}"/>
-    </Border>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="222" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <!-- Filter Options -->
+        <Border Grid.Row="0" Grid.RowSpan="2" Grid.Column="0"
+                BorderBrush="Black"
+                BorderThickness="1"
+                Padding="10"
+                TextBlock.FontSize="16"
+                CornerRadius="5"
+                Margin="0,0,24,24">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <TextBlock Grid.Row="0" Margin="0,0,0,10">Sort</TextBlock>
+                <ComboBox Grid.Row="1" Margin="0,0,0,15" SelectedIndex="0">
+                    <ComboBoxItem>Default</ComboBoxItem>
+                    <ComboBoxItem>Points Asc</ComboBoxItem>
+                    <ComboBoxItem>Points Desc</ComboBoxItem>
+                    <ComboBoxItem>Team Name Asc</ComboBoxItem>
+                    <ComboBoxItem>Team Name Desc</ComboBoxItem>
+                </ComboBox>
+
+                <TextBlock Grid.Row="2" Margin="0,0,0,10">Filters</TextBlock>
+                <Grid Grid.Row="3" Margin="0,0,0,15">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="75" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="30" />
+                        <ColumnDefinition Width="25" />
+                        <ColumnDefinition Width="30" />
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Column="0">Members:</TextBlock>
+                    <TextBox Grid.Column="2"></TextBox>
+                    <TextBlock Grid.Column="3" TextAlignment="Center">&gt;</TextBlock>
+                    <TextBox Grid.Column="4"></TextBox>
+                </Grid>
+
+                <Grid Grid.Row="8">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="10" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <Button Grid.Column="0" Content="Reset" Style="{StaticResource NiceButton}"
+                            Background="#97DEFF" />
+                    <Button Grid.Column="2" Content="Apply" Style="{StaticResource NiceButton}" />
+                </Grid>
+            </Grid>
+        </Border>
+
+        <!-- Advanced options -->
+        <Border Grid.Row="2" Grid.Column="0"
+                BorderBrush="Black"
+                BorderThickness="1"
+                Padding="10"
+                CornerRadius="5"
+                Margin="0,0,24,0">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <TextBlock Grid.Row="0" Margin="0,0,0,10">Advanced</TextBlock>
+                <RadioButton Grid.Row="1" Margin="0,0,0,10" VerticalContentAlignment="Center">Most Wins</RadioButton>
+                <RadioButton Grid.Row="2" VerticalContentAlignment="Center">Most Points</RadioButton>
+            </Grid>
+        </Border>
+
+
+        <!-- Search Box -->
+        <controls:PlaceholderTextBox Grid.Row="0" Grid.Column="1"
+                                     Style="{StaticResource NicePlaceholderTextBox}"
+                                     Placeholder="Search"
+                                     Text="{Binding TeamsFilter, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"
+                                     Height="38"
+                                     Margin="0,0,0,24" />
+
+        <Border Grid.Row="1" Grid.RowSpan="2" Grid.Column="1"
+                BorderBrush="Black"
+                BorderThickness="1"
+                CornerRadius="5"
+                Padding="5">
+            <ListBox ItemsSource="{Binding TeamsCollectionView}"
+                     SelectedItem="{Binding SelectedTeam}"
+                     SelectionMode="Single"
+                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                     Style="{StaticResource TeamListBox}" />
+        </Border>
+
+    </Grid>
 </UserControl>
