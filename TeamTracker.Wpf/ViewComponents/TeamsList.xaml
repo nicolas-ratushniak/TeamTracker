@@ -7,7 +7,7 @@
              xmlns:viewModels="clr-namespace:TeamTracker.Wpf.ViewModels"
              xmlns:controls="clr-namespace:TeamTracker.Wpf.Controls"
              mc:Ignorable="d"
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="600" d:DesignWidth="300">
 
     <UserControl.Resources>
         <Style x:Key="TeamListBox" TargetType="ListBox">
@@ -68,17 +68,28 @@
                 <TextBlock Grid.Row="2" Margin="0,0,0,10">Filters</TextBlock>
                 <Grid Grid.Row="3" Margin="0,0,0,15">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="75" />
+                        <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="30" />
-                        <ColumnDefinition Width="25" />
-                        <ColumnDefinition Width="30" />
+                        <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
 
-                    <TextBlock Grid.Column="0">Members:</TextBlock>
-                    <TextBox Grid.Column="2"></TextBox>
-                    <TextBlock Grid.Column="3" TextAlignment="Center">&gt;</TextBlock>
-                    <TextBox Grid.Column="4"></TextBox>
+                    <TextBlock Grid.Column="0"
+                               Text="Members:"
+                               FontSize="16"
+                               VerticalAlignment="Center"
+                               Margin="0,0,10,0" />
+
+                    <controls:PlaceholderIntTextBox Grid.Column="1"
+                                                    Placeholder="Min"
+                                                    MaxDigits="3"
+                                                    FontSize="14"
+                                                    Margin="0,0,5,0" />
+
+                    <controls:PlaceholderIntTextBox Grid.Column="2"
+                                                    Placeholder="Max"
+                                                    MaxDigits="3"
+                                                    FontSize="14"
+                                                    Margin="5,0,0,0" />
                 </Grid>
 
                 <Grid Grid.Row="8">
