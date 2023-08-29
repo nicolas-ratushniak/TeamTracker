@@ -110,6 +110,49 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
+        
+        <Style x:Key="NicePlaceholderTextBox" TargetType="{x:Type controls:PlaceholderTextBox}">
+            <Setter Property="BorderBrush" Value="#858a8c" />
+            <Setter Property="FontSize" Value="18" />
+            <Setter Property="Foreground" Value="Black" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type controls:PlaceholderTextBox}">
+                        <Border BorderBrush="{TemplateBinding BorderBrush}"
+                                Background="{TemplateBinding Background}"
+                                BorderThickness="1"
+                                CornerRadius="5"
+                                Padding="5">
+                            <Grid>
+                                <TextBlock
+                                    Text="{Binding Placeholder, RelativeSource={RelativeSource TemplatedParent}}"
+                                    VerticalAlignment="Center"
+                                    Margin="3,0,0,0"
+                                    FontSize="{TemplateBinding FontSize}"
+                                    Foreground="{TemplateBinding Foreground}"
+                                    Opacity="0.5"
+                                    Panel.ZIndex="1"
+                                    IsHitTestVisible="False"
+                                    Visibility="{Binding IsTyping, RelativeSource={RelativeSource TemplatedParent},
+                                    Converter={StaticResource InverseBoolToVisibilityConverter}}" />
+                                <TextBox
+                                    Text="{Binding Text, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged}"
+                                    VerticalAlignment="Center"
+                                    Foreground="{TemplateBinding Foreground}"
+                                    Background="Transparent"
+                                    BorderThickness="0"
+                                    FontSize="{TemplateBinding FontSize}" />
+                            </Grid>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsKeyboardFocusWithin" Value="True">
+                    <Setter Property="BorderBrush" Value="Black" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
 
         <Style x:Key="NiceBorder" TargetType="Border">
             <Setter Property="BorderBrush" Value="#858a8c" />
