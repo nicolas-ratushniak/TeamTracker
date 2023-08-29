@@ -1,0 +1,26 @@
+﻿<UserControl x:Class="TeamTracker.Wpf.Controls.PlaceholderTextBox"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+
+             xmlns:converters="clr-namespace:TeamTracker.Wpf.Converters"
+             mc:Ignorable="d"
+             d:DesignHeight="300" d:DesignWidth="300"
+             Name="PlaceholderTb">
+
+    <UserControl.Resources>
+        <converters:InverseBoolToVisibilityConverter x:Key="InverseBoolToVisibilityConverter" />
+    </UserControl.Resources>
+
+    <Grid>
+        <TextBlock
+            Text="{Binding ElementName=PlaceholderTb, Path=Placeholder}"
+            Panel.ZIndex="1"
+            IsHitTestVisible="False"
+            Visibility="{Binding ElementName=PlaceholderTb, Path=IsTyping, Converter={StaticResource InverseBoolToVisibilityConverter}}" />
+        <TextBox
+            Text="{Binding ElementName=PlaceholderTb, Path=Text, UpdateSourceTrigger=PropertyChanged}"
+            BorderThickness="0"/>
+    </Grid>
+</UserControl>

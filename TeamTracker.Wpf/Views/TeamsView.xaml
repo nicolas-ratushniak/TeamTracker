@@ -3,15 +3,16 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:local="clr-namespace:TeamTracker.Wpf.Views"
+             
+             xmlns:controls="clr-namespace:TeamTracker.Wpf.Controls"
              xmlns:viewComponents="clr-namespace:TeamTracker.Wpf.ViewComponents"
              mc:Ignorable="d"
              d:DesignHeight="500" d:DesignWidth="1000">
 
     <Grid Margin="24">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
@@ -21,11 +22,10 @@
         </Grid.ColumnDefinitions>
 
         <!-- Search Box -->
-        <TextBox Grid.Row="0" Grid.Column="0" 
-                 Style="{StaticResource NiceTextBox}"
-                 FontSize="16" 
-                 Margin="0,0,0,24"
-                 Text="Search"/>
+        <controls:PlaceholderTextBox Grid.Row="0" Grid.Column="0"
+                                     Style="{StaticResource NicePlaceholderTextBox}"
+                                     Placeholder="Search"
+                                     Margin="0,0,0,24" />
 
         <!-- Filter Options -->
         <Border Grid.Row="1" Grid.Column="0" BorderBrush="Black"
@@ -83,8 +83,8 @@
                     </Grid.ColumnDefinitions>
 
                     <Button Grid.Column="0" Content="Reset" Style="{StaticResource NiceButton}"
-                            Background="#97DEFF"/>
-                    <Button Grid.Column="2" Content="Apply" Style="{StaticResource NiceButton}"/>
+                            Background="#97DEFF" />
+                    <Button Grid.Column="2" Content="Apply" Style="{StaticResource NiceButton}" />
                 </Grid>
             </Grid>
         </Border>
