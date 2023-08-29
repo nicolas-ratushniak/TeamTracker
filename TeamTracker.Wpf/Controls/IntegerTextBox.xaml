@@ -7,12 +7,10 @@
              d:DesignHeight="300" d:DesignWidth="300"
              Name="IntTb">
     
-    <Grid>
-        <TextBox Style="{StaticResource NiceTextBox}"
-                 PreviewTextInput="OnPreviewTextInput"
-                 PreviewKeyDown="OnPreviewKeyDown"
-                 DataObject.Pasting="OnPasting"
-                 Text="{Binding ElementName=IntTb, Path=Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-    </Grid>
+    <TextBox Style="{StaticResource NiceTextBox}"
+             PreviewTextInput="OnPreviewTextInput"
+             PreviewKeyDown="OnPreviewKeyDown"
+             DataObject.Pasting="OnPasting"
+             Text="{Binding ElementName=IntTb, Path=Text, UpdateSourceTrigger=PropertyChanged}" />
     
 </UserControl>

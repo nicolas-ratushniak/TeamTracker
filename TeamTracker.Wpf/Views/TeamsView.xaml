@@ -88,32 +88,32 @@
                 </Grid>
             </Grid>
         </Border>
-        
+
         <StackPanel Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2"
                     Orientation="Horizontal"
                     HorizontalAlignment="Right"
                     Margin="0,0,0,24">
-            
-            <Button Style="{StaticResource NiceButton}" 
+
+            <Button Style="{StaticResource NiceButton}"
                     Command="{Binding AddTeamCommand}"
                     Margin="0,0,10,0"
-                    Content="Add"/>
-            <Button Style="{StaticResource NiceButton}" 
+                    Content="Add" />
+            <Button Style="{StaticResource NiceButton}"
                     Command="{Binding EditTeamCommand}"
                     Margin="0,0,10,0"
-                    Content="Edit"/>
+                    Content="Edit" />
             <Button Style="{StaticResource NiceButton}"
                     Command="{Binding DeleteTeamCommand}"
-                    Content="Delete"/>
+                    Content="Delete" />
         </StackPanel>
 
         <viewComponents:TeamsList Grid.Row="1" Grid.Column="1"
-                             Margin="24,0,0,0"
-                             DataContext="{Binding TeamsList}"/>
+                                  Margin="24,0,0,0"
+                                  DataContext="{Binding TeamsList}" />
 
-        <viewComponents:TeamsDetails Grid.Row="1" Grid.Column="2" 
-                                    Margin="24,0,0,0"
-                                    DataContext="{Binding SelectedTeamDetails}"/>
+        <viewComponents:TeamsDetails Grid.Row="1" Grid.Column="2"
+                                     Margin="24,0,0,0"
+                                     DataContext="{Binding SelectedTeamDetails}" />
 
     </Grid>
 </UserControl>
