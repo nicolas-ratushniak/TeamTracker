@@ -7,7 +7,11 @@
         xmlns:controls="clr-namespace:TeamTracker.Wpf.Controls"
 
         mc:Ignorable="d"
-        Title="MainWindow" Height="600" Width="1000">
+        Title="Team Tracker" 
+        Height="600" 
+        Width="1000"
+        MinHeight="555"
+        MinWidth="810">
     
     <Grid>
         <Grid.RowDefinitions>
