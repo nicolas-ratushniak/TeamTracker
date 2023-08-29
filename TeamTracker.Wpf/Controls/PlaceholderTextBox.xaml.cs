@@ -8,11 +8,18 @@ public partial class PlaceholderTextBox : UserControl
     public static readonly DependencyProperty TextProperty;
     public static readonly DependencyProperty PlaceholderProperty;
     public static readonly DependencyProperty IsTypingProperty;
+    public static readonly DependencyProperty MaxLenghtProperty;
 
     public string Text
     {
         get => (string)GetValue(TextProperty);
         set => SetValue(TextProperty, value);
+    }
+    
+    public int MaxLength
+    {
+        get => (int)GetValue(MaxLenghtProperty);
+        set => SetValue(MaxLenghtProperty, value);
     }
     
     public string Placeholder
@@ -34,6 +41,8 @@ public partial class PlaceholderTextBox : UserControl
             new PropertyMetadata(OnTextChanged));
         PlaceholderProperty = DependencyProperty.Register(nameof(Placeholder), typeof(string), typeof(PlaceholderTextBox));
         IsTypingProperty = DependencyProperty.Register(nameof(IsTyping), typeof(bool), typeof(PlaceholderTextBox));
+        MaxLenghtProperty = DependencyProperty.Register(nameof(MaxLength), typeof(int), typeof(PlaceholderTextBox),
+            new PropertyMetadata(10));
     }
 
     public PlaceholderTextBox()
