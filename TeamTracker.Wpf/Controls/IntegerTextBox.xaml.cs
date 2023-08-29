@@ -31,8 +31,10 @@ public partial class IntegerTextBox : UserControl
 
     static IntegerTextBox()
     {
-        var textMetadata = new PropertyMetadata(OnTextChanged);
-        textMetadata.CoerceValueCallback = CoerceText;
+        var textMetadata = new PropertyMetadata("0", OnTextChanged)
+        {
+            CoerceValueCallback = CoerceText
+        };
 
         var valueMetadata = new PropertyMetadata(default(int), OnValueChanged);
 
