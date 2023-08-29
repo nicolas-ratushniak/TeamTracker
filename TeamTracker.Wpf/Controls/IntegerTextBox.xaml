@@ -11,6 +11,7 @@
              PreviewTextInput="OnPreviewTextInput"
              PreviewKeyDown="OnPreviewKeyDown"
              DataObject.Pasting="OnPasting"
+             MaxLength="{Binding ElementName=IntTb, Path=MaxDigits}"
              Text="{Binding ElementName=IntTb, Path=Text, UpdateSourceTrigger=PropertyChanged}" />
 
 </UserControl>

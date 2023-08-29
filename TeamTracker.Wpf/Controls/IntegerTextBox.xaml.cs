@@ -9,18 +9,25 @@ public partial class IntegerTextBox : UserControl
 {
     public static readonly DependencyProperty TextProperty;
     public static readonly DependencyProperty ValueProperty;
+    public static readonly DependencyProperty MaxDigitsProperty;
     public static readonly RoutedEvent ValueChangedEvent;
-
-    public string Text
-    {
-        get => (string)GetValue(TextProperty);
-        set => SetValue(TextProperty, value);
-    }
 
     public int Value
     {
         get => (int)GetValue(ValueProperty);
         set => SetValue(ValueProperty, value);
+    }
+    
+    public int MaxDigits
+    {
+        get => (int)GetValue(MaxDigitsProperty);
+        set => SetValue(MaxDigitsProperty, value);
+    }
+    
+    private string Text
+    {
+        get => (string)GetValue(TextProperty);
+        set => SetValue(TextProperty, value);
     }
 
     public event RoutedPropertyChangedEventHandler<int> ValueChanged
@@ -40,6 +47,8 @@ public partial class IntegerTextBox : UserControl
 
         TextProperty = DependencyProperty.Register(nameof(Text), typeof(string), typeof(IntegerTextBox), textMetadata);
         ValueProperty = DependencyProperty.Register(nameof(Value), typeof(int), typeof(IntegerTextBox), valueMetadata);
+        MaxDigitsProperty = DependencyProperty.Register(nameof(MaxDigits), typeof(int), typeof(IntegerTextBox),
+            new PropertyMetadata(10));
 
         ValueChangedEvent = EventManager.RegisterRoutedEvent(nameof(ValueChanged), RoutingStrategy.Bubble,
             typeof(RoutedPropertyChangedEventHandler<int>), typeof(IntegerTextBox));
