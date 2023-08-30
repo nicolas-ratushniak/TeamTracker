@@ -1,7 +1,9 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Data;
+using System.Windows.Input;
 using TeamTracker.Domain.Services;
+using TeamTracker.Wpf.Commands;
 
 namespace TeamTracker.Wpf.ViewModels;
 
@@ -14,6 +16,12 @@ public class TeamsListViewModel : ViewModelBase
     private string _sortStrategyName;
     private int _minMembers;
     private int _maxMembers;
+    private int _minPoints;
+    private int _maxPoints;
+
+    public ICommand ShowMostWinsCommand { get; }
+    public ICommand ShowMostPointsCommand { get; }
+    public ICommand ShowNewcomersCommand { get; }
 
     public string[] SortOptions { get; }
     public ICollectionView TeamsCollectionView { get; }
@@ -25,7 +33,7 @@ public class TeamsListViewModel : ViewModelBase
         {
             if (value == _minMembers) return;
             _minMembers = value;
-            
+
             OnPropertyChanged();
             UpdateFilters();
         }
@@ -38,6 +46,32 @@ public class TeamsListViewModel : ViewModelBase
         {
             if (value == _maxMembers) return;
             _maxMembers = value;
+
+            OnPropertyChanged();
+            UpdateFilters();
+        }
+    }
+
+    public int MinPoints
+    {
+        get => _minPoints;
+        set
+        {
+            if (value == _minPoints) return;
+            _minPoints = value;
+            
+            OnPropertyChanged();
+            UpdateFilters();
+        }
+    }
+
+    public int MaxPoints
+    {
+        get => _maxPoints;
+        set
+        {
+            if (value == _maxPoints) return;
+            _maxPoints = value;
             
             OnPropertyChanged();
             UpdateFilters();
@@ -51,7 +85,7 @@ public class TeamsListViewModel : ViewModelBase
         {
             if (value == _sortStrategyName) return;
             _sortStrategyName = value;
-            
+
             OnPropertyChanged();
             UpdateSortStrategy(GetSortStrategy(value));
         }
@@ -100,6 +134,31 @@ public class TeamsListViewModel : ViewModelBase
         TeamsCollectionView = CollectionViewSource.GetDefaultView(_teams);
         UpdateFilters();
         UpdateSortStrategy(new SortDescription("FullName", ListSortDirection.Ascending));
+
+        ShowMostWinsCommand = new RelayCommand<object>(ShowMostWins_Execute);
+        ShowMostPointsCommand = new RelayCommand<object>(ShowMostPoints_Execute);
+        ShowNewcomersCommand = new RelayCommand<object>(ShowNewcomers_Execute);
+    }
+
+    private void ShowNewcomers_Execute(object obj)
+    {
+        TeamsCollectionView.Filter = o =>
+            o is TeamListItemViewModel t && FilterTeamsBySearch(t) && t.TotalGames == 0;
+        ResetCommonFilters();
+    }
+
+    private void ShowMostPoints_Execute(object obj)
+    {
+        TeamsCollectionView.Filter = o =>
+            o is TeamListItemViewModel t && FilterTeamsBySearch(t) && t.Points == _teams.Max(team => team.Points);
+        ResetCommonFilters();
+    }
+
+    private void ShowMostWins_Execute(object obj)
+    {
+        TeamsCollectionView.Filter = o =>
+            o is TeamListItemViewModel t && FilterTeamsBySearch(t) && t.Wins == _teams.Max(team => team.Wins);
+        ResetCommonFilters();
     }
 
     private SortDescription GetSortStrategy(string sortStrategyName)
@@ -126,21 +185,40 @@ public class TeamsListViewModel : ViewModelBase
     {
         // if Max is not specified it is set to infinity 
         var actualMaxMembers = MaxMembers == 0 ? int.MaxValue : MaxMembers;
-        
-        if (MinMembers >= actualMaxMembers)
+        var actualMaxPoints = MaxPoints == 0 ? int.MaxValue : MaxPoints;
+
+        Predicate<TeamListItemViewModel> filterTeamsBySearch = FilterTeamsBySearch;
+        Predicate<TeamListItemViewModel> filterTeamsByMembers = FilterTeamsByMembers;
+        Predicate<TeamListItemViewModel> filterTeamsByPoints = FilterTeamsByPoints;
+
+        if (MinMembers > actualMaxMembers)
         {
-            TeamsCollectionView.Filter = o =>
-                o is TeamListItemViewModel t && FilterTeamsBySearch(t);
-        }
-        else
-        {
-            TeamsCollectionView.Filter = o =>
-                o is TeamListItemViewModel t && FilterTeamsBySearch(t) && FilterTeamsByMembers(t);
+            filterTeamsByMembers = _ => false;
         }
 
-        bool FilterTeamsBySearch(TeamListItemViewModel team) => team.FullName.ToLower().Contains(TeamsSearchFilter.ToLower());
+        if (MinPoints > actualMaxPoints)
+        {
+            filterTeamsByPoints = _ => false;
+        }
         
-        bool FilterTeamsByMembers(TeamListItemViewModel team) => team.Members >= MinMembers && team.Members <= actualMaxMembers;
+        TeamsCollectionView.Filter = o =>
+            o is TeamListItemViewModel t && filterTeamsBySearch(t) && filterTeamsByMembers(t) && filterTeamsByPoints(t);
+
+        bool FilterTeamsByMembers(TeamListItemViewModel team) =>
+            team.Members >= MinMembers && team.Members <= actualMaxMembers;
+        
+        bool FilterTeamsByPoints(TeamListItemViewModel team) =>
+            team.Points >= MinPoints && team.Points <= actualMaxPoints;
+    }
+
+    private bool FilterTeamsBySearch(TeamListItemViewModel team) =>
+        team.FullName.ToLower().Contains(TeamsSearchFilter.ToLower());
+
+    private void ResetCommonFilters()
+    {
+        SortStrategyName = SortOptions[0];
+        MinMembers = 0;
+        MaxMembers = 0;
     }
 
     public void Refresh()
@@ -161,7 +239,9 @@ public class TeamsListViewModel : ViewModelBase
                 Id = t.Id,
                 FullName = $"{t.Name}-{t.OriginCity}",
                 Points = _teamService.CalculatePoints(t),
-                Members = t.MembersCount
+                Members = t.MembersCount,
+                TotalGames = _teamService.GetTotalGames(t),
+                Wins = t.GamesWon
             })
             .ToList();
     }
