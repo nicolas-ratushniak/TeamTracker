@@ -39,14 +39,23 @@ public class TeamsViewModel : ViewModelBase
 
     private void DeleteTeam_Execute(object obj)
     {
-        var messageBoxResult = MessageBox.Show("Are you sure, you want to delete this team?", "caption",
-            MessageBoxButton.YesNo,
-            MessageBoxImage.Warning);
+        var messageBoxResult = MessageBox.Show("Are you sure, you want to delete this team?", "Warning",
+            MessageBoxButton.YesNo, MessageBoxImage.Warning);
 
-        if (messageBoxResult == MessageBoxResult.Yes)
+        if (messageBoxResult != MessageBoxResult.Yes)
+        {
+            return;
+        }
+        
+        try
         {
             _teamService.Delete(SelectedTeamDetails.Team!.Id);
             TeamsList.Refresh();
+        }
+        catch (InvalidOperationException)
+        {
+            MessageBox.Show("Sorry, cannot delete this team. It's not a newcomer.", "Sorry", 
+                MessageBoxButton.OK, MessageBoxImage.Hand);
         }
     }
 
