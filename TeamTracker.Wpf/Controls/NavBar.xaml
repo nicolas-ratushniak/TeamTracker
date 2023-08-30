@@ -8,29 +8,6 @@
              mc:Ignorable="d"
              d:DesignHeight="100" d:DesignWidth="600">
     
-    <UserControl.Resources>
-        <Style x:Key="NavBarOption" TargetType="RadioButton">
-            <Setter Property="FontSize" Value="20"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type RadioButton}">
-                        <Border x:Name="B" Padding="35,10">
-                            <ContentPresenter/>
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsChecked" Value="True">
-                                <Setter TargetName="B" Property="Background" Value="#97DEFF"/>
-                            </Trigger>
-                            <Trigger Property="IsChecked" Value="False">
-                                <Setter TargetName="B" Property="Background" Value="#C9EEFF"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-    </UserControl.Resources>
-    
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
@@ -46,17 +23,17 @@
 
             <RadioButton Grid.Column="0" 
                          IsChecked="True"
-                         Style="{StaticResource NavBarOption}"
+                         Style="{StaticResource NiceRadioButton}"
                          Command="{Binding Path=Navigator.UpdateCurrentViewTypeCommand}"
                          CommandParameter="{x:Static navigation:ViewType.Teams}"
                          Content="Teams"/>
             <RadioButton Grid.Column="1" 
-                         Style="{StaticResource NavBarOption}"
+                         Style="{StaticResource NiceRadioButton}"
                          Command="{Binding Path=Navigator.UpdateCurrentViewTypeCommand}"
                          CommandParameter="{x:Static navigation:ViewType.Games}"
                          Content="Games"/>
             <RadioButton Grid.Column="3" 
-                         Style="{StaticResource NavBarOption}" 
+                         Style="{StaticResource NiceRadioButton}" 
                          Command="{Binding Path=Navigator.UpdateCurrentViewTypeCommand}"
                          CommandParameter="{x:Static navigation:ViewType.Help}"
                          Content="Help"/>
