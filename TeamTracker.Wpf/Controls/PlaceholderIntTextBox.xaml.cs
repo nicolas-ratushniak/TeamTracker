@@ -12,6 +12,7 @@ public partial class PlaceholderIntTextBox : UserControl
     public static readonly DependencyProperty IsTypingProperty;
     public static readonly DependencyProperty ValueProperty;
     public static readonly DependencyProperty MaxDigitsProperty;
+    public static readonly DependencyProperty AcceptZeroProperty;
 
     public string Placeholder
     {
@@ -29,6 +30,12 @@ public partial class PlaceholderIntTextBox : UserControl
     {
         get => (int)GetValue(MaxDigitsProperty);
         set => SetValue(MaxDigitsProperty, value);
+    }
+    
+    public bool AcceptZero
+    {
+        get => (bool)GetValue(AcceptZeroProperty);
+        set => SetValue(AcceptZeroProperty, value);
     }
     
     private bool IsTyping
@@ -58,6 +65,8 @@ public partial class PlaceholderIntTextBox : UserControl
         IsTypingProperty = DependencyProperty.Register(nameof(IsTyping), typeof(bool), typeof(PlaceholderIntTextBox));
         MaxDigitsProperty = DependencyProperty.Register(nameof(MaxDigits), typeof(int), typeof(PlaceholderIntTextBox),
             new PropertyMetadata(10));
+        AcceptZeroProperty = DependencyProperty.Register(nameof(AcceptZero), typeof(bool), typeof(PlaceholderIntTextBox),
+            new PropertyMetadata(true));
     }
 
     public PlaceholderIntTextBox()
@@ -99,7 +108,14 @@ public partial class PlaceholderIntTextBox : UserControl
 
     private void OnPreviewTextInput(object sender, TextCompositionEventArgs e)
     {
-        if (!int.TryParse(e.Text, out _))
+        var oldText = ((TextBox)sender).Text;
+
+        if (!int.TryParse(e.Text, out int digit))
+        {
+            e.Handled = true;
+        }
+        // handle first zero if not acceptable
+        else if (!AcceptZero && string.IsNullOrEmpty(oldText) && digit == 0)
         {
             e.Handled = true;
         }
