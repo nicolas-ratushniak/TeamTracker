@@ -17,4 +17,7 @@ public class GameInfoCreateDto
     [Required]
     [Range(0, 200)]
     public int TeamAwayScore { get; set; }
+
+    [Required]
+    public DateOnly Date { get; set; }
 }
