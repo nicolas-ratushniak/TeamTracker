@@ -42,6 +42,12 @@
             <Setter Property="TextWrapping" Value="Wrap" />
         </Style>
 
+        <Style x:Key="AccentText" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="{StaticResource BrushAccent}" />
+            <Setter Property="FontWeight" Value="500" />
+            <Setter Property="FontSize" Value="18" />
+        </Style>
+
         <!-- Buttons -->
         <Style x:Key="NiceButton" TargetType="Button">
             <Setter Property="Background" Value="#AA77FF" />
@@ -110,8 +116,8 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
-        
-        <Style x:Key="NicePlaceholderTextBox" TargetType="{x:Type controls:PlaceholderTextBox}">
+
+        <Style TargetType="{x:Type controls:PlaceholderTextBox}">
             <Setter Property="BorderBrush" Value="#858a8c" />
             <Setter Property="FontSize" Value="18" />
             <Setter Property="Foreground" Value="Black" />

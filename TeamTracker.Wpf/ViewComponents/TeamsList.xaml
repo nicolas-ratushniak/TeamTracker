@@ -49,24 +49,27 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
                     <RowDefinition Height="*" />
-                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
 
-                <TextBlock Grid.Row="0" Margin="0,0,0,10">Sort</TextBlock>
-                <ComboBox Grid.Row="1" Margin="0,0,0,15" SelectedIndex="0">
-                    <ComboBoxItem>Default</ComboBoxItem>
-                    <ComboBoxItem>Points Asc</ComboBoxItem>
-                    <ComboBoxItem>Points Desc</ComboBoxItem>
-                    <ComboBoxItem>Team Name Asc</ComboBoxItem>
-                    <ComboBoxItem>Team Name Desc</ComboBoxItem>
-                </ComboBox>
+                <TextBlock Grid.Row="0"
+                           Text="Sorting"
+                           Style="{StaticResource AccentText}"
+                           Margin="0,0,0,10" />
 
-                <TextBlock Grid.Row="2" Margin="0,0,0,10">Filters</TextBlock>
+                <ComboBox Grid.Row="1"
+                          SelectedIndex="0"
+                          SelectedItem="{Binding SortStrategyName}"
+                          ItemsSource="{Binding SortOptions}"
+                          Margin="0,0,0,15" />
+
+                <TextBlock Grid.Row="2"
+                           Text="Filters"
+                           Style="{StaticResource AccentText}"
+                           Margin="0,0,0,10" />
+
                 <Grid Grid.Row="3" Margin="0,0,0,15">
+
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="*" />
@@ -75,33 +78,23 @@
 
                     <TextBlock Grid.Column="0"
                                Text="Members:"
-                               FontSize="16"
                                VerticalAlignment="Center"
                                Margin="0,0,10,0" />
 
                     <controls:PlaceholderIntTextBox Grid.Column="1"
+                                                    Value="{Binding MinMembers, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                     Placeholder="Min"
                                                     MaxDigits="3"
                                                     FontSize="14"
                                                     Margin="0,0,5,0" />
 
                     <controls:PlaceholderIntTextBox Grid.Column="2"
+                                                    Value="{Binding MaxMembers, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                     Placeholder="Max"
+                                                    AcceptZero="False"
                                                     MaxDigits="3"
                                                     FontSize="14"
                                                     Margin="5,0,0,0" />
-                </Grid>
-
-                <Grid Grid.Row="8">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="10" />
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
-
-                    <Button Grid.Column="0" Content="Reset" Style="{StaticResource NiceButton}"
-                            Background="#97DEFF" />
-                    <Button Grid.Column="2" Content="Apply" Style="{StaticResource NiceButton}" />
                 </Grid>
             </Grid>
         </Border>
@@ -114,24 +107,34 @@
                 CornerRadius="5"
                 Margin="0,0,24,0">
             <Grid>
+
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
 
-                <TextBlock Grid.Row="0" Margin="0,0,0,10">Advanced</TextBlock>
-                <RadioButton Grid.Row="1" Margin="0,0,0,10" VerticalContentAlignment="Center">Most Wins</RadioButton>
-                <RadioButton Grid.Row="2" VerticalContentAlignment="Center">Most Points</RadioButton>
+                <TextBlock Grid.Row="0"
+                           Text="Advanced"
+                           Style="{StaticResource AccentText}"
+                           Margin="0,0,0,10" />
+
+                <RadioButton Grid.Row="1"
+                             Content="Most Wins"
+                             Margin="0,0,0,10"
+                             VerticalContentAlignment="Center" />
+
+                <RadioButton Grid.Row="2"
+                             Content="Most Points"
+                             VerticalContentAlignment="Center" />
             </Grid>
         </Border>
 
 
         <!-- Search Box -->
         <controls:PlaceholderTextBox Grid.Row="0" Grid.Column="1"
-                                     Style="{StaticResource NicePlaceholderTextBox}"
                                      Placeholder="Search"
-                                     Text="{Binding TeamsFilter, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"
+                                     Text="{Binding TeamsSearchFilter, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"
                                      Height="38"
                                      Margin="0,0,0,24" />
 
