@@ -58,6 +58,8 @@ public class GameInfoService : IGameInfoService
         };
         
         _gamesRepository.Add(game);
+        _gamesRepository.SaveChanges();
+        
         UpdateTeamsStats(game);
     }
 
