@@ -219,6 +219,8 @@ public class TeamsListViewModel : ViewModelBase
         SortStrategyName = SortOptions[0];
         MinMembers = 0;
         MaxMembers = 0;
+        MinPoints = 0;
+        MaxPoints = 0;
     }
 
     public void Refresh()

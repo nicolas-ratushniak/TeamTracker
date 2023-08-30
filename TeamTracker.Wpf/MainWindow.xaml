@@ -10,7 +10,7 @@
         Title="Team Tracker" 
         Height="600" 
         Width="1000"
-        MinHeight="555"
+        MinHeight="570"
         MinWidth="810">
     
     <Grid>

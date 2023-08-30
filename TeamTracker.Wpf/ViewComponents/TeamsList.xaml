@@ -97,7 +97,7 @@
                                                     Margin="5,0,0,0" />
                 </Grid>
                 
-                <Grid Grid.Row="4" Margin="0,0,0,15">
+                <Grid Grid.Row="4">
 
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="92" />
@@ -186,6 +186,7 @@
                      SelectedItem="{Binding SelectedTeam}"
                      SelectionMode="Single"
                      ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                     ScrollViewer.VerticalScrollBarVisibility="Hidden"
                      Style="{StaticResource TeamListBox}" />
         </Border>
 
