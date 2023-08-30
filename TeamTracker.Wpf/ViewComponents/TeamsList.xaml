@@ -112,6 +112,7 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
 
                 <TextBlock Grid.Row="0"
@@ -119,14 +120,20 @@
                            Style="{StaticResource AccentText}"
                            Margin="0,0,0,10" />
 
-                <RadioButton Grid.Row="1"
-                             Content="Most Wins"
-                             Margin="0,0,0,10"
-                             VerticalContentAlignment="Center" />
+                <Button Grid.Row="1" 
+                        Content="Most Wins"
+                        Style="{StaticResource NiceButton}"
+                        Margin="0,0,0,10" />
 
-                <RadioButton Grid.Row="2"
-                             Content="Most Points"
-                             VerticalContentAlignment="Center" />
+                <Button Grid.Row="2"
+                        Content="Most Points"
+                        Style="{StaticResource NiceButton}"
+                        Margin="0,0,0,10"/>
+
+                <Button Grid.Row="3" 
+                        Content="Newcomers"
+                        Style="{StaticResource NiceButton}" />
+
             </Grid>
         </Border>
 
