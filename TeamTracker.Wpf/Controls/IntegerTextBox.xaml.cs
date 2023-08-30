@@ -83,7 +83,11 @@ public partial class IntegerTextBox : UserControl
     {
         var control = (IntegerTextBox)d;
         var newValue = (int)e.NewValue;
-        control.Text = newValue.ToString();
+        
+        if (!string.IsNullOrEmpty(control.Text))
+        {
+            control.Text = newValue.ToString();
+        }
 
         var args = new RoutedPropertyChangedEventArgs<int>((int)e.OldValue, newValue, ValueChangedEvent);
         control.RaiseEvent(args);

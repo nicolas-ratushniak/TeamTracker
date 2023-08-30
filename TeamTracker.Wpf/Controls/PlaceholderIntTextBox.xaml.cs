@@ -90,7 +90,11 @@ public partial class PlaceholderIntTextBox : UserControl
     {
         var control = (PlaceholderIntTextBox)d;
         var newValue = (int)e.NewValue;
-        control.Text = newValue.ToString();
+
+        if (!string.IsNullOrEmpty(control.Text))
+        {
+            control.Text = newValue.ToString();
+        }
     }
 
     private void OnPreviewTextInput(object sender, TextCompositionEventArgs e)
