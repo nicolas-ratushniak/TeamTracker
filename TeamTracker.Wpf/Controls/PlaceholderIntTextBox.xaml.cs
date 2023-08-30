@@ -82,6 +82,7 @@ public partial class PlaceholderIntTextBox : UserControl
         var control = (PlaceholderIntTextBox)sender;
         var newText = (string)e.NewValue;
 
+        control.Value = int.TryParse(newText, out int num) ? num : default;
         control.IsTyping = !string.IsNullOrEmpty(newText);
     }
 
