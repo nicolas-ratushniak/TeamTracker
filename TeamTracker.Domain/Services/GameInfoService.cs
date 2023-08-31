@@ -30,7 +30,7 @@ public class GameInfoService : IGameInfoService
 
     public void PlayGame(GameInfoCreateDto dto)
     {
-        Validator.ValidateObject(dto, new ValidationContext(dto));
+        Validator.ValidateObject(dto, new ValidationContext(dto), true);
 
         if (dto.TeamHomeId == dto.TeamAwayId)
         {

@@ -11,11 +11,11 @@ public class GameInfoCreateDto
     public Guid TeamAwayId { get; set; }
     
     [Required]
-    [Range(0, 200)]
+    [Range(0, 200, ErrorMessage = "Home Team Score value should be in range from 0 to 200")]
     public int TeamHomeScore { get; set; }
     
     [Required]
-    [Range(0, 200)]
+    [Range(0, 200, ErrorMessage = "Away Team Score value should be in range from 0 to 200")]
     public int TeamAwayScore { get; set; }
 
     [Required]

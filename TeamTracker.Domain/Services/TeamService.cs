@@ -28,7 +28,7 @@ public class TeamService : ITeamService
 
     public void Add(TeamCreateDto dto)
     {
-        Validator.ValidateObject(dto, new ValidationContext(dto));
+        Validator.ValidateObject(dto, new ValidationContext(dto), true);
 
         if (GetAll().Any(t => t.Name == dto.Name && t.OriginCity == dto.OriginCity))
         {
@@ -49,7 +49,7 @@ public class TeamService : ITeamService
 
     public void Update(TeamUpdateDto dto)
     {
-        Validator.ValidateObject(dto, new ValidationContext(dto));
+        Validator.ValidateObject(dto, new ValidationContext(dto), true);
 
         if (_repository.GetAll().Any(t => t.Name == dto.Name && t.OriginCity == dto.OriginCity && t.Id != dto.Id))
         {
