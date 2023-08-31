@@ -74,10 +74,10 @@ public class TeamCreateFormViewModel : ViewModelBase
             
             _navigator.UpdateCurrentViewType(ViewType.Teams, null);
         }
-        catch (ValidationException)
+        catch (ValidationException ex)
         {
-            _logger.LogInformation("Some validation error occured");
-            ErrorMessage = "Some validation error occured";
+            _logger.LogInformation("Validation exception was handled: {Message}", ex.Message);
+            ErrorMessage = ex.Message;
         }
     }
 }

@@ -32,7 +32,7 @@ public class TeamService : ITeamService
 
         if (GetAll().Any(t => t.Name == dto.Name && t.OriginCity == dto.OriginCity))
         {
-            throw new ValidationException("No way to have two identical teams in one city");
+            throw new ValidationException("No way having two identical teams in one city");
         }
 
         Team team = new()
@@ -53,7 +53,7 @@ public class TeamService : ITeamService
 
         if (_repository.GetAll().Any(t => t.Name == dto.Name && t.OriginCity == dto.OriginCity && t.Id != dto.Id))
         {
-            throw new ValidationException("No way to have two identical teams in one city");
+            throw new ValidationException("No way having two identical teams in one city");
         }
 
         var team = Get(dto.Id);
