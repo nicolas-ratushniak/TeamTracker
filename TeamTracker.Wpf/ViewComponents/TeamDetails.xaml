@@ -45,67 +45,67 @@
                        Foreground="{StaticResource BrushGrey}"
                        FontSize="18"
                        Text="Points:"
-                       Margin="0,0,0,5" />
+                       Margin="0,0,0,8" />
 
             <TextBlock Grid.Row="1" Grid.Column="1"
                        FontSize="18"
                        Text="{Binding Path=Points}"
-                       Margin="0,0,0,5" />
+                       Margin="0,0,0,8" />
 
             <TextBlock Grid.Row="2" Grid.Column="0"
                        Foreground="{StaticResource BrushGrey}"
                        FontSize="18"
                        Text="Origin City:"
-                       Margin="0,0,0,5" />
+                       Margin="0,0,0,8" />
 
             <TextBlock Grid.Row="2" Grid.Column="1"
                        FontSize="18"
                        Text="{Binding Path=OriginCity}"
-                       Margin="0,0,0,5" />
+                       Margin="0,0,0,8" />
 
             <TextBlock Grid.Row="3" Grid.Column="0"
                        Foreground="{StaticResource BrushGrey}"
                        FontSize="18"
                        Text="Members:"
-                       Margin="0,0,0,5" />
+                       Margin="0,0,0,8" />
 
             <TextBlock Grid.Row="3" Grid.Column="1"
                        FontSize="18"
                        Text="{Binding Path=MembersCount}"
-                       Margin="0,0,0,5" />
+                       Margin="0,0,0,8" />
 
             <TextBlock Grid.Row="4" Grid.Column="0"
                        Foreground="{StaticResource BrushGrey}"
                        FontSize="18"
                        Text="Total Games:"
-                       Margin="0,0,0,5" />
+                       Margin="0,0,0,8" />
 
             <TextBlock Grid.Row="4" Grid.Column="1"
                        FontSize="18"
                        Text="{Binding Path=TotalGames}"
-                       Margin="0,0,0,5" />
+                       Margin="0,0,0,8" />
 
             <TextBlock Grid.Row="5" Grid.Column="0"
                        Foreground="{StaticResource BrushGrey}"
                        FontSize="18"
                        Text="Games Won:"
-                       Margin="0,0,0,5" />
+                       Margin="0,0,0,8" />
 
             <TextBlock Grid.Row="5" Grid.Column="1"
                        FontSize="18"
                        Text="{Binding Path=GamesWon}"
-                       Margin="0,0,0,5" />
+                       Margin="0,0,0,8" />
 
             <TextBlock Grid.Row="6" Grid.Column="0"
                        Foreground="{StaticResource BrushGrey}"
                        FontSize="18"
                        Text="Games Lost:"
-                       Margin="0,0,0,5" />
+                       Margin="0,0,0,8" />
 
             <TextBlock Grid.Row="6" Grid.Column="1"
                        FontSize="18"
                        Text="{Binding Path=GamesLost}"
-                       Margin="0,0,0,5" />
+                       Margin="0,0,0,8" />
 
             <TextBlock Grid.Row="7" Grid.Column="0"
                        Foreground="{StaticResource BrushGrey}"

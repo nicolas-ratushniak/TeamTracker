@@ -1,6 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Data;
+using System.Windows.Input;
 using TeamTracker.Domain.Services;
 
 namespace TeamTracker.Wpf.ViewModels;
@@ -11,8 +12,23 @@ public class GamesListViewModel : ViewModelBase
     private readonly ITeamService _teamService;
     private readonly ObservableCollection<GamesListItemViewModel> _games;
     private GamesListItemViewModel? _selectedGame;
+    private string _gamesSearchFilter;
 
     public ICollectionView GamesCollectionView { get; }
+
+    public ICommand ShowMostCrushingGameCommand { get; }
+    public ICommand ShowDrawsCommand { get; }
+
+    public string GamesSearchFilter
+    {
+        get => _gamesSearchFilter;
+        set
+        {
+            if (value == _gamesSearchFilter) return;
+            _gamesSearchFilter = value;
+            OnPropertyChanged();
+        }
+    }
 
     public GamesListItemViewModel? SelectedGame
     {
