@@ -1,8 +1,8 @@
 ﻿namespace TeamTracker.Wpf.ViewModels;
 
-public class TeamDetailsItemViewModel : ViewModelBase
+public class TeamDetailsItemViewModel
 {
-    public Guid Id { get; set; }
+    public Guid Id { get; init; }
     public string Name { get; set; } = "";
     public string OriginCity { get; set; } = "";
     public int GamesWon { get; set; }
