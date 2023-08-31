@@ -3,75 +3,118 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:local="clr-namespace:TeamTracker.Wpf.Views"
+
              xmlns:converters="clr-namespace:TeamTracker.Wpf.Converters"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300">
-       
-       <UserControl.Resources>
-              <converters:NullToVisibilityConverter x:Key="NullToVisibilityConverter"/>
-       </UserControl.Resources>
-       
-       <Border BorderBrush="Black" 
-               BorderThickness="1"
-               CornerRadius="5"
-               Padding="20"
-               DataContext="{Binding Team}">
-            
-            <Grid Visibility="{Binding Converter={StaticResource NullToVisibilityConverter}}">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
-                
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
-                
-                <Label Grid.Row="0" Grid.ColumnSpan="2" FontSize="20" FontWeight="Bold" Margin="0,0,0,15"
-                       Content="{Binding Path=Name}"/>
-                
-                <Label Grid.Row="1" Grid.Column="0" FontSize="16"
-                       Content="Points:"/>
-                <Label Grid.Row="1" Grid.Column="1" FontSize="16"
-                       Content="{Binding Path=Points}"/>
-                
-                <Label Grid.Row="2" Grid.Column="0" FontSize="16"
-                         Content="Origin City:"/>
-                <Label Grid.Row="2" Grid.Column="1" FontSize="16"
-                       Content="{Binding Path=OriginCity}"/>
-                
-                <Label Grid.Row="3" Grid.Column="0" FontSize="16"
-                       Content="Members:"/>
-                <Label Grid.Row="3" Grid.Column="1" FontSize="16"
-                       Content="{Binding Path=MembersCount}"/>
-                
-                <Label Grid.Row="4" Grid.Column="0" FontSize="16"
-                       Content="Total Games:"/>
-                <Label Grid.Row="4" Grid.Column="1" FontSize="16"
-                       Content="{Binding Path=TotalGames}"/>
-                
-                <Label Grid.Row="5" Grid.Column="0" FontSize="16"
-                       Content="Games Won:"/>
-                <Label Grid.Row="5" Grid.Column="1" FontSize="16"
-                       Content="{Binding Path=GamesWon}"/>
-                
-                <Label Grid.Row="6" Grid.Column="0" FontSize="16"
-                       Content="Games Lost:"/>
-                <Label Grid.Row="6" Grid.Column="1" FontSize="16"
-                       Content="{Binding Path=GamesLost}"/>
-                
-                <Label Grid.Row="7" Grid.Column="0" FontSize="16"
-                       Content="Games Drawn:"/>
-                <Label Grid.Row="7" Grid.Column="1" FontSize="16"
-                       Content="{Binding Path=GamesDrawn}"/>
-            </Grid>
-        </Border>
+
+    <UserControl.Resources>
+        <converters:NullToVisibilityConverter x:Key="NullToVisibilityConverter" />
+    </UserControl.Resources>
+
+    <Border BorderBrush="Black"
+            BorderThickness="1"
+            CornerRadius="5"
+            Padding="20"
+            DataContext="{Binding Team}">
+
+        <Grid Visibility="{Binding Converter={StaticResource NullToVisibilityConverter}}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="130" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Grid.Row="0" Grid.ColumnSpan="2"
+                       FontSize="20"
+                       FontWeight="Bold"
+                       Text="{Binding Path=Name}"
+                       Margin="0,0,0,15" />
+
+            <TextBlock Grid.Row="1" Grid.Column="0"
+                       Foreground="{StaticResource BrushGrey}"
+                       FontSize="18"
+                       Text="Points:"
+                       Margin="0,0,0,5" />
+
+            <TextBlock Grid.Row="1" Grid.Column="1"
+                       FontSize="18"
+                       Text="{Binding Path=Points}"
+                       Margin="0,0,0,5" />
+
+            <TextBlock Grid.Row="2" Grid.Column="0"
+                       Foreground="{StaticResource BrushGrey}"
+                       FontSize="18"
+                       Text="Origin City:"
+                       Margin="0,0,0,5" />
+
+            <TextBlock Grid.Row="2" Grid.Column="1"
+                       FontSize="18"
+                       Text="{Binding Path=OriginCity}"
+                       Margin="0,0,0,5" />
+
+            <TextBlock Grid.Row="3" Grid.Column="0"
+                       Foreground="{StaticResource BrushGrey}"
+                       FontSize="18"
+                       Text="Members:"
+                       Margin="0,0,0,5" />
+
+            <TextBlock Grid.Row="3" Grid.Column="1"
+                       FontSize="18"
+                       Text="{Binding Path=MembersCount}"
+                       Margin="0,0,0,5" />
+
+            <TextBlock Grid.Row="4" Grid.Column="0"
+                       Foreground="{StaticResource BrushGrey}"
+                       FontSize="18"
+                       Text="Total Games:"
+                       Margin="0,0,0,5" />
+
+            <TextBlock Grid.Row="4" Grid.Column="1"
+                       FontSize="18"
+                       Text="{Binding Path=TotalGames}"
+                       Margin="0,0,0,5" />
+
+            <TextBlock Grid.Row="5" Grid.Column="0"
+                       Foreground="{StaticResource BrushGrey}"
+                       FontSize="18"
+                       Text="Games Won:"
+                       Margin="0,0,0,5" />
+
+            <TextBlock Grid.Row="5" Grid.Column="1"
+                       FontSize="18"
+                       Text="{Binding Path=GamesWon}"
+                       Margin="0,0,0,5" />
+
+            <TextBlock Grid.Row="6" Grid.Column="0"
+                       Foreground="{StaticResource BrushGrey}"
+                       FontSize="18"
+                       Text="Games Lost:"
+                       Margin="0,0,0,5" />
+
+            <TextBlock Grid.Row="6" Grid.Column="1"
+                       FontSize="18"
+                       Text="{Binding Path=GamesLost}"
+                       Margin="0,0,0,5" />
+
+            <TextBlock Grid.Row="7" Grid.Column="0"
+                       Foreground="{StaticResource BrushGrey}"
+                       FontSize="18"
+                       Text="Games Drawn:" />
+
+            <TextBlock Grid.Row="7" Grid.Column="1"
+                       FontSize="18"
+                       Text="{Binding Path=GamesDrawn}" />
+        </Grid>
+    </Border>
 </UserControl>
