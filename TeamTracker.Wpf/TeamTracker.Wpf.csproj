@@ -26,7 +26,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Page Update="ViewComponents\TeamsDetails.xaml">
+      <Page Update="ViewComponents\TeamDetails.xaml">
         <Generator>MSBuild:Compile</Generator>
         <XamlRuntime>Wpf</XamlRuntime>
         <SubType>Designer</SubType>

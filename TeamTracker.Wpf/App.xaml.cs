@@ -70,7 +70,9 @@ public partial class App : Application
                     s.GetRequiredService<INavigator>()));
                 
                 services.AddSingleton<Func<GamesViewModel>>(s => () => new GamesViewModel(
-                    s.GetRequiredService<IGameInfoService>()));
+                    s.GetRequiredService<IGameInfoService>(),
+                    s.GetRequiredService<ITeamService>(),
+                    s.GetRequiredService<INavigator>()));
 
                 services.AddSingleton<Func<HelpViewModel>>(s => () => new HelpViewModel());
                 

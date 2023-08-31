@@ -42,7 +42,7 @@
         <viewComponents:TeamsList Grid.Row="0" Grid.RowSpan="2" Grid.Column="0"
                                   DataContext="{Binding TeamsList}" />
 
-        <viewComponents:TeamsDetails Grid.Row="1" Grid.Column="1"
+        <viewComponents:TeamDetails Grid.Row="1" Grid.Column="1"
                                      Margin="24,0,0,0"
                                      DataContext="{Binding SelectedTeamDetails}" />
 
