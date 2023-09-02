@@ -8,6 +8,7 @@ public class ViewModelFactory : IViewModelFactory
     private readonly Func<TeamCreateFormViewModel> _createTeamCreateViewModel;
     private readonly Func<Guid, TeamUpdateFormViewModel> _createTeamUpdateViewModel;
     private readonly Func<GamesViewModel> _createGamesViewModel;
+    private readonly Func<GameCreateFormViewModel> _createGameCreateFormViewModel;
     private readonly Func<HelpViewModel> _createHelpViewModel;
 
     public ViewModelFactory(
@@ -15,6 +16,7 @@ public class ViewModelFactory : IViewModelFactory
         Func<TeamCreateFormViewModel> createTeamCreateViewModel,
         Func<Guid, TeamUpdateFormViewModel> createTeamUpdateViewModel,
         Func<GamesViewModel> createGamesViewModel,
+        Func<GameCreateFormViewModel> createGameCreateFormViewModel,
         Func<HelpViewModel> createHelpViewModel
     )
     {
@@ -22,6 +24,7 @@ public class ViewModelFactory : IViewModelFactory
         _createTeamCreateViewModel = createTeamCreateViewModel;
         _createTeamUpdateViewModel = createTeamUpdateViewModel;
         _createGamesViewModel = createGamesViewModel;
+        _createGameCreateFormViewModel = createGameCreateFormViewModel;
         _createHelpViewModel = createHelpViewModel;
     }
 
@@ -33,6 +36,7 @@ public class ViewModelFactory : IViewModelFactory
             ViewType.TeamCreate => _createTeamCreateViewModel(),
             ViewType.TeamUpdate => _createTeamUpdateViewModel((Guid)viewParameter!),
             ViewType.Games => _createGamesViewModel(),
+            ViewType.GameCreate => _createGameCreateFormViewModel(),
             ViewType.Help => _createHelpViewModel(),
             _ => throw new InvalidOperationException("Cannot create view model with this type.")
         };

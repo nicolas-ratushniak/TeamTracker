@@ -74,6 +74,12 @@ public partial class App : Application
                     s.GetRequiredService<ITeamService>(),
                     s.GetRequiredService<INavigator>()));
 
+                services.AddSingleton<Func<GameCreateFormViewModel>>(s => () => new GameCreateFormViewModel(
+                    s.GetRequiredService<IGameInfoService>(),
+                    s.GetRequiredService<ITeamService>(),
+                    s.GetRequiredService<INavigator>(),
+                    s.GetRequiredService<ILogger<GameCreateFormViewModel>>()));
+
                 services.AddSingleton<Func<HelpViewModel>>(s => () => new HelpViewModel());
                 
                 services.AddTransient<MainViewModel>();

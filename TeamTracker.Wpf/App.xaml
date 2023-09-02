@@ -199,6 +199,10 @@
         <DataTemplate DataType="{x:Type viewModels:GamesViewModel}">
             <views:GamesView />
         </DataTemplate>
+        
+        <DataTemplate DataType="{x:Type viewModels:GameCreateFormViewModel}">
+            <views:GameCreateView />
+        </DataTemplate>
 
         <DataTemplate DataType="{x:Type viewModels:HelpViewModel}">
             <views:HelpView />
