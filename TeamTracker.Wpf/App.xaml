@@ -182,6 +182,8 @@
         <Style x:Key="NiceBorder" TargetType="Border">
             <Setter Property="BorderThickness" Value="1" />
             <Setter Property="BorderBrush" Value="{StaticResource BrushGrey}" />
+            <Setter Property="CornerRadius" Value="5"/>
+            <Setter Property="Padding" Value="5"></Setter>
             <Style.Triggers>
                 <Trigger Property="IsKeyboardFocusWithin" Value="True">
                     <Setter Property="BorderBrush" Value="Black" />
