@@ -137,6 +137,8 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
 
                 <TextBlock Grid.Row="0"
@@ -147,13 +149,19 @@
                 <Button Grid.Row="1"
                         Content="Most Crushing"
                         Command="{Binding ShowMostCrushingGameCommand}"
-                        Style="{StaticResource NiceButton}"
-                        Margin="0,0,0,10" />
+                        Style="{StaticResource CommonButton}"
+                        Margin="0,0,0,5" />
 
                 <Button Grid.Row="2"
                         Content="Draws"
                         Command="{Binding ShowDrawsCommand}"
-                        Style="{StaticResource NiceButton}"
+                        Style="{StaticResource CommonButton}"
+                        Margin="0,0,0,10" />
+                
+                <Button Grid.Row="4"
+                        Content="Reset"
+                        Command="{Binding ResetAdvancedFiltersCommand}"
+                        Style="{StaticResource CancelButton}"
                         Margin="0,0,0,10" />
 
             </Grid>

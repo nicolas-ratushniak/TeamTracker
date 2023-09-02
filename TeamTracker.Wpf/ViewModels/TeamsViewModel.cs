@@ -50,7 +50,7 @@ public class TeamsViewModel : ViewModelBase
         try
         {
             _teamService.Delete(SelectedTeamDetails.Team!.Id);
-            TeamsList.Refresh();
+            TeamsList.RefreshItemSource();
         }
         catch (InvalidOperationException)
         {

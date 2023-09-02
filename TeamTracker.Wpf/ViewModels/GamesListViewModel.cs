@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Windows.Data;
 using System.Windows.Input;
 using TeamTracker.Domain.Services;
+using TeamTracker.Wpf.Commands;
 
 namespace TeamTracker.Wpf.ViewModels;
 
@@ -14,10 +15,13 @@ public class GamesListViewModel : ViewModelBase
     private GamesListItemViewModel? _selectedGame;
     private string _gamesSearchFilter = string.Empty;
     private string _sortStrategyName;
+    private bool _isAdvancedFilterActive;
 
-    
+
     public ICommand ShowMostCrushingGameCommand { get; }
     public ICommand ShowDrawsCommand { get; }
+    public ICommand ResetAdvancedFiltersCommand { get; }
+
     public string[] SortOptions { get; }
     public ICollectionView GamesCollectionView { get; }
 
@@ -28,7 +32,7 @@ public class GamesListViewModel : ViewModelBase
         {
             if (value == _gamesSearchFilter) return;
             _gamesSearchFilter = value ?? string.Empty;
-            
+
             OnPropertyChanged();
             GamesCollectionView.Refresh();
         }
@@ -44,7 +48,7 @@ public class GamesListViewModel : ViewModelBase
             OnPropertyChanged();
         }
     }
-    
+
     public string SortStrategyName
     {
         get => _sortStrategyName;
@@ -57,7 +61,7 @@ public class GamesListViewModel : ViewModelBase
             UpdateSortStrategy(GetSortStrategy(value));
         }
     }
-    
+
     public GamesListViewModel(IGameInfoService gameInfoService, ITeamService teamService)
     {
         SortOptions = new[]
@@ -65,19 +69,59 @@ public class GamesListViewModel : ViewModelBase
             "Recent first",
             "Older first"
         };
-        
+
         _gameInfoService = gameInfoService;
         _teamService = teamService;
 
         _games = new ObservableCollection<GamesListItemViewModel>(GetGames());
 
         GamesCollectionView = CollectionViewSource.GetDefaultView(_games);
-        GamesCollectionView.Filter =
-            o => o is GamesListItemViewModel g && (g.HomeTeamName.ToLower().StartsWith(GamesSearchFilter.ToLower()) ||
-                                                   g.AwayTeamName.ToLower().StartsWith(GamesSearchFilter.ToLower()));
+        SetDefaultFilters();
         UpdateSortStrategy(new SortDescription(nameof(SelectedGame.Date), ListSortDirection.Ascending));
+
+        ShowMostCrushingGameCommand = new RelayCommand<object>(ShowMostCrushingGame_Execute);
+        ShowDrawsCommand = new RelayCommand<object>(ShowDrawsCommand_Execute);
+        ResetAdvancedFiltersCommand = new RelayCommand<object>(_ => SetDefaultFilters(), _ => _isAdvancedFilterActive);
     }
-    
+
+    private void ShowMostCrushingGame_Execute(object obj)
+    {
+        _isAdvancedFilterActive = true;
+        
+        GamesCollectionView.Filter = o =>
+        {
+            if (o is not GamesListItemViewModel g)
+            {
+                return false;
+            }
+
+            var currentGoalsDiff = Math.Abs(g.HomeTeamScore - g.AwayTeamScore);
+            var maxGoalsDiff = _games.Max(game => Math.Abs(game.HomeTeamScore - game.AwayTeamScore));
+
+            return FilterGamesBySearch(g) && currentGoalsDiff == maxGoalsDiff;
+        };
+    }
+
+    private void ShowDrawsCommand_Execute(object obj)
+    {
+        _isAdvancedFilterActive = true;
+        
+        GamesCollectionView.Filter = o => o is GamesListItemViewModel g && FilterGamesBySearch(g) &&
+                                          g.HomeTeamScore == g.AwayTeamScore;
+    }
+
+    private void SetDefaultFilters()
+    {
+        _isAdvancedFilterActive = false;
+        GamesCollectionView.Filter = o => o is GamesListItemViewModel g && FilterGamesBySearch(g);
+    }
+
+    private bool FilterGamesBySearch(GamesListItemViewModel game)
+    {
+        return game.HomeTeamName.ToLower().StartsWith(GamesSearchFilter.ToLower()) ||
+               game.AwayTeamName.ToLower().StartsWith(GamesSearchFilter.ToLower());
+    }
+
     private SortDescription GetSortStrategy(string sortStrategyName)
     {
         return sortStrategyName switch

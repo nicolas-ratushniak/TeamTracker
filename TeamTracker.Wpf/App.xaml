@@ -12,14 +12,12 @@
 
         <!--Colors-->
         <Color x:Key="ColorAccent">#AA77FF</Color>
-        <Color x:Key="ColorAccentFocused">#875FC9</Color>
         <Color x:Key="ColorMinor">#C9EEFF</Color>
-        <Color x:Key="ColorMinorFocused">#62CDFF</Color>
+        <Color x:Key="ColorMinorFocused">#97DEFF</Color>
         <Color x:Key="GreyColor">#858a8c</Color>
 
         <!--Brushes-->
         <SolidColorBrush x:Key="BrushAccent" Color="{StaticResource ColorAccent}" />
-        <SolidColorBrush x:Key="BrushAccentFocused" Color="{StaticResource ColorAccentFocused}" />
         <SolidColorBrush x:Key="BrushMinor" Color="{StaticResource ColorMinor}" />
         <SolidColorBrush x:Key="BrushMinorFocused" Color="{StaticResource ColorMinorFocused}" />
         <SolidColorBrush x:Key="BrushGrey" Color="{StaticResource GreyColor}" />
@@ -48,15 +46,14 @@
 
         <!-- Buttons -->
         <Style x:Key="NiceButton" TargetType="Button">
-            <Setter Property="Background" Value="#AA77FF" />
+            <Setter Property="Background" Value="{StaticResource BrushAccent}" />
             <Setter Property="Foreground" Value="#FFFFFF" />
             <Setter Property="FontSize" Value="16" />
             <Setter Property="FontWeight" Value="SemiBold" />
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type Button}">
-                        <Border x:Name="ButtonBorder"
-                                Background="{TemplateBinding Background}"
+                        <Border Background="{TemplateBinding Background}"
                                 Opacity="{TemplateBinding Opacity}"
                                 CornerRadius="5">
                             <ContentPresenter Margin="17,7"
@@ -78,9 +75,14 @@
         </Style>
 
         <Style x:Key="CancelButton" TargetType="Button" BasedOn="{StaticResource NiceButton}">
-            <Setter Property="Background" Value="#C9EEFF" />
-            <Setter Property="Foreground" Value="#000000" />
+            <Setter Property="Background" Value="{StaticResource BrushMinor}" />
+            <Setter Property="Foreground" Value="#202121" />
             <Setter Property="FontWeight" Value="Regular" />
+        </Style>
+        
+        <Style x:Key="CommonButton" TargetType="Button" BasedOn="{StaticResource CancelButton}">
+            <Setter Property="Background" Value="{StaticResource BrushMinorFocused}" />
+            <Setter Property="FontWeight" Value="400"/>
         </Style>
 
         <Style x:Key="DangerButton" TargetType="Button" BasedOn="{StaticResource NiceButton}">
@@ -91,7 +93,7 @@
         <!-- RadioButtons -->
         <Style x:Key="NiceRadioButton" TargetType="RadioButton">
             <Setter Property="FontSize" Value="20" />
-            <Setter Property="Background" Value="#C9EEFF" />
+            <Setter Property="Background" Value="{StaticResource BrushMinor}" />
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type RadioButton}">
@@ -104,7 +106,7 @@
             </Setter>
             <Style.Triggers>
                 <Trigger Property="IsChecked" Value="True">
-                    <Setter Property="Background" Value="#97DEFF" />
+                    <Setter Property="Background" Value="{StaticResource BrushMinorFocused}" />
                 </Trigger>
             </Style.Triggers>
         </Style>
