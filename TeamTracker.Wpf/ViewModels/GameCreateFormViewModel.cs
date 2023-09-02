@@ -201,10 +201,13 @@ public class GameCreateFormViewModel : ViewModelBase
         try
         {
             _gameInfoService.PlayGame(dto);
+            _logger.LogInformation("The Game was successfully created");
+            
             _navigator.UpdateCurrentViewType(ViewType.Games, null);
         }
         catch (ValidationException ex)
         {
+            _logger.LogWarning("Validation exception was caught: {Message}", ex.Message);
             ErrorMessage = ex.Message;
         }
     }

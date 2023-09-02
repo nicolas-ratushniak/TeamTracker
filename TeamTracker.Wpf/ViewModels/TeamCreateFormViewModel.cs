@@ -76,7 +76,7 @@ public class TeamCreateFormViewModel : ViewModelBase
         }
         catch (ValidationException ex)
         {
-            _logger.LogInformation("Validation exception was handled: {Message}", ex.Message);
+            _logger.LogInformation("Validation exception was caught: {Message}", ex.Message);
             ErrorMessage = ex.Message;
         }
     }
