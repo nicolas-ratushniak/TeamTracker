@@ -239,7 +239,8 @@ public class TeamsListViewModel : ViewModelBase
             .Select(t => new TeamListItemViewModel
             {
                 Id = t.Id,
-                FullName = $"{t.Name}-{t.OriginCity}",
+                Name = t.Name,
+                OriginCity = t.OriginCity,
                 Points = _teamService.CalculatePoints(t),
                 Members = t.MembersCount,
                 TotalGames = _teamService.GetTotalGames(t),
