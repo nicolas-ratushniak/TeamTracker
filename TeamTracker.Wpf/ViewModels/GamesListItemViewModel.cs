@@ -3,6 +3,7 @@
 public class GamesListItemViewModel
 {
     public Guid Id { get; set; }
+    public DateOnly Date { get; set; }
     public string HomeTeamName { get; set; }
     public string HomeTeamOriginCity { get; set; }
     public int HomeTeamScore { get; set; }
