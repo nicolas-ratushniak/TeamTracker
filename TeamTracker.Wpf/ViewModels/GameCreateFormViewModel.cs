@@ -167,6 +167,7 @@ public class GameCreateFormViewModel : ViewModelBase
         _teamService = teamService;
         _navigator = navigator;
         _logger = logger;
+        _date = DateTime.Now;
 
         HomeTeamCandidates = CollectionViewSource.GetDefaultView(GetTeams());
         HomeTeamCandidates.SortDescriptions.Add(new SortDescription(nameof(SelectTeamItemViewModel.FullName), ListSortDirection.Ascending));

@@ -78,11 +78,18 @@
                                Text="Date:"
                                VerticalAlignment="Center"
                                Margin="0,0,0,15" />
-
-                    <DatePicker Grid.Row="0" Grid.Column="1"
-                                FontSize="18"
-                                SelectedDate="{Binding Date, Mode=TwoWay}"
-                                Margin="0,0,0,15" />
+                    
+                    <Border Grid.Row="0" Grid.Column="1"
+                            Style="{StaticResource NiceBorder}"
+                            Padding="3"
+                            Margin="0,0,0,15">
+                        <DatePicker VerticalAlignment="Center"
+                                    Height="26"
+                                    BorderThickness="0"
+                                    SelectedDate="{Binding Date, Mode=TwoWay}"
+                                    IsTodayHighlighted="True"
+                                    FontSize="16"/>
+                    </Border>
 
                     <TextBlock Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
                                FontSize="18"
