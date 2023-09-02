@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
 using Microsoft.Extensions.Logging;
@@ -235,9 +234,21 @@ public class GameCreateFormViewModel : ViewModelBase
     {
         var filter = HomeTeamSearchFilter;
 
-        AreHomeCandidatesVisible = _selectedHomeTeam is null
-            ? !string.IsNullOrEmpty(filter)
-            : filter != _selectedHomeTeam.FullName;
+        if (_selectedHomeTeam is null)
+        {
+            AreHomeCandidatesVisible = !string.IsNullOrEmpty(filter);
+        }
+        else
+        {
+            if (filter == _selectedHomeTeam.FullName)
+            {
+                AreHomeCandidatesVisible = false;
+                return;
+            }
+
+            AreHomeCandidatesVisible = true;
+            _selectedHomeTeam = null;
+        }
         
         HomeTeamCandidates.Refresh();
     }
@@ -246,9 +257,21 @@ public class GameCreateFormViewModel : ViewModelBase
     {
         var filter = AwayTeamSearchFilter;
 
-        AreAwayCandidatesVisible = _selectedAwayTeam is null
-            ? !string.IsNullOrEmpty(filter)
-            : filter != _selectedAwayTeam.FullName;
+        if (_selectedAwayTeam is null)
+        {
+            AreAwayCandidatesVisible = !string.IsNullOrEmpty(filter);
+        }
+        else
+        {
+            if (filter == _selectedAwayTeam.FullName)
+            {
+                AreAwayCandidatesVisible = false;
+                return;
+            }
+
+            AreAwayCandidatesVisible = true;
+            _selectedAwayTeam = null;
+        }
         
         AwayTeamCandidates.Refresh();
     }
