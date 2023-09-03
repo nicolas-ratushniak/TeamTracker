@@ -10,4 +10,6 @@ public class GameListItemViewModel
     public string AwayTeamName { get; set; }
     public string AwayTeamOriginCity { get; set; }
     public int AwayTeamScore { get; set; }
+    public string HomeTeamFullName => $"{HomeTeamName}-{HomeTeamOriginCity}";
+    public string AwayTeamFullName => $"{AwayTeamName}-{AwayTeamOriginCity}";
 }

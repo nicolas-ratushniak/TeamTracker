@@ -118,8 +118,10 @@ public class GameListViewModel : ViewModelBase
 
     private bool FilterGamesBySearch(GameListItemViewModel game)
     {
-        return game.HomeTeamName.ToLower().StartsWith(GamesSearchFilter.ToLower()) ||
-               game.AwayTeamName.ToLower().StartsWith(GamesSearchFilter.ToLower());
+        var lowerFilter = GamesSearchFilter.ToLower();
+        
+        return game.HomeTeamFullName.ToLower().StartsWith(lowerFilter) ||
+               game.AwayTeamFullName.ToLower().StartsWith(lowerFilter);
     }
 
     private SortDescription GetSortStrategy(string sortStrategyName)

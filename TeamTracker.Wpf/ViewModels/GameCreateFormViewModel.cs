@@ -171,11 +171,11 @@ public class GameCreateFormViewModel : ViewModelBase
 
         HomeTeamCandidates = CollectionViewSource.GetDefaultView(GetTeams());
         HomeTeamCandidates.SortDescriptions.Add(new SortDescription(nameof(SelectTeamItemViewModel.FullName), ListSortDirection.Ascending));
-        HomeTeamCandidates.Filter = o => o is SelectTeamItemViewModel t && FilterTeam(t, HomeTeamSearchFilter);
+        HomeTeamCandidates.Filter = o => o is SelectTeamItemViewModel t && FilterTeamBySearch(t, HomeTeamSearchFilter);
 
         AwayTeamCandidates = CollectionViewSource.GetDefaultView(GetTeams());
         AwayTeamCandidates.SortDescriptions.Add(new SortDescription(nameof(SelectTeamItemViewModel.FullName), ListSortDirection.Ascending));
-        AwayTeamCandidates.Filter = o => o is SelectTeamItemViewModel t && FilterTeam(t, AwayTeamSearchFilter);
+        AwayTeamCandidates.Filter = o => o is SelectTeamItemViewModel t && FilterTeamBySearch(t, AwayTeamSearchFilter);
 
         SubmitCommand = new RelayCommand<object>(AddGame_Execute, AddGame_CanExecute);
         CancelCommand = new RelayCommand<object>(_ => navigator.UpdateCurrentViewType(ViewType.Games, null));
@@ -280,13 +280,12 @@ public class GameCreateFormViewModel : ViewModelBase
         AwayTeamCandidates.Refresh();
     }
 
-    private bool FilterTeam(SelectTeamItemViewModel team, string filter)
+    private bool FilterTeamBySearch(SelectTeamItemViewModel team, string filter)
     {
         var lowerFilter = filter.ToLower();
         
-        return team.Name.ToLower().StartsWith(lowerFilter) ||
-               team.OriginCity.ToLower().StartsWith(lowerFilter) ||
-               team.FullName.ToLower().StartsWith(lowerFilter);
+        return team.FullName.ToLower().StartsWith(lowerFilter) ||
+               team.OriginCity.ToLower().StartsWith(lowerFilter);
     }
 
     private IEnumerable<SelectTeamItemViewModel> GetTeams()

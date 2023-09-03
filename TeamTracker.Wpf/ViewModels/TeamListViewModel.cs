@@ -218,7 +218,10 @@ public class TeamListViewModel : ViewModelBase
 
     private bool FilterTeamsBySearch(TeamListItemViewModel team)
     {
-        return team.FullName.ToLower().Contains(TeamsSearchFilter.ToLower());
+        var lowerFilter = TeamsSearchFilter.ToLower();
+
+        return team.FullName.ToLower().StartsWith(lowerFilter) ||
+               team.OriginCity.ToLower().StartsWith(lowerFilter);
     }
 
     private bool FilterTeamsByMembers(TeamListItemViewModel team)
