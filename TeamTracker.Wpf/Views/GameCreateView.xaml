@@ -6,11 +6,13 @@
 
              xmlns:controls="clr-namespace:TeamTracker.Wpf.Controls"
              xmlns:viewModels="clr-namespace:TeamTracker.Wpf.ViewModels"
-             xmlns:System="clr-namespace:System;assembly=System.Runtime"
+             xmlns:converters="clr-namespace:TeamTracker.Wpf.Converters"
              mc:Ignorable="d"
              d:DesignHeight="580" d:DesignWidth="400">
 
     <UserControl.Resources>
+        <converters:InverseBoolToVisibilityConverter x:Key="InverseBoolToVisibilityConverter"/>
+        
         <Style x:Key="SelectTeamListBox" TargetType="ListBox">
             <Setter Property="BorderThickness" Value="0" />
             <Setter Property="ItemTemplate">
@@ -78,7 +80,7 @@
                                Text="Date:"
                                VerticalAlignment="Center"
                                Margin="0,0,0,15" />
-                    
+
                     <Border Grid.Row="0" Grid.Column="1"
                             Style="{StaticResource NiceBorder}"
                             Padding="3"
@@ -88,7 +90,7 @@
                                     BorderThickness="0"
                                     SelectedDate="{Binding Date, Mode=TwoWay}"
                                     IsTodayHighlighted="True"
-                                    FontSize="16"/>
+                                    FontSize="16" />
                     </Border>
 
                     <TextBlock Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
@@ -119,12 +121,21 @@
                                     Width="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=Grid}}"
                                     MaxHeight="250"
                                     Background="White">
-                                <ListBox ScrollViewer.CanContentScroll="True"
-                                         ScrollViewer.VerticalScrollBarVisibility="Hidden"
-                                         ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                                         Style="{StaticResource SelectTeamListBox}"
-                                         ItemsSource="{Binding HomeTeamCandidates}"
-                                         SelectedItem="{Binding SelectedHomeTeam, Mode=TwoWay}" />
+                                <Grid>
+                                    <TextBlock Text="Nothing found"
+                                               Panel.ZIndex="1"
+                                               Foreground="{StaticResource BrushGrey}"
+                                               FontSize="16"
+                                               Visibility="{Binding ElementName=LbPopup1, Path=HasItems,
+                                               Converter={StaticResource InverseBoolToVisibilityConverter}}" />
+                                    <ListBox x:Name="LbPopup1"
+                                             ScrollViewer.CanContentScroll="True"
+                                             ScrollViewer.VerticalScrollBarVisibility="Hidden"
+                                             ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                             Style="{StaticResource SelectTeamListBox}"
+                                             ItemsSource="{Binding HomeTeamCandidates}"
+                                             SelectedItem="{Binding SelectedHomeTeam, Mode=TwoWay}" />
+                                </Grid>
                             </Border>
                         </Popup>
                     </Grid>
@@ -166,12 +177,21 @@
                                     Width="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=Grid}}"
                                     MaxHeight="250"
                                     Background="White">
-                                <ListBox ScrollViewer.CanContentScroll="True"
-                                         ScrollViewer.VerticalScrollBarVisibility="Hidden"
-                                         ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                                         Style="{StaticResource SelectTeamListBox}"
-                                         ItemsSource="{Binding AwayTeamCandidates}"
-                                         SelectedItem="{Binding SelectedAwayTeam, Mode=TwoWay}" />
+                                <Grid>
+                                    <TextBlock Text="Nothing found"
+                                               Panel.ZIndex="1"
+                                               Foreground="{StaticResource BrushGrey}"
+                                               FontSize="16"
+                                               Visibility="{Binding ElementName=LbPopup2, Path=HasItems,
+                                               Converter={StaticResource InverseBoolToVisibilityConverter}}" />
+                                    <ListBox x:Name="LbPopup2"
+                                             ScrollViewer.CanContentScroll="True"
+                                             ScrollViewer.VerticalScrollBarVisibility="Hidden"
+                                             ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                             Style="{StaticResource SelectTeamListBox}"
+                                             ItemsSource="{Binding AwayTeamCandidates}"
+                                             SelectedItem="{Binding SelectedAwayTeam, Mode=TwoWay}" />
+                                </Grid>
                             </Border>
                         </Popup>
                     </Grid>
