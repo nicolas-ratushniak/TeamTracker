@@ -76,6 +76,7 @@
 
         <Style x:Key="CancelButton" TargetType="Button" BasedOn="{StaticResource NiceButton}">
             <Setter Property="Background" Value="{StaticResource BrushMinor}" />
+            <Setter Property="Foreground" Value="Black"/>
             <Setter Property="FontWeight" Value="Regular" />
         </Style>
         
