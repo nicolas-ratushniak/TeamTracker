@@ -46,8 +46,8 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-            <RowDefinition Height="*" />
+            <RowDefinition Height="2*" />
+            <RowDefinition Height="3*" />
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
@@ -174,26 +174,25 @@
                 <Button Grid.Row="1"
                         Content="Most Wins"
                         Command="{Binding ShowMostWinsCommand}"
-                        Style="{StaticResource CommonButton}"
+                        Style="{StaticResource AdvancedButton}"
                         Margin="0,0,0,5" />
 
                 <Button Grid.Row="2"
                         Content="Most Points"
                         Command="{Binding ShowMostPointsCommand}"
-                        Style="{StaticResource CommonButton}"
+                        Style="{StaticResource AdvancedButton}"
                         Margin="0,0,0,5" />
 
                 <Button Grid.Row="3"
                         Content="Newcomers"
                         Command="{Binding ShowNewcomersCommand}"
-                        Style="{StaticResource CommonButton}"
+                        Style="{StaticResource AdvancedButton}"
                         Margin="0,0,0,5"/>
                 
                 <Button Grid.Row="5"
                         Content="Reset"
                         Command="{Binding ResetAdvancedFiltersCommand}"
-                        Style="{StaticResource CancelButton}"
-                        Margin="0,0,0,10" />
+                        Style="{StaticResource AdvancedCancelButton}"/>
 
             </Grid>
         </Border>

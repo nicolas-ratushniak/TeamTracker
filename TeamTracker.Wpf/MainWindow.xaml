@@ -3,14 +3,13 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:TeamTracker.Wpf"
         xmlns:controls="clr-namespace:TeamTracker.Wpf.Controls"
 
         mc:Ignorable="d"
         Title="Team Tracker" 
         Height="650" 
         Width="1000"
-        MinHeight="650"
+        MinHeight="620"
         MinWidth="810">
     
     <Grid>
