@@ -37,6 +37,12 @@ public class TeamsViewModel : ViewModelBase
             _ => SelectedTeamDetails.Team is not null);
     }
 
+    public override void Dispose()
+    {
+        TeamList.PropertyChanged -= TeamsList_OnPropertyChanged;
+        base.Dispose();
+    }
+
     private void DeleteTeam_Execute(object obj)
     {
         var messageBoxResult = MessageBox.Show("Are you sure, you want to delete this team?", "Warning",

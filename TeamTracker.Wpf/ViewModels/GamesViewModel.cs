@@ -27,6 +27,12 @@ public class GamesViewModel : ViewModelBase
             _ => navigator.UpdateCurrentViewType(ViewType.GameCreate, null));
     }
 
+    public override void Dispose()
+    {
+        GameList.PropertyChanged -= SelectedGame_OnPropertyChanged;
+        base.Dispose();
+    }
+
     private void SelectedGame_OnPropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
         if (e.PropertyName != nameof(GameList.SelectedGame))

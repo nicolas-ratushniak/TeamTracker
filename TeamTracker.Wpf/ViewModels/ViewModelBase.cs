@@ -3,12 +3,16 @@ using System.Runtime.CompilerServices;
 
 namespace TeamTracker.Wpf.ViewModels;
 
-public class ViewModelBase : INotifyPropertyChanged
+public class ViewModelBase : INotifyPropertyChanged, IDisposable
 {
     public event PropertyChangedEventHandler? PropertyChanged;
 
-    protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
+    protected void OnPropertyChanged([CallerMemberName] string? propertyName = null)
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    }
+
+    public virtual void Dispose()
+    {
     }
 }

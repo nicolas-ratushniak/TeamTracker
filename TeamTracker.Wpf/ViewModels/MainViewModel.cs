@@ -18,6 +18,8 @@ public class MainViewModel : ViewModelBase
         set
         {
             if (Equals(value, _currentViewModel)) return;
+            
+            _currentViewModel?.Dispose();
             _currentViewModel = value;
             OnPropertyChanged();
         }
