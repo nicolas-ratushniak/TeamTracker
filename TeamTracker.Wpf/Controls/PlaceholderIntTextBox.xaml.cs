@@ -133,7 +133,7 @@ public partial class PlaceholderIntTextBox : UserControl
     {
         var text = (string?)e.DataObject.GetData(typeof(string));
 
-        if (text is null || !Regex.IsMatch(text, @"^\d*$"))
+        if (text is null || !Regex.IsMatch(text, @"^\d*$") || text.Length > MaxDigits)
         {
             e.CancelCommand();
         }
