@@ -3,15 +3,20 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300"
              Name="IntTb">
-
-    <TextBox Style="{StaticResource NiceTextBox}"
-             PreviewTextInput="OnPreviewTextInput"
-             PreviewKeyDown="OnPreviewKeyDown"
-             DataObject.Pasting="OnPasting"
-             MaxLength="{Binding ElementName=IntTb, Path=MaxDigits}"
-             Text="{Binding ElementName=IntTb, Path=Text, UpdateSourceTrigger=PropertyChanged}" />
-
+    
+    <Border Style="{StaticResource NiceBorder}">
+        <Grid>
+            <TextBox FontSize="16" 
+                     PreviewTextInput="OnPreviewTextInput"
+                     PreviewKeyDown="OnPreviewKeyDown"
+                     DataObject.Pasting="OnPasting"
+                     Text="{Binding ElementName=IntTb, Path=Text, UpdateSourceTrigger=PropertyChanged}"
+                     MaxLength="{Binding ElementName=IntTb, Path=MaxDigits}"
+                     BorderThickness="0"/>
+        </Grid>
+    </Border>
 </UserControl>

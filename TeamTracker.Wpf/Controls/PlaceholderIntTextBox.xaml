@@ -14,10 +14,7 @@
         <converters:InverseBoolToVisibilityConverter x:Key="InverseBoolToVisibilityConverter" />
     </UserControl.Resources>
 
-    <Border BorderThickness="1"
-            CornerRadius="5"
-            Padding="5"
-            Style="{StaticResource NiceBorder}">
+    <Border Style="{StaticResource NiceBorder}">
         <Grid>
             <TextBlock
                 FontSize="14"

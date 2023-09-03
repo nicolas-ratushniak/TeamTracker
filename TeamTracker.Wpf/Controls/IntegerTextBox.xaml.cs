@@ -59,7 +59,7 @@ public partial class IntegerTextBox : UserControl
         InitializeComponent();
     }
 
-    private static object CoerceText(DependencyObject d, object value)
+    private static object CoerceText(DependencyObject sender, object value)
     {
         var text = (string)value;
 
@@ -113,7 +113,7 @@ public partial class IntegerTextBox : UserControl
     {
         var text = (string?)e.DataObject.GetData(typeof(string));
 
-        if (text is null || !Regex.IsMatch(text, @"^\d*$"))
+        if (text is null || !Regex.IsMatch(text, @"^\d*$") || text.Length > MaxDigits)
         {
             e.CancelCommand();
         }
