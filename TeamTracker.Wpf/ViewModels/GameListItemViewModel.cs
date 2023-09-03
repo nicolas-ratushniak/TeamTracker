@@ -1,6 +1,6 @@
 ﻿namespace TeamTracker.Wpf.ViewModels;
 
-public class GamesListItemViewModel
+public class GameListItemViewModel
 {
     public Guid Id { get; set; }
     public DateOnly Date { get; set; }

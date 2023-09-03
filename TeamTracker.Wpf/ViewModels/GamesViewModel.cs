@@ -11,17 +11,17 @@ public class GamesViewModel : ViewModelBase
     private readonly IGameInfoService _gameInfoService;
 
     public ICommand AddGameCommand { get; }
-    public GamesListViewModel GamesList { get; set; }
+    public GameListViewModel GameList { get; set; }
     public GameDetailsViewModel SelectedGameDetails { get; set; }
 
     public GamesViewModel(IGameInfoService gameInfoService, ITeamService teamService, INavigator navigator)
     {
         _gameInfoService = gameInfoService;
         
-        GamesList = new GamesListViewModel(gameInfoService, teamService);
+        GameList = new GameListViewModel(gameInfoService, teamService);
         SelectedGameDetails = new GameDetailsViewModel();
         
-        GamesList.PropertyChanged += SelectedGame_OnPropertyChanged;
+        GameList.PropertyChanged += SelectedGame_OnPropertyChanged;
 
         AddGameCommand = new RelayCommand<object>(
             _ => navigator.UpdateCurrentViewType(ViewType.GameCreate, null));
@@ -29,12 +29,12 @@ public class GamesViewModel : ViewModelBase
 
     private void SelectedGame_OnPropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
-        if (e.PropertyName != nameof(GamesList.SelectedGame))
+        if (e.PropertyName != nameof(GameList.SelectedGame))
         {
             return;
         }
 
-        var selectedGame = ((GamesListViewModel)sender!).SelectedGame;
+        var selectedGame = ((GameListViewModel)sender!).SelectedGame;
 
         if (selectedGame is null)
         {

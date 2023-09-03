@@ -11,7 +11,7 @@ public class TeamsViewModel : ViewModelBase
 {
     private readonly ITeamService _teamService;
 
-    public TeamsListViewModel TeamsList { get; set; }
+    public TeamListViewModel TeamList { get; set; }
     public TeamDetailsViewModel SelectedTeamDetails { get; set; }
     public ICommand AddTeamCommand { get; }
     public ICommand EditTeamCommand { get; }
@@ -20,10 +20,10 @@ public class TeamsViewModel : ViewModelBase
     public TeamsViewModel(ITeamService teamService, INavigator navigator)
     {
         _teamService = teamService;
-        TeamsList = new TeamsListViewModel(teamService);
+        TeamList = new TeamListViewModel(teamService);
         SelectedTeamDetails = new TeamDetailsViewModel();
 
-        TeamsList.PropertyChanged += TeamsList_OnPropertyChanged;
+        TeamList.PropertyChanged += TeamsList_OnPropertyChanged;
 
         AddTeamCommand = new RelayCommand<object>(
             _ => navigator.UpdateCurrentViewType(ViewType.TeamCreate, null));
@@ -50,7 +50,7 @@ public class TeamsViewModel : ViewModelBase
         try
         {
             _teamService.Delete(SelectedTeamDetails.Team!.Id);
-            TeamsList.RefreshItemSource();
+            TeamList.RefreshItemSource();
         }
         catch (InvalidOperationException)
         {
@@ -61,12 +61,12 @@ public class TeamsViewModel : ViewModelBase
 
     private void TeamsList_OnPropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
-        if (e.PropertyName != nameof(TeamsList.SelectedTeam))
+        if (e.PropertyName != nameof(TeamList.SelectedTeam))
         {
             return;
         }
 
-        var selectedTeam = ((TeamsListViewModel)sender!).SelectedTeam;
+        var selectedTeam = ((TeamListViewModel)sender!).SelectedTeam;
 
         if (selectedTeam is null)
         {

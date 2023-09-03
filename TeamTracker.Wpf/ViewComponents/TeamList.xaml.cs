@@ -2,9 +2,9 @@
 
 namespace TeamTracker.Wpf.ViewComponents;
 
-public partial class GamesList : UserControl
+public partial class TeamList : UserControl
 {
-    public GamesList()
+    public TeamList()
     {
         InitializeComponent();
     }

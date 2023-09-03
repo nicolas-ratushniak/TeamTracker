@@ -7,7 +7,7 @@ using TeamTracker.Wpf.Commands;
 
 namespace TeamTracker.Wpf.ViewModels;
 
-public class TeamsListViewModel : ViewModelBase
+public class TeamListViewModel : ViewModelBase
 {
     private readonly ITeamService _teamService;
     private readonly ObservableCollection<TeamListItemViewModel> _teams;
@@ -119,7 +119,7 @@ public class TeamsListViewModel : ViewModelBase
         }
     }
 
-    public TeamsListViewModel(ITeamService teamService)
+    public TeamListViewModel(ITeamService teamService)
     {
         SortOptions = new[]
         {

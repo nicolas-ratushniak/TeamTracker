@@ -7,12 +7,12 @@ using TeamTracker.Wpf.Commands;
 
 namespace TeamTracker.Wpf.ViewModels;
 
-public class GamesListViewModel : ViewModelBase
+public class GameListViewModel : ViewModelBase
 {
     private readonly IGameInfoService _gameInfoService;
     private readonly ITeamService _teamService;
-    private readonly ObservableCollection<GamesListItemViewModel> _games;
-    private GamesListItemViewModel? _selectedGame;
+    private readonly ObservableCollection<GameListItemViewModel> _games;
+    private GameListItemViewModel? _selectedGame;
     private string _gamesSearchFilter = string.Empty;
     private string _sortStrategyName;
     private bool _isAdvancedFilterActive;
@@ -38,7 +38,7 @@ public class GamesListViewModel : ViewModelBase
         }
     }
 
-    public GamesListItemViewModel? SelectedGame
+    public GameListItemViewModel? SelectedGame
     {
         get => _selectedGame;
         set
@@ -62,7 +62,7 @@ public class GamesListViewModel : ViewModelBase
         }
     }
 
-    public GamesListViewModel(IGameInfoService gameInfoService, ITeamService teamService)
+    public GameListViewModel(IGameInfoService gameInfoService, ITeamService teamService)
     {
         SortOptions = new[]
         {
@@ -73,7 +73,7 @@ public class GamesListViewModel : ViewModelBase
         _gameInfoService = gameInfoService;
         _teamService = teamService;
 
-        _games = new ObservableCollection<GamesListItemViewModel>(GetGames());
+        _games = new ObservableCollection<GameListItemViewModel>(GetGames());
 
         GamesCollectionView = CollectionViewSource.GetDefaultView(_games);
         SetDefaultFilters();
@@ -90,7 +90,7 @@ public class GamesListViewModel : ViewModelBase
         
         GamesCollectionView.Filter = o =>
         {
-            if (o is not GamesListItemViewModel g)
+            if (o is not GameListItemViewModel g)
             {
                 return false;
             }
@@ -106,17 +106,17 @@ public class GamesListViewModel : ViewModelBase
     {
         _isAdvancedFilterActive = true;
         
-        GamesCollectionView.Filter = o => o is GamesListItemViewModel g && FilterGamesBySearch(g) &&
+        GamesCollectionView.Filter = o => o is GameListItemViewModel g && FilterGamesBySearch(g) &&
                                           g.HomeTeamScore == g.AwayTeamScore;
     }
 
     private void SetDefaultFilters()
     {
         _isAdvancedFilterActive = false;
-        GamesCollectionView.Filter = o => o is GamesListItemViewModel g && FilterGamesBySearch(g);
+        GamesCollectionView.Filter = o => o is GameListItemViewModel g && FilterGamesBySearch(g);
     }
 
-    private bool FilterGamesBySearch(GamesListItemViewModel game)
+    private bool FilterGamesBySearch(GameListItemViewModel game)
     {
         return game.HomeTeamName.ToLower().StartsWith(GamesSearchFilter.ToLower()) ||
                game.AwayTeamName.ToLower().StartsWith(GamesSearchFilter.ToLower());
@@ -138,7 +138,7 @@ public class GamesListViewModel : ViewModelBase
         GamesCollectionView.SortDescriptions.Add(sortDescription);
     }
 
-    private IEnumerable<GamesListItemViewModel> GetGames()
+    private IEnumerable<GameListItemViewModel> GetGames()
     {
         return _gameInfoService.GetAll()
             .Select(g =>
@@ -146,7 +146,7 @@ public class GamesListViewModel : ViewModelBase
                 var homeTeam = _teamService.Get(g.TeamHomeId);
                 var awayTeam = _teamService.Get(g.TeamAwayId);
 
-                return new GamesListItemViewModel
+                return new GameListItemViewModel
                 {
                     Id = g.Id,
                     Date = g.Date,

@@ -39,8 +39,8 @@
                     Content="Delete" />
         </StackPanel>
 
-        <viewComponents:TeamsList Grid.Row="0" Grid.RowSpan="2" Grid.Column="0"
-                                  DataContext="{Binding TeamsList}" />
+        <viewComponents:TeamList Grid.Row="0" Grid.RowSpan="2" Grid.Column="0"
+                                  DataContext="{Binding TeamList}" />
 
         <viewComponents:TeamDetails Grid.Row="1" Grid.Column="1"
                                      Margin="24,0,0,0"
