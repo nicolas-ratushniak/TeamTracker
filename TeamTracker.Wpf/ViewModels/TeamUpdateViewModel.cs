@@ -8,7 +8,7 @@ public class TeamUpdateViewModel : ViewModelBase
     private string _originCity = string.Empty;
     private int _membersCount;
     
-    public Guid Id { get; init; }
+    public Guid Id { get; set; }
 
     public string Name
     {

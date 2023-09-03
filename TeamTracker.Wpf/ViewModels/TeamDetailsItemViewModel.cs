@@ -2,7 +2,7 @@
 
 public class TeamDetailsItemViewModel
 {
-    public Guid Id { get; init; }
+    public Guid Id { get; set; }
     public string Name { get; set; } = "";
     public string OriginCity { get; set; } = "";
     public int GamesWon { get; set; }
