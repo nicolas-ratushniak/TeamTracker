@@ -3,8 +3,8 @@
 public class TeamListItemViewModel
 {
     public Guid Id { get; set; }
-    public string Name { get; set; }
-    public string OriginCity { get; set; }
+    public string Name { get; set; } = string.Empty;
+    public string OriginCity { get; set; } = string.Empty;
     public int Points { get; set; }
     public int TotalGames { get; set; }
     public int Wins { get; set; }
