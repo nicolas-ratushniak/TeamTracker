@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Windows.Input;
+using Microsoft.Extensions.Logging;
 using TeamTracker.Domain.Dto;
 using TeamTracker.Domain.Services;
 using TeamTracker.Wpf.Commands;
@@ -11,6 +12,7 @@ public class TeamUpdateFormViewModel : ViewModelBase
 {
     private readonly ITeamService _teamService;
     private readonly INavigator _navigator;
+    private readonly ILogger<TeamUpdateFormViewModel> _logger;
     private TeamUpdateViewModel _teamToEdit;
     private string? _errorMessage;
 
@@ -39,14 +41,15 @@ public class TeamUpdateFormViewModel : ViewModelBase
     public ICommand SubmitCommand { get; }
     public ICommand CancelCommand { get; }
 
-    public TeamUpdateFormViewModel(Guid teamId, ITeamService teamService, INavigator navigator)
+    public TeamUpdateFormViewModel(Guid teamId, ITeamService teamService, INavigator navigator,
+        ILogger<TeamUpdateFormViewModel> logger)
     {
-
         _teamService = teamService;
         _navigator = navigator;
+        _logger = logger;
 
         var team = _teamService.Get(teamId);
-        
+
         _teamToEdit = new TeamUpdateViewModel
         {
             Id = team.Id,
@@ -74,15 +77,18 @@ public class TeamUpdateFormViewModel : ViewModelBase
             OriginCity = TeamToEdit.OriginCity,
             MembersCount = TeamToEdit.MembersCount
         };
-        
+
         try
         {
             _teamService.Update(dto);
+            _logger.LogInformation("\"{TeamName}\" was successfully updated", dto.Name);
+            
             _navigator.UpdateCurrentViewType(ViewType.Teams, null);
         }
-        catch (ValidationException)
+        catch (ValidationException ex)
         {
-            ErrorMessage = "Some validation error occured";
+            _logger.LogInformation("Validation exception was caught: {Message}", ex.Message);
+            ErrorMessage = ex.Message;
         }
     }
 }

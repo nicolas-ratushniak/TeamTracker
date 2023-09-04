@@ -68,7 +68,8 @@ public partial class App : Application
                 services.AddSingleton<Func<Guid, TeamUpdateFormViewModel>>(s => id => new TeamUpdateFormViewModel(
                     id,
                     s.GetRequiredService<ITeamService>(),
-                    s.GetRequiredService<INavigator>()));
+                    s.GetRequiredService<INavigator>(),
+                    s.GetRequiredService<ILogger<TeamUpdateFormViewModel>>()));
 
                 services.AddSingleton<Func<TeamsViewModel>>(s => () => new TeamsViewModel(
                     s.GetRequiredService<ITeamService>(),
