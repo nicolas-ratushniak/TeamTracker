@@ -15,7 +15,7 @@
         <Color x:Key="ColorMinor">#C9EEFF</Color>
         <Color x:Key="ColorMinorFocused">#97DEFF</Color>
         <Color x:Key="GreyColor">#858a8c</Color>
-        <Color x:Key="LightGreyColor">#c2c3c4</Color>
+        <Color x:Key="LightGreyColor">#acadad</Color>
 
         <!--Brushes-->
         <SolidColorBrush x:Key="BrushAccent" Color="{StaticResource ColorAccent}" />

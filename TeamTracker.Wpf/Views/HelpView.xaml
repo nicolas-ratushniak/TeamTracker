@@ -136,7 +136,7 @@
                            Content="Escape - cancel the form" />
                     
                     <Label Style="{StaticResource BulletListItem}"
-                           Content="Enter - submitting the form" />
+                           Content="Enter - submit the form" />
 
 
                 </StackPanel>
