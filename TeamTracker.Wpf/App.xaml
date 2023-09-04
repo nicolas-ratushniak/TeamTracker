@@ -254,6 +254,7 @@
             </Style.Triggers>
         </Style>
 
+        <!-- PlaceholderTextBox -->
         <Style TargetType="{x:Type controls:PlaceholderTextBox}">
             <Setter Property="BorderBrush" Value="{StaticResource BrushGrey}" />
             <Setter Property="FontSize" Value="18" />
