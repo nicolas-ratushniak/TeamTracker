@@ -173,11 +173,7 @@
                                 BorderThickness="1"
                                 CornerRadius="5"
                                 Padding="5">
-                            <TextBox x:Name="NestedTextBox" BorderThickness="0"
-                                     FontSize="{TemplateBinding FontSize}"
-                                     Text="{Binding Text, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged}"
-                                     VerticalAlignment="Center">
-                            </TextBox>
+                            <ScrollViewer Name="PART_ContentHost" />
                         </Border>
                     </ControlTemplate>
                 </Setter.Value>
