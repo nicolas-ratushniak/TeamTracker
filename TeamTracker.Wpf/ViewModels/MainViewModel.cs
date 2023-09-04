@@ -9,6 +9,7 @@ public class MainViewModel : ViewModelBase
     private readonly IViewModelFactory _viewModelFactory;
     private readonly ILogger<MainViewModel> _logger;
     private ViewModelBase _currentViewModel;
+    private ViewType _currentNavBarOption;
 
     public INavigator Navigator { get; }
 
@@ -18,9 +19,20 @@ public class MainViewModel : ViewModelBase
         set
         {
             if (Equals(value, _currentViewModel)) return;
-            
+
             _currentViewModel?.Dispose();
             _currentViewModel = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public ViewType CurrentNavBarOption
+    {
+        get => _currentNavBarOption;
+        set
+        {
+            if (value == _currentNavBarOption) return;
+            _currentNavBarOption = value;
             OnPropertyChanged();
         }
     }
@@ -30,9 +42,9 @@ public class MainViewModel : ViewModelBase
         _viewModelFactory = viewModelFactory;
         _logger = logger;
         Navigator = navigator;
-        
+
         Navigator.CurrentViewTypeChanged += Navigator_OnCurrentViewTypeChanged;
-        
+
         _logger.LogInformation("Setting default view");
         CurrentViewModel = _viewModelFactory.CreateViewModel(ViewType.Teams);
     }
@@ -40,8 +52,17 @@ public class MainViewModel : ViewModelBase
     private void Navigator_OnCurrentViewTypeChanged(object? sender, EventArgs args)
     {
         var viewArgs = (ViewTypeChangedEventArgs)args;
-        CurrentViewModel = _viewModelFactory.CreateViewModel(viewArgs.NewViewType, viewArgs.ViewParameter);
-        
+        var newViewType = viewArgs.NewViewType;
+
+        CurrentViewModel = _viewModelFactory.CreateViewModel(newViewType, viewArgs.ViewParameter);
+
+        CurrentNavBarOption = newViewType switch
+        {
+            ViewType.Teams or ViewType.TeamCreate or ViewType.TeamUpdate => ViewType.Teams,
+            ViewType.Games or ViewType.GameCreate => ViewType.Games,
+            _ => ViewType.Help
+        };
+
         _logger.LogInformation("Current view was successfully updated");
     }
 }
