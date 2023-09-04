@@ -33,22 +33,20 @@ public partial class App : Application
                 var dbName = context.Configuration.GetRequiredSection("DbName").Value ?? "Db";
 
                 var dbPath = Path.Combine(folder!, dbName);
-                
+
                 // ensure db folder exists
                 Directory.CreateDirectory(dbPath);
 
                 services.AddScoped<IRepository<Team>, Repository<Team>>(s =>
                 {
                     var db = new TextFileDbTable(dbPath, "Teams");
-                    var converter = s.GetRequiredService<IModelConverter<Team>>();
-                    return new Repository<Team>(db, converter);
+                    return new Repository<Team>(db, s.GetRequiredService<IModelConverter<Team>>());
                 });
 
                 services.AddScoped<IRepository<GameInfo>, Repository<GameInfo>>(s =>
                 {
                     var db = new TextFileDbTable(dbPath, "Games");
-                    var converter = s.GetRequiredService<IModelConverter<GameInfo>>();
-                    return new Repository<GameInfo>(db, converter);
+                    return new Repository<GameInfo>(db, s.GetRequiredService<IModelConverter<GameInfo>>());
                 });
 
                 services.AddScoped<ITeamService, TeamService>();
@@ -86,7 +84,7 @@ public partial class App : Application
                     s.GetRequiredService<INavigator>(),
                     s.GetRequiredService<ILogger<GameCreateFormViewModel>>()));
 
-                services.AddSingleton<Func<HelpViewModel>>(s => () => new HelpViewModel());
+                services.AddSingleton<Func<HelpViewModel>>(_ => () => new HelpViewModel());
 
                 services.AddTransient<MainViewModel>();
 
