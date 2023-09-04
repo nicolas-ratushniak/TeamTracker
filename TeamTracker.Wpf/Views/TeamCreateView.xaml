@@ -6,7 +6,15 @@
 
              xmlns:controls="clr-namespace:TeamTracker.Wpf.Controls"
              mc:Ignorable="d"
-             d:DesignHeight="600" d:DesignWidth="1000">
+             d:DesignHeight="600" d:DesignWidth="1000"
+             Loaded="OnLoaded">
+    
+    <UserControl.InputBindings>
+        <KeyBinding Key="Enter"
+                    Command="{Binding Path=SubmitCommand}"/>
+        <KeyBinding Key="Escape"
+                    Command="{Binding Path=CancelCommand}"/>
+    </UserControl.InputBindings>
 
     <Grid>
         <Grid.RowDefinitions>
@@ -59,7 +67,7 @@
                                VerticalAlignment="Center"
                                Margin="0,0,0,10" />
 
-                    <TextBox Grid.Row="0" Grid.Column="1"
+                    <TextBox x:Name="DefaultFocusedItem" Grid.Row="0" Grid.Column="1"
                              Style="{StaticResource NiceTextBox}"
                              Margin="0,0,0,10"
                              Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">

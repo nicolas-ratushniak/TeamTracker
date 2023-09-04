@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:controls="clr-namespace:TeamTracker.Wpf.Controls"
+        xmlns:navigation="clr-namespace:TeamTracker.Wpf.Navigation"
 
         mc:Ignorable="d"
         Title="Team Tracker" 
@@ -11,6 +12,12 @@
         Width="1000"
         MinHeight="620"
         MinWidth="810">
+    
+    <Window.InputBindings>
+        <KeyBinding Key="F1"
+                    Command="{Binding Path=Navigator.UpdateCurrentViewTypeCommand}"
+                    CommandParameter="{x:Static navigation:ViewType.Help}"/>
+    </Window.InputBindings>
     
     <Grid>
         <Grid.RowDefinitions>

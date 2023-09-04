@@ -3,12 +3,20 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             
-             xmlns:local="clr-namespace:TeamTracker.Wpf.Views"
+
              xmlns:controls="clr-namespace:TeamTracker.Wpf.Controls"
              mc:Ignorable="d"
-             d:DesignHeight="300" d:DesignWidth="300">
-        <Grid>
+             d:DesignHeight="300" d:DesignWidth="300"
+             Loaded="OnLoaded">
+    
+    <UserControl.InputBindings>
+        <KeyBinding Key="Enter"
+                    Command="{Binding Path=SubmitCommand}"/>
+        <KeyBinding Key="Escape"
+                    Command="{Binding Path=CancelCommand}"/>
+    </UserControl.InputBindings>
+    
+    <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
@@ -41,7 +49,7 @@
                            Text="Edit team"
                            Margin="0,0,0,35" />
 
-                <Grid Grid.Row="1" 
+                <Grid Grid.Row="1"
                       DataContext="{Binding TeamToEdit}">
 
                     <Grid.RowDefinitions>
@@ -59,7 +67,7 @@
                                VerticalAlignment="Center"
                                Margin="0,0,0,10" />
 
-                    <TextBox Grid.Row="0" Grid.Column="1"
+                    <TextBox x:Name="DefaultFocusedItem" Grid.Row="0" Grid.Column="1"
                              Style="{StaticResource NiceTextBox}"
                              Margin="0,0,0,10"
                              Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
@@ -77,18 +85,18 @@
                     <TextBlock Grid.Row="2" Grid.Column="0" Text="Members:"
                                VerticalAlignment="Center"
                                Margin="0,0,0,10" />
-                    
+
                     <controls:IntegerTextBox Grid.Row="2" Grid.Column="1"
                                              Margin="0,0,0,10"
                                              Value="{Binding MembersCount, Mode=TwoWay,
-                                             UpdateSourceTrigger=PropertyChanged}"/>
+                                             UpdateSourceTrigger=PropertyChanged}" />
 
                 </Grid>
 
-                <TextBlock Grid.Row="2" 
+                <TextBlock Grid.Row="2"
                            Text="{Binding ErrorMessage}"
                            Style="{StaticResource ErrorMessage}"
-                           Margin="0,15"/>
+                           Margin="0,15" />
 
                 <Grid Grid.Row="3">
 
