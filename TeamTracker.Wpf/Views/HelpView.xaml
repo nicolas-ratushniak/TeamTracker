@@ -5,8 +5,143 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:TeamTracker.Wpf.Views"
              mc:Ignorable="d"
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="3500" d:DesignWidth="500">
     <Grid>
-        <TextBlock>Welcome to Help View!</TextBlock>
+        <ScrollViewer HorizontalScrollBarVisibility="Disabled"
+                      VerticalScrollBarVisibility="Auto"
+                      Padding="30">
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="3*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Grid.Column="1">
+                    <TextBlock Style="{StaticResource H1}"
+                               Text="About the Team Tracker" />
+
+                    <TextBlock Style="{StaticResource Paragraph}">
+                        This is an app to keep track of your favorite teams' results.
+                        On this page, you can find some tips for using it most productively.
+                    </TextBlock>
+
+                    <TextBlock Style="{StaticResource H2}"
+                               Text="General" />
+
+                    <TextBlock Style="{StaticResource H3}">
+                        Creating your first team
+                    </TextBlock>
+
+                    <TextBlock Style="{StaticResource Paragraph}">
+                        In order to create a team first, open the "Teams" page (the default one on start up).
+                        Then select "Add" options and fill the form. You'll see a consistent error message if
+                        some input is invalid.
+                    </TextBlock>
+
+                    <TextBlock Style="{StaticResource H3}">
+                        Editing team info
+                    </TextBlock>
+
+                    <TextBlock Style="{StaticResource Paragraph}">
+                        If you want to rename the team name, origin city, or update the members count, go to
+                        "Teams", select a team to delete from a list and press "Edit" and feel free to change previous data.
+                        Don't forget to save your changes ;-)
+                    </TextBlock>
+
+                    <TextBlock Style="{StaticResource H3}">
+                        Deleting a team
+                    </TextBlock>
+
+                    <TextBlock Style="{StaticResource Paragraph}">
+                        You can delete a team if it has no games played. Just go to "Teams", select
+                        a team to delete from a list and press "Delete". Don't worry, if the action
+                        is impossible the message will be shown.
+                    </TextBlock>
+
+                    <TextBlock Style="{StaticResource H3}">
+                        Adding a game result
+                    </TextBlock>
+
+                    <TextBlock Style="{StaticResource Paragraph}">
+                        After some teams are created, let's go ahead to add the first game result!
+                        Go to "Games" =&gt; "Add Game" and fill out the form. To select a home/away team start typing
+                        its name in an appropriate field: The suggestions will be shown in a drop-down menu.
+                    </TextBlock>
+
+                    <TextBlock Style="{StaticResource H3}">
+                        See Team/Game details
+                    </TextBlock>
+
+                    <TextBlock Style="{StaticResource Paragraph}">
+                        Just select any item from list and its details will be shown on the right side of the window.
+                    </TextBlock>
+
+                    <TextBlock Style="{StaticResource H2}"
+                               Text="Sorting and Filtering" />
+
+                    <TextBlock Style="{StaticResource H3}">
+                        General filters and sorting
+                    </TextBlock>
+
+                    <TextBlock Style="{StaticResource Paragraph}">
+                        In the top left corner of the Teams/Games page, there are a bunch of tools for better analysis.
+                        Choose one of the sortings suggested and try to play with range filters (on the Teams page).
+                        You can specify one or both of the fields of such filter (Min, Max), and the list will
+                        automatically refresh itself.
+                    </TextBlock>
+
+                    <TextBlock Style="{StaticResource H3}">
+                        Advanced filters
+                    </TextBlock>
+
+                    <TextBlock Style="{StaticResource Paragraph}">
+                        This type of filters (just below the common ones) can help you with more sophisticated
+                        calculations. Choose one of the options available and press "Reset" when you're done.
+                        Remember, you can combine the selected advanced filter with other common filters and even
+                        apply sorting to the result set of items.
+                    </TextBlock>
+
+                    <TextBlock Style="{StaticResource H2}"
+                               Text="Searching" />
+
+                    <TextBlock Style="{StaticResource H3}">
+                        Searching for a team
+                    </TextBlock>
+
+                    <TextBlock Style="{StaticResource Paragraph}">
+                        If you want to search for a concrete team from the whole list, use the search box
+                        above the Team list on the Teams page. Start typing the name of the team or its origin city.
+                        Remember that to search within the WHOLE list you should remove all filters applied.
+                    </TextBlock>
+
+                    <TextBlock Style="{StaticResource H3}">
+                        Searching for a game
+                    </TextBlock>
+
+                    <TextBlock Style="{StaticResource Paragraph}">
+                        If you want to search for a concrete game from the whole list, use the search box
+                        above the Team list on the Games page. Start typing the full name (TEAM_NAME-ORIGIN_CITY).
+                        Remember that to search within the WHOLE list you should remove all filters applied.
+                    </TextBlock>
+
+                    <TextBlock Style="{StaticResource H2}"
+                               Text="Shortcuts" />
+
+                    <Label Style="{StaticResource BulletListItem}"
+                           Content="F1 - go to the Home page" />
+
+                    <Label Style="{StaticResource BulletListItem}"
+                           Content="Escape - cancel the form" />
+                    
+                    <Label Style="{StaticResource BulletListItem}"
+                           Content="Enter - submitting the form" />
+
+
+                </StackPanel>
+            </Grid>
+
+        </ScrollViewer>
     </Grid>
 </UserControl>

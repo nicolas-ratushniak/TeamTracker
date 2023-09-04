@@ -15,12 +15,14 @@
         <Color x:Key="ColorMinor">#C9EEFF</Color>
         <Color x:Key="ColorMinorFocused">#97DEFF</Color>
         <Color x:Key="GreyColor">#858a8c</Color>
+        <Color x:Key="LightGreyColor">#c2c3c4</Color>
 
         <!--Brushes-->
         <SolidColorBrush x:Key="BrushAccent" Color="{StaticResource ColorAccent}" />
         <SolidColorBrush x:Key="BrushMinor" Color="{StaticResource ColorMinor}" />
         <SolidColorBrush x:Key="BrushMinorFocused" Color="{StaticResource ColorMinorFocused}" />
         <SolidColorBrush x:Key="BrushGrey" Color="{StaticResource GreyColor}" />
+        <SolidColorBrush x:Key="BrushLightGrey" Color="{StaticResource LightGreyColor}" />
 
         <!-- Text -->
         <Style x:Key="Title" TargetType="TextBlock">
@@ -42,6 +44,73 @@
             <Setter Property="Foreground" Value="{StaticResource BrushAccent}" />
             <Setter Property="FontWeight" Value="500" />
             <Setter Property="FontSize" Value="18" />
+        </Style>
+        <!-- Georgia -->
+        
+        <Style x:Key="Paragraph" TargetType="TextBlock">
+            <Setter Property="FontFamily" Value="Verdana"/>
+            <Setter Property="LineHeight" Value="22"/>
+            <Setter Property="FontSize" Value="16" />
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="Margin" Value="0,0,0,15"/>
+        </Style>
+        
+        <Style x:Key="H1" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="28" />
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Margin" Value="0,0,0,25"/>
+        </Style>
+        
+        <Style x:Key="H2" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="{StaticResource BrushAccent}"/>
+            <Setter Property="FontSize" Value="26" />
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Margin" Value="0,20,0,5"/>
+        </Style>
+        
+        <Style x:Key="H3" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="{StaticResource BrushLightGrey}"/>
+            <Setter Property="FontSize" Value="20" />
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="FontWeight" Value="Regular"/>
+            <Setter Property="FontStyle" Value="Italic"/>
+            <Setter Property="Margin" Value="0,20,0,20"/>
+        </Style>
+        
+        <Style x:Key="BulletListItem" TargetType="Label">
+            <Setter Property="FontSize" Value="18" />
+            <Setter Property="Margin" Value="0,7"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Label">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <Ellipse Grid.Row="0" Grid.Column="0"
+                                     Height="8"
+                                     Width="8"
+                                     HorizontalAlignment="Center"
+                                     VerticalAlignment="Center"
+                                     Fill="{StaticResource BrushAccent}"
+                                     Margin="15,10,25,10"/>
+                            
+                            <TextBlock Grid.Row="0" Grid.RowSpan="2" Grid.Column="1"
+                                       Text="{TemplateBinding Content}"
+                                       TextWrapping="Wrap"/>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
         </Style>
 
         <!-- Buttons -->
