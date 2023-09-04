@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using System.IO;
+using System.Reflection;
+using System.Windows;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -21,31 +23,34 @@ public partial class App : Application
     static App()
     {
         AppHost = Host.CreateDefaultBuilder()
-            .ConfigureAppConfiguration(builder =>
-            {
-                builder.AddJsonFile("appsettings.json");
-            })
+            .ConfigureAppConfiguration(builder => { builder.AddJsonFile("appsettings.json"); })
             .ConfigureServices((context, services) =>
             {
                 services.AddSingleton<IModelConverter<Team>, ModelConverter<Team>>();
                 services.AddSingleton<IModelConverter<GameInfo>, ModelConverter<GameInfo>>();
 
-                var dbPath = context.Configuration.GetRequiredSection("TeamTracker:DesignTimeDB").Value;
+                var folder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                var dbName = context.Configuration.GetRequiredSection("DbName").Value ?? "Db";
+
+                var dbPath = Path.Combine(folder!, dbName);
                 
+                // ensure db folder exists
+                Directory.CreateDirectory(dbPath);
+
                 services.AddScoped<IRepository<Team>, Repository<Team>>(s =>
                 {
-                    var db = new TextFileDbTable(dbPath!, "TeamsTable");
+                    var db = new TextFileDbTable(dbPath, "Teams");
                     var converter = s.GetRequiredService<IModelConverter<Team>>();
                     return new Repository<Team>(db, converter);
                 });
 
                 services.AddScoped<IRepository<GameInfo>, Repository<GameInfo>>(s =>
                 {
-                    var db = new TextFileDbTable(dbPath!, "GamesTable");
+                    var db = new TextFileDbTable(dbPath, "Games");
                     var converter = s.GetRequiredService<IModelConverter<GameInfo>>();
                     return new Repository<GameInfo>(db, converter);
                 });
-                
+
                 services.AddScoped<ITeamService, TeamService>();
                 services.AddScoped<IGameInfoService, GameInfoService>();
                 services.AddScoped<IViewModelFactory, ViewModelFactory>();
@@ -54,21 +59,21 @@ public partial class App : Application
                 services.AddSingleton<Func<TeamsViewModel>>(s => () => new TeamsViewModel(
                     s.GetRequiredService<ITeamService>(),
                     s.GetRequiredService<INavigator>()));
-                
+
                 services.AddSingleton<Func<TeamCreateFormViewModel>>(s => () => new TeamCreateFormViewModel(
                     s.GetRequiredService<ITeamService>(),
                     s.GetRequiredService<INavigator>(),
                     s.GetRequiredService<ILogger<TeamCreateFormViewModel>>()));
-                
+
                 services.AddSingleton<Func<Guid, TeamUpdateFormViewModel>>(s => id => new TeamUpdateFormViewModel(
                     id,
                     s.GetRequiredService<ITeamService>(),
                     s.GetRequiredService<INavigator>()));
-                
+
                 services.AddSingleton<Func<TeamsViewModel>>(s => () => new TeamsViewModel(
                     s.GetRequiredService<ITeamService>(),
                     s.GetRequiredService<INavigator>()));
-                
+
                 services.AddSingleton<Func<GamesViewModel>>(s => () => new GamesViewModel(
                     s.GetRequiredService<IGameInfoService>(),
                     s.GetRequiredService<ITeamService>(),
@@ -81,7 +86,7 @@ public partial class App : Application
                     s.GetRequiredService<ILogger<GameCreateFormViewModel>>()));
 
                 services.AddSingleton<Func<HelpViewModel>>(s => () => new HelpViewModel());
-                
+
                 services.AddTransient<MainViewModel>();
 
                 services.AddScoped<MainWindow>(s =>
@@ -99,14 +104,14 @@ public partial class App : Application
         await AppHost.StartAsync();
         MainWindow = AppHost.Services.GetRequiredService<MainWindow>();
         MainWindow.Show();
-        
+
         base.OnStartup(e);
     }
 
     protected override async void OnExit(ExitEventArgs e)
     {
         await AppHost.StopAsync();
-        
+
         base.OnExit(e);
     }
 }
