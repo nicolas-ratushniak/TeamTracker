@@ -4,7 +4,6 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 
-             xmlns:controls="clr-namespace:TeamTracker.Wpf.Controls"
              xmlns:viewComponents="clr-namespace:TeamTracker.Wpf.ViewComponents"
              mc:Ignorable="d"
              d:DesignHeight="500" d:DesignWidth="1000">

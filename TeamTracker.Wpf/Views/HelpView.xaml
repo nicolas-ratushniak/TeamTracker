@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:local="clr-namespace:TeamTracker.Wpf.Views"
+
              mc:Ignorable="d"
              d:DesignHeight="3500" d:DesignWidth="500">
     <Grid>
@@ -23,9 +23,29 @@
                                Text="About the Team Tracker" />
 
                     <TextBlock Style="{StaticResource Paragraph}">
-                        This is an app to keep track of your favorite teams' results.
-                        On this page, you can find some tips for using it most productively.
+                        Team Tracker is a minimalistic app for keeping track of your favorite and
+                        their performance.
                     </TextBlock>
+
+                    <TextBlock Style="{StaticResource Paragraph}">
+                        For better statistics, teams are given special points depending on their results:
+                    </TextBlock>
+
+                    <Label Style="{StaticResource BulletListItem}"
+                           Content="Win - 3 points" />
+
+                    <Label Style="{StaticResource BulletListItem}"
+                           Content="Draw - 1 point" />
+
+                    <Label Style="{StaticResource BulletListItem}"
+                           Content="Loss - 0 points" />
+
+                    <TextBlock Style="{StaticResource Paragraph}"
+                               Margin="0,15,0,0">
+                        On this page, you can find some tips for using the app most productively.
+                        Let's get started!
+                    </TextBlock>
+
 
                     <TextBlock Style="{StaticResource H2}"
                                Text="General" />
@@ -134,7 +154,7 @@
 
                     <Label Style="{StaticResource BulletListItem}"
                            Content="Escape - cancel the form" />
-                    
+
                     <Label Style="{StaticResource BulletListItem}"
                            Content="Enter - submit the form" />
 
