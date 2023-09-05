@@ -266,10 +266,10 @@ public class TeamListViewModel : ViewModelBase
                 Id = t.Id,
                 Name = t.Name,
                 OriginCity = t.OriginCity,
-                Points = _teamService.CalculatePoints(t),
+                Points = _teamService.GetPoints(t),
                 Members = t.MembersCount,
                 TotalGames = _teamService.GetTotalGames(t),
-                Wins = t.GamesWon
+                Wins = _teamService.GetGamesWon(t)
             })
             .ToList();
     }

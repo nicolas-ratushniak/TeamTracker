@@ -9,12 +9,10 @@ namespace TeamTracker.Domain.Services;
 public class GameInfoService : IGameInfoService
 {
     private readonly IRepository<GameInfo> _gamesRepository;
-    private readonly IRepository<Team> _teamsRepository;
 
-    public GameInfoService(IRepository<GameInfo> gamesRepository, IRepository<Team> teamsRepository)
+    public GameInfoService(IRepository<GameInfo> gamesRepository)
     {
         _gamesRepository = gamesRepository;
-        _teamsRepository = teamsRepository;
     }
 
     public IReadOnlyList<GameInfo> GetAll()
@@ -59,33 +57,5 @@ public class GameInfoService : IGameInfoService
         
         _gamesRepository.Add(game);
         _gamesRepository.SaveChanges();
-        
-        UpdateTeamsStats(game);
-    }
-
-    private void UpdateTeamsStats(GameInfo game)
-    {
-        var teamHome = _teamsRepository.Get(game.TeamHomeId) ?? throw new InvalidOperationException();
-        var teamAway = _teamsRepository.Get(game.TeamAwayId) ?? throw new InvalidOperationException();
-
-        if (game.TeamHomeScore == game.TeamAwayScore)
-        {
-            teamHome.GamesDrawn++;
-            teamAway.GamesDrawn++;
-        }
-        else if (game.TeamHomeScore > game.TeamAwayScore)
-        {
-            teamHome.GamesWon++;
-            teamAway.GamesLost++;
-        }
-        else
-        {
-            teamHome.GamesLost++;
-            teamAway.GamesWon++;
-        }
-        
-        _teamsRepository.Update(teamHome);
-        _teamsRepository.Update(teamAway);
-        _teamsRepository.SaveChanges();
     }
 }

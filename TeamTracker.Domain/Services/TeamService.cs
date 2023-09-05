@@ -8,21 +8,23 @@ namespace TeamTracker.Domain.Services;
 
 public class TeamService : ITeamService
 {
-    private readonly IRepository<Team> _repository;
+    private readonly IRepository<Team> _teamRepository;
+    private readonly IRepository<GameInfo> _gameRepository;
 
-    public TeamService(IRepository<Team> repository)
+    public TeamService(IRepository<Team> teamRepository, IRepository<GameInfo> gameRepository)
     {
-        _repository = repository;
+        _teamRepository = teamRepository;
+        _gameRepository = gameRepository;
     }
 
     public IReadOnlyList<Team> GetAll()
     {
-        return _repository.GetAll().AsReadOnly();
+        return _teamRepository.GetAll().AsReadOnly();
     }
 
     public Team Get(Guid id)
     {
-        return _repository.Get(id)
+        return _teamRepository.Get(id)
                ?? throw new EntityNotFoundException();
     }
 
@@ -43,15 +45,15 @@ public class TeamService : ITeamService
             MembersCount = dto.MembersCount
         };
         
-        _repository.Add(team);
-        _repository.SaveChanges();
+        _teamRepository.Add(team);
+        _teamRepository.SaveChanges();
     }
 
     public void Update(TeamUpdateDto dto)
     {
         Validator.ValidateObject(dto, new ValidationContext(dto), true);
 
-        if (_repository.GetAll().Any(t => t.Name == dto.Name && t.OriginCity == dto.OriginCity && t.Id != dto.Id))
+        if (_teamRepository.GetAll().Any(t => t.Name == dto.Name && t.OriginCity == dto.OriginCity && t.Id != dto.Id))
         {
             throw new ValidationException("No way having two identical teams in one city");
         }
@@ -62,8 +64,8 @@ public class TeamService : ITeamService
         team.OriginCity = dto.OriginCity;
         team.MembersCount = dto.MembersCount;
         
-        _repository.Update(team);
-        _repository.SaveChanges();
+        _teamRepository.Update(team);
+        _teamRepository.SaveChanges();
     }
 
     public void Delete(Guid id)
@@ -75,17 +77,46 @@ public class TeamService : ITeamService
             throw new InvalidOperationException("Cannot delete a team having played once");
         }
         
-        _repository.Remove(team);
-        _repository.SaveChanges();
+        _teamRepository.Remove(team);
+        _teamRepository.SaveChanges();
     }
 
-    public int CalculatePoints(Team team)
+    public int GetGamesWon(Team team)
     {
-        return team.GamesWon * 3 + team.GamesDrawn;
+        var gamesWonAtHome = _gameRepository.GetAll()
+            .Count(g => g.TeamHomeId == team.Id && g.TeamHomeScore > g.TeamAwayScore);
+        
+        var gamesWonAway = _gameRepository.GetAll()
+            .Count(g => g.TeamAwayId == team.Id && g.TeamHomeScore < g.TeamAwayScore);
+
+        return gamesWonAtHome + gamesWonAway;
+    }
+    
+    public int GetGamesDrawn(Team team)
+    {
+        return _gameRepository.GetAll()
+            .Count(g => (g.TeamHomeId == team.Id || g.TeamAwayId == team.Id) && g.TeamHomeScore == g.TeamAwayScore);
+    }
+    
+    public int GetGamesLost(Team team)
+    {
+        var gamesLostAtHome = _gameRepository.GetAll()
+            .Count(g => g.TeamHomeId == team.Id && g.TeamHomeScore < g.TeamAwayScore);
+        
+        var gamesLostAway = _gameRepository.GetAll()
+            .Count(g => g.TeamAwayId == team.Id && g.TeamHomeScore > g.TeamAwayScore);
+
+        return gamesLostAtHome + gamesLostAway;
+    }
+
+    public int GetPoints(Team team)
+    {
+        return GetGamesWon(team) * 3 + GetGamesDrawn(team);
     }
 
     public int GetTotalGames(Team team)
     {
-        return team.GamesWon + team.GamesDrawn + team.GamesLost;
+        return _gameRepository.GetAll()
+            .Count(g => g.TeamHomeId == team.Id || g.TeamAwayId == team.Id);
     }
 }

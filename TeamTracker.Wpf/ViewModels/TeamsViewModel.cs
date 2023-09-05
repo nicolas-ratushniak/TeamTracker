@@ -87,12 +87,12 @@ public class TeamsViewModel : ViewModelBase
                 Id = team.Id,
                 Name = team.Name,
                 OriginCity = team.OriginCity,
-                GamesWon = team.GamesWon,
-                GamesLost = team.GamesLost,
-                GamesDrawn = team.GamesDrawn,
+                GamesWon = _teamService.GetGamesWon(team),
+                GamesLost = _teamService.GetGamesLost(team),
+                GamesDrawn = _teamService.GetGamesDrawn(team),
                 MembersCount = team.MembersCount,
                 TotalGames = _teamService.GetTotalGames(team),
-                Points = _teamService.CalculatePoints(team)
+                Points = _teamService.GetPoints(team)
             };
         }
     }
