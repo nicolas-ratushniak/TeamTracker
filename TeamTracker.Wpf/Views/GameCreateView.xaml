@@ -10,17 +10,17 @@
              mc:Ignorable="d"
              d:DesignHeight="580" d:DesignWidth="400"
              Loaded="OnLoaded">
-    
+
     <UserControl.InputBindings>
         <KeyBinding Key="Enter"
-                    Command="{Binding Path=SubmitCommand}"/>
+                    Command="{Binding Path=SubmitCommand}" />
         <KeyBinding Key="Escape"
-                    Command="{Binding Path=CancelCommand}"/>
+                    Command="{Binding Path=CancelCommand}" />
     </UserControl.InputBindings>
 
     <UserControl.Resources>
-        <converters:InverseBoolToVisibilityConverter x:Key="InverseBoolToVisibilityConverter"/>
-        
+        <converters:InverseBoolToVisibilityConverter x:Key="InverseBoolToVisibilityConverter" />
+
         <Style x:Key="SelectTeamListBox" TargetType="ListBox">
             <Setter Property="BorderThickness" Value="0" />
             <Setter Property="ItemTemplate">
@@ -125,6 +125,7 @@
                                AllowsTransparency="True"
                                PopupAnimation="Slide"
                                StaysOpen="False">
+
                             <Border Style="{StaticResource NiceBorder}"
                                     Width="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=Grid}}"
                                     MaxHeight="250"
@@ -132,10 +133,12 @@
                                 <Grid>
                                     <TextBlock Text="Nothing found"
                                                Panel.ZIndex="1"
+                                               TextWrapping="Wrap"
                                                Foreground="{StaticResource BrushGrey}"
                                                FontSize="16"
                                                Visibility="{Binding ElementName=LbPopup1, Path=HasItems,
                                                Converter={StaticResource InverseBoolToVisibilityConverter}}" />
+
                                     <ListBox x:Name="LbPopup1"
                                              ScrollViewer.CanContentScroll="True"
                                              ScrollViewer.VerticalScrollBarVisibility="Hidden"
@@ -166,6 +169,7 @@
                     <!-- Select Away Team -->
                     <Grid Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2"
                           Margin="0,0,0,10">
+
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
@@ -181,17 +185,21 @@
                                AllowsTransparency="True"
                                PopupAnimation="Slide"
                                StaysOpen="False">
+
                             <Border Style="{StaticResource NiceBorder}"
                                     Width="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=Grid}}"
                                     MaxHeight="250"
                                     Background="White">
+
                                 <Grid>
+
                                     <TextBlock Text="Nothing found"
                                                Panel.ZIndex="1"
                                                Foreground="{StaticResource BrushGrey}"
                                                FontSize="16"
                                                Visibility="{Binding ElementName=LbPopup2, Path=HasItems,
                                                Converter={StaticResource InverseBoolToVisibilityConverter}}" />
+
                                     <ListBox x:Name="LbPopup2"
                                              ScrollViewer.CanContentScroll="True"
                                              ScrollViewer.VerticalScrollBarVisibility="Hidden"
@@ -212,7 +220,6 @@
                                              Value="{Binding AwayTeamScore, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                              MaxDigits="3"
                                              Margin="0,0,0,10" />
-
                 </Grid>
 
                 <TextBlock Grid.Row="2"
@@ -239,7 +246,6 @@
                             Margin="12,0,0,0"
                             Content="Submit" />
                 </Grid>
-
             </Grid>
         </Border>
     </Grid>

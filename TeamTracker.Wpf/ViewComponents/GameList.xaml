@@ -6,10 +6,13 @@
 
              xmlns:viewModels="clr-namespace:TeamTracker.Wpf.ViewModels"
              xmlns:controls="clr-namespace:TeamTracker.Wpf.Controls"
+             xmlns:converters="clr-namespace:TeamTracker.Wpf.Converters"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300">
 
     <UserControl.Resources>
+        <converters:InverseBoolToVisibilityConverter x:Key="InverseBoolToVisibilityConverter"/>
+        
         <Style x:Key="TeamListBox" TargetType="ListBox">
             <Setter Property="BorderThickness" Value="0" />
             <Setter Property="ItemTemplate">
@@ -182,16 +185,25 @@
                 BorderThickness="1"
                 CornerRadius="5"
                 Padding="5">
-
-            <ListBox ItemsSource="{Binding GamesCollectionView}"
-                     SelectedItem="{Binding SelectedGame}"
-                     SelectionMode="Single"
-                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                     ScrollViewer.VerticalScrollBarVisibility="Hidden"
-                     Style="{StaticResource TeamListBox}" />
+            
+            <Grid>
+                <TextBlock Text="No games found"
+                           Panel.ZIndex="1"
+                           Foreground="{StaticResource BrushGrey}"
+                           FontSize="18"
+                           Padding="15"
+                           Visibility="{Binding ElementName=GamesList, Path=HasItems,
+                           Converter={StaticResource InverseBoolToVisibilityConverter}}"/>
+                
+                <ListBox x:Name="GamesList"  
+                         ItemsSource="{Binding GamesCollectionView}"
+                         SelectedItem="{Binding SelectedGame}"
+                         SelectionMode="Single"
+                         ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                         ScrollViewer.VerticalScrollBarVisibility="Hidden"
+                         Style="{StaticResource TeamListBox}" />
+            </Grid>
         </Border>
-
     </Grid>
-
-
+    
 </UserControl>
