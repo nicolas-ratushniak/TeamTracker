@@ -9,13 +9,12 @@
 
     <Application.Resources>
         <converters:InverseBoolToVisibilityConverter x:Key="InverseBoolToVisibilityConverter" />
-
-        <!--Colors-->
-        <Color x:Key="ColorAccent">#AA77FF</Color>
-        <Color x:Key="ColorMinor">#C9EEFF</Color>
-        <Color x:Key="ColorMinorFocused">#97DEFF</Color>
+        
+        <Color x:Key="ColorAccent">#5CBAB8</Color>
+        <Color x:Key="ColorMinor">#C1F376</Color>
+        <Color x:Key="ColorMinorFocused">#5FC314</Color>
         <Color x:Key="GreyColor">#858a8c</Color>
-        <Color x:Key="LightGreyColor">#acadad</Color>
+        <Color x:Key="LightGreyColor">#dee0e0</Color>
 
         <!--Brushes-->
         <SolidColorBrush x:Key="BrushAccent" Color="{StaticResource ColorAccent}" />
@@ -71,7 +70,7 @@
         </Style>
         
         <Style x:Key="H3" TargetType="TextBlock">
-            <Setter Property="Foreground" Value="{StaticResource BrushLightGrey}"/>
+            <Setter Property="Foreground" Value="{StaticResource BrushMinorFocused}"/>
             <Setter Property="FontSize" Value="20" />
             <Setter Property="TextWrapping" Value="Wrap"/>
             <Setter Property="FontWeight" Value="Regular"/>
@@ -144,7 +143,7 @@
         </Style>
 
         <Style x:Key="CancelButton" TargetType="Button" BasedOn="{StaticResource NiceButton}">
-            <Setter Property="Background" Value="{StaticResource BrushMinor}" />
+            <Setter Property="Background" Value="{StaticResource BrushLightGrey}" />
             <Setter Property="Foreground" Value="Black" />
             <Setter Property="FontWeight" Value="Regular" />
         </Style>
@@ -227,6 +226,7 @@
             <Style.Triggers>
                 <Trigger Property="IsChecked" Value="True">
                     <Setter Property="Background" Value="{StaticResource BrushMinorFocused}" />
+                    <Setter Property="Foreground" Value="#FFFFFF" />
                 </Trigger>
             </Style.Triggers>
         </Style>
@@ -313,16 +313,16 @@
 
         <!-- ToggleButton -->
         <Style x:Key="NiceToggleButton" TargetType="ToggleButton">
-            <Setter Property="Background" Value="{StaticResource BrushMinorFocused}" />
+            <Setter Property="Background" Value="{StaticResource BrushMinor}" />
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="ToggleButton">
                         <Border Style="{StaticResource NiceBorder}"
-                                BorderBrush="#14a0e0"
+                                BorderBrush="{StaticResource BrushMinorFocused}"
                                 Opacity="{TemplateBinding Opacity}"
                                 Background="{TemplateBinding Background}">
                             <Polygon Points="0,0 6,10 12,0"
-                                     Fill="#FFFFFF"
+                                     Fill="{StaticResource BrushMinorFocused}"
                                      HorizontalAlignment="Right"
                                      VerticalAlignment="Center"
                                      Margin="0,0,10,0" />
