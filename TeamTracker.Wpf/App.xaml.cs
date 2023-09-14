@@ -56,7 +56,8 @@ public partial class App : Application
 
                 services.AddSingleton<Func<TeamsViewModel>>(s => () => new TeamsViewModel(
                     s.GetRequiredService<ITeamService>(),
-                    s.GetRequiredService<INavigator>()));
+                    s.GetRequiredService<INavigator>(),
+                    s.GetRequiredService<ILogger<TeamsViewModel>>()));
 
                 services.AddSingleton<Func<TeamCreateFormViewModel>>(s => () => new TeamCreateFormViewModel(
                     s.GetRequiredService<ITeamService>(),
@@ -69,14 +70,11 @@ public partial class App : Application
                     s.GetRequiredService<INavigator>(),
                     s.GetRequiredService<ILogger<TeamUpdateFormViewModel>>()));
 
-                services.AddSingleton<Func<TeamsViewModel>>(s => () => new TeamsViewModel(
-                    s.GetRequiredService<ITeamService>(),
-                    s.GetRequiredService<INavigator>()));
-
                 services.AddSingleton<Func<GamesViewModel>>(s => () => new GamesViewModel(
                     s.GetRequiredService<IGameInfoService>(),
                     s.GetRequiredService<ITeamService>(),
-                    s.GetRequiredService<INavigator>()));
+                    s.GetRequiredService<INavigator>(),
+                    s.GetRequiredService<ILogger<GamesViewModel>>()));
 
                 services.AddSingleton<Func<GameCreateFormViewModel>>(s => () => new GameCreateFormViewModel(
                     s.GetRequiredService<IGameInfoService>(),

@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Windows;
 using System.Windows.Input;
+using Microsoft.Extensions.Logging;
 using TeamTracker.Domain.Services;
 using TeamTracker.Wpf.Commands;
 using TeamTracker.Wpf.Navigation;
@@ -10,6 +11,7 @@ namespace TeamTracker.Wpf.ViewModels;
 public class TeamsViewModel : ViewModelBase
 {
     private readonly ITeamService _teamService;
+    private readonly ILogger<TeamsViewModel> _logger;
 
     public TeamListViewModel TeamList { get; set; }
     public TeamDetailsViewModel SelectedTeamDetails { get; set; }
@@ -17,9 +19,10 @@ public class TeamsViewModel : ViewModelBase
     public ICommand EditTeamCommand { get; }
     public ICommand DeleteTeamCommand { get; }
 
-    public TeamsViewModel(ITeamService teamService, INavigator navigator)
+    public TeamsViewModel(ITeamService teamService, INavigator navigator, ILogger<TeamsViewModel> logger)
     {
         _teamService = teamService;
+        _logger = logger;
         TeamList = new TeamListViewModel(teamService);
         SelectedTeamDetails = new TeamDetailsViewModel();
 
@@ -41,6 +44,11 @@ public class TeamsViewModel : ViewModelBase
     {
         TeamList.PropertyChanged -= TeamsList_OnPropertyChanged;
         base.Dispose();
+    }
+    
+    ~TeamsViewModel()
+    {
+        _logger.LogDebug("The {ViewModel} was destroyed", nameof(TeamsViewModel));
     }
 
     private void DeleteTeam_Execute(object obj)
