@@ -2,6 +2,7 @@
 using System.Windows.Input;
 using Microsoft.Extensions.Logging;
 using TeamTracker.Domain.Dto;
+using TeamTracker.Domain.Exceptions;
 using TeamTracker.Domain.Services;
 using TeamTracker.Wpf.Commands;
 using TeamTracker.Wpf.Navigation;
@@ -48,18 +49,26 @@ public class TeamUpdateFormViewModel : ViewModelBase
         _navigator = navigator;
         _logger = logger;
 
-        var team = _teamService.Get(teamId);
-
-        _teamToEdit = new TeamUpdateViewModel
-        {
-            Id = team.Id,
-            Name = team.Name,
-            OriginCity = team.OriginCity,
-            MembersCount = team.MembersCount
-        };
-
         SubmitCommand = new RelayCommand<object>(EditTeam, EditTeam_CanExecute);
         CancelCommand = new RelayCommand<object>(_ => _navigator.UpdateCurrentViewType(ViewType.Teams, null));
+
+        try
+        {
+            var team = _teamService.Get(teamId);
+
+            _teamToEdit = new TeamUpdateViewModel
+            {
+                Id = team.Id,
+                Name = team.Name,
+                OriginCity = team.OriginCity,
+                MembersCount = team.MembersCount
+            };
+        }
+        catch (EntityNotFoundException)
+        {
+            _logger.LogWarning("Cannot find a team to update. Redirecting back");
+            CancelCommand.Execute(null);
+        }
     }
 
     private bool EditTeam_CanExecute(object obj)
@@ -82,7 +91,7 @@ public class TeamUpdateFormViewModel : ViewModelBase
         {
             _teamService.Update(dto);
             _logger.LogInformation("\"{TeamName}\" was successfully updated", dto.Name);
-            
+
             _navigator.UpdateCurrentViewType(ViewType.Teams, null);
         }
         catch (ValidationException ex)
