@@ -6,7 +6,11 @@ public class ViewTypeChangedEventArgs : EventArgs
     public ViewType NewViewType { get; set; }
     public object? ViewParameter { get; set; }
 
-    public ViewTypeChangedEventArgs(ViewType? oldViewType, ViewType newViewType, object? viewParameter = null)
+    public ViewTypeChangedEventArgs(ViewType? oldViewType, ViewType newViewType) : this(oldViewType, newViewType, null)
+    {
+    }
+
+    public ViewTypeChangedEventArgs(ViewType? oldViewType, ViewType newViewType, object? viewParameter)
     {
         OldViewType = oldViewType;
         NewViewType = newViewType;
