@@ -1,4 +1,4 @@
-﻿namespace TeamTracker.Domain.Models;
+﻿namespace TeamTracker.Data.Models;
 
 public class GameInfo : ModelBase
 {

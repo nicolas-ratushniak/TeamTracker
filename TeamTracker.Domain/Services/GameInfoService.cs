@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using TeamTracker.Domain.Data;
+using TeamTracker.Data;
+using TeamTracker.Data.Models;
 using TeamTracker.Domain.Dto;
 using TeamTracker.Domain.Exceptions;
-using TeamTracker.Domain.Models;
 
 namespace TeamTracker.Domain.Services;
 

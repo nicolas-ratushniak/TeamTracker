@@ -1,4 +1,4 @@
-﻿namespace TeamTracker.Domain.Data;
+﻿namespace TeamTracker.Data;
 
 public interface IRepository<TModel>
 {

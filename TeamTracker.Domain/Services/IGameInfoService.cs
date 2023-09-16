@@ -1,5 +1,5 @@
-﻿using TeamTracker.Domain.Dto;
-using TeamTracker.Domain.Models;
+﻿using TeamTracker.Data.Models;
+using TeamTracker.Domain.Dto;
 
 namespace TeamTracker.Domain.Services;
 

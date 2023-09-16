@@ -1,5 +1,4 @@
-﻿using TeamTracker.Domain.Data;
-using TeamTracker.Domain.Models;
+﻿using TeamTracker.Data.Models;
 
 namespace TeamTracker.Data;
 
