@@ -20,10 +20,10 @@
 
                 <StackPanel Grid.Column="1">
                     <TextBlock Style="{StaticResource H1}"
-                               Text="About the Team Tracker" />
+                               Text="About the Sports Team app" />
 
                     <TextBlock Style="{StaticResource Paragraph}">
-                        Team Tracker is a minimalistic app for keeping track of your favorite and
+                        Sports Team is a minimalistic app for keeping track of your favorite and
                         their performance.
                     </TextBlock>
 
