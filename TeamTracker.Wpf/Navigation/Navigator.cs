@@ -6,11 +6,11 @@ namespace TeamTracker.Wpf.Navigation;
 
 public class Navigator : INavigator
 {
+    public event EventHandler<ViewTypeChangedEventArgs> CurrentViewTypeChanged;
+    
     private readonly ILogger<Navigator> _logger;
     public ViewType? CurrentViewType { get; private set; }
     public ICommand UpdateCurrentViewTypeCommand { get; }
-
-    public event EventHandler? CurrentViewTypeChanged;
 
     public Navigator(ILogger<Navigator> logger)
     {
