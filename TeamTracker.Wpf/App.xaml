@@ -44,7 +44,6 @@
             <Setter Property="FontWeight" Value="500" />
             <Setter Property="FontSize" Value="18" />
         </Style>
-        <!-- Georgia -->
         
         <Style x:Key="Paragraph" TargetType="TextBlock">
             <Setter Property="FontFamily" Value="Verdana"/>
