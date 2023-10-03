@@ -5,16 +5,16 @@ using TeamTracker.Wpf.ViewModels.Factories;
 
 namespace TeamTracker.Wpf.ViewModels;
 
-public class MainViewModel : ViewModelBase
+public class MainViewModel : BaseViewModel
 {
     private readonly IViewModelFactory _viewModelFactory;
     private readonly ILogger<MainViewModel> _logger;
-    private ViewModelBase _currentViewModel;
+    private BaseViewModel _currentViewModel;
     private ViewType _currentNavBarOption;
 
     public INavigationService NavigationService { get; }
 
-    public ViewModelBase CurrentViewModel
+    public BaseViewModel CurrentViewModel
     {
         get => _currentViewModel;
         set

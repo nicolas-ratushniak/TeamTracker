@@ -2,18 +2,18 @@
 
 namespace TeamTracker.Data;
 
-public class Repository<TModel> : IRepository<TModel> where TModel : ModelBase
+public class Repository<TModel> : IRepository<TModel> where TModel : BaseModel
 {
     private readonly ITextBasedStorage _textBasedStorage;
-    private readonly IModelConverter<TModel> _modelConverter;
+    private readonly IModelToRecordConverter<TModel> _modelToRecordConverter;
     private readonly List<TModel> _entities;
     
     private bool _changesSaved;
 
-    public Repository(ITextBasedStorage textBasedStorage, IModelConverter<TModel> modelConverter)
+    public Repository(ITextBasedStorage textBasedStorage, IModelToRecordConverter<TModel> modelToRecordConverter)
     {
         _textBasedStorage = textBasedStorage;
-        _modelConverter = modelConverter;
+        _modelToRecordConverter = modelToRecordConverter;
         _entities = GetTeamsFromDb();
         _changesSaved = true;
     }
@@ -52,7 +52,7 @@ public class Repository<TModel> : IRepository<TModel> where TModel : ModelBase
             return;
         }
         
-        var records = _entities.Select(t => _modelConverter.ToDbRecord(t)).ToList();
+        var records = _entities.Select(t => _modelToRecordConverter.ToDbRecord(t)).ToList();
         _textBasedStorage.WriteRecords(records);
         _changesSaved = true;
     }
@@ -60,6 +60,6 @@ public class Repository<TModel> : IRepository<TModel> where TModel : ModelBase
     private List<TModel> GetTeamsFromDb()
     {
         return _textBasedStorage.ReadRecords()
-            .Select(record => _modelConverter.ParseFromDbRecord(record)).ToList();
+            .Select(record => _modelToRecordConverter.ParseFromDbRecord(record)).ToList();
     }
 }

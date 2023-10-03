@@ -10,7 +10,7 @@ using TeamTracker.Wpf.ViewModels.Inners;
 
 namespace TeamTracker.Wpf.ViewModels;
 
-public class TeamsViewModel : ViewModelBase
+public class TeamsViewModel : BaseViewModel
 {
     private readonly ITeamService _teamService;
     private readonly ILogger<TeamsViewModel> _logger;

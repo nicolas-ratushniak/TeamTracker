@@ -1,6 +1,6 @@
 ﻿namespace TeamTracker.Wpf.ViewModels;
 
-public class HelpViewModel : ViewModelBase
+public class HelpViewModel : BaseViewModel
 {
     
 }

@@ -26,8 +26,8 @@ public partial class App : Application
             .ConfigureAppConfiguration(builder => { builder.AddJsonFile("appsettings.json"); })
             .ConfigureServices((context, services) =>
             {
-                services.AddSingleton<IModelConverter<Team>, ModelConverter<Team>>();
-                services.AddSingleton<IModelConverter<GameInfo>, ModelConverter<GameInfo>>();
+                services.AddSingleton<IModelToRecordConverter<Team>, ModelToRecordConverter<Team>>();
+                services.AddSingleton<IModelToRecordConverter<GameInfo>, ModelToRecordConverter<GameInfo>>();
 
                 var folder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
                 var dbName = context.Configuration.GetRequiredSection("DbName").Value ?? "Db";
@@ -40,13 +40,13 @@ public partial class App : Application
                 services.AddScoped<IRepository<Team>, Repository<Team>>(s =>
                 {
                     var db = new TextFileDbTable(dbPath, "Teams");
-                    return new Repository<Team>(db, s.GetRequiredService<IModelConverter<Team>>());
+                    return new Repository<Team>(db, s.GetRequiredService<IModelToRecordConverter<Team>>());
                 });
 
                 services.AddScoped<IRepository<GameInfo>, Repository<GameInfo>>(s =>
                 {
                     var db = new TextFileDbTable(dbPath, "Games");
-                    return new Repository<GameInfo>(db, s.GetRequiredService<IModelConverter<GameInfo>>());
+                    return new Repository<GameInfo>(db, s.GetRequiredService<IModelToRecordConverter<GameInfo>>());
                 });
 
                 services.AddScoped<ITeamService, TeamService>();

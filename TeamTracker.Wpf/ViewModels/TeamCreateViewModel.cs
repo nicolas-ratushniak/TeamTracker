@@ -8,7 +8,7 @@ using TeamTracker.Wpf.Navigation;
 
 namespace TeamTracker.Wpf.ViewModels;
 
-public class TeamCreateViewModel : ViewModelBase
+public class TeamCreateViewModel : BaseViewModel
 {
     private readonly ITeamService _teamService;
     private readonly INavigationService _navigationService;

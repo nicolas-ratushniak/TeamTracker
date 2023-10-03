@@ -11,7 +11,7 @@ using TeamTracker.Wpf.ViewModels.Inners;
 
 namespace TeamTracker.Wpf.ViewModels;
 
-public class TeamListViewModel : ViewModelBase
+public class TeamListViewModel : BaseViewModel
 {
     private readonly ITeamService _teamService;
     private readonly ObservableCollection<TeamListItemViewModel> _teams;

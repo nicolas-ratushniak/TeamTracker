@@ -4,16 +4,16 @@ using TeamTracker.Data.Exceptions;
 
 namespace TeamTracker.Data;
 
-public class ModelConverter<TModel> : IModelConverter<TModel>
+public class ModelToRecordConverter<TModel> : IModelToRecordConverter<TModel>
 {
     private readonly CultureInfo _cultureInfo;
     private readonly string _separator;
 
     private readonly List<PropertyInfo> _propertyInfos;
 
-    public ModelConverter() : this(CultureInfo.CurrentCulture) { }
+    public ModelToRecordConverter() : this(CultureInfo.CurrentCulture) { }
 
-    public ModelConverter(CultureInfo cultureInfo)
+    public ModelToRecordConverter(CultureInfo cultureInfo)
     {
         if (!ValidateModelType())
         {

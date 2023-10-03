@@ -8,7 +8,7 @@ using TeamTracker.Wpf.ViewModels.Inners;
 
 namespace TeamTracker.Wpf.ViewModels;
 
-public class GamesViewModel : ViewModelBase
+public class GamesViewModel : BaseViewModel
 {
     private readonly IGameInfoService _gameInfoService;
     private readonly ILogger<GamesViewModel> _logger;

@@ -4,7 +4,7 @@ using System.Runtime.CompilerServices;
 
 namespace TeamTracker.Wpf.ViewModels;
 
-public class ViewModelBase : INotifyPropertyChanged, IDisposable
+public class BaseViewModel : INotifyPropertyChanged, IDisposable
 {
     public event PropertyChangedEventHandler? PropertyChanged;
 

@@ -5,7 +5,7 @@ namespace TeamTracker.Wpf;
 
 public partial class MainWindow : Window
 {
-    public MainWindow(ViewModelBase dataContextViewModel)
+    public MainWindow(BaseViewModel dataContextViewModel)
     {
         InitializeComponent();
         DataContext = dataContextViewModel;

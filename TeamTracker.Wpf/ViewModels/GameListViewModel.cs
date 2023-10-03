@@ -11,7 +11,7 @@ using TeamTracker.Wpf.ViewModels.Inners;
 
 namespace TeamTracker.Wpf.ViewModels;
 
-public class GameListViewModel : ViewModelBase
+public class GameListViewModel : BaseViewModel
 {
     private readonly IGameInfoService _gameInfoService;
     private readonly ITeamService _teamService;

@@ -29,7 +29,7 @@ public class ViewModelFactory : IViewModelFactory
         _createHelpViewModel = createHelpViewModel;
     }
 
-    public ViewModelBase CreateViewModel(ViewType viewType, object? viewParameter = null)
+    public BaseViewModel CreateViewModel(ViewType viewType, object? viewParameter = null)
     {
         return viewType switch
         {

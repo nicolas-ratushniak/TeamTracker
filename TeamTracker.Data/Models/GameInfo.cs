@@ -1,6 +1,6 @@
 ﻿namespace TeamTracker.Data.Models;
 
-public class GameInfo : ModelBase
+public class GameInfo : BaseModel
 {
     public Guid TeamHomeId { get; set; }
     public Guid TeamAwayId { get; set; }

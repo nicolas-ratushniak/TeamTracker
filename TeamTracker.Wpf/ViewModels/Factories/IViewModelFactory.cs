@@ -4,5 +4,5 @@ namespace TeamTracker.Wpf.ViewModels.Factories;
 
 public interface IViewModelFactory
 {
-    public ViewModelBase CreateViewModel(ViewType viewType, object? viewParameter = null);
+    public BaseViewModel CreateViewModel(ViewType viewType, object? viewParameter = null);
 }
