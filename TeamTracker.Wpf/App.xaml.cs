@@ -58,10 +58,10 @@ public partial class App : Application
                     s.GetRequiredService<INavigator>(),
                     s.GetRequiredService<ILogger<TeamsViewModel>>()));
 
-                services.AddSingleton<Func<TeamCreateFormViewModel>>(s => () => new TeamCreateFormViewModel(
+                services.AddSingleton<Func<TeamCreateViewModel>>(s => () => new TeamCreateViewModel(
                     s.GetRequiredService<ITeamService>(),
                     s.GetRequiredService<INavigator>(),
-                    s.GetRequiredService<ILogger<TeamCreateFormViewModel>>()));
+                    s.GetRequiredService<ILogger<TeamCreateViewModel>>()));
 
                 services.AddSingleton<Func<Guid, TeamUpdateFormViewModel>>(s => id => new TeamUpdateFormViewModel(
                     id,
@@ -75,11 +75,11 @@ public partial class App : Application
                     s.GetRequiredService<INavigator>(),
                     s.GetRequiredService<ILogger<GamesViewModel>>()));
 
-                services.AddSingleton<Func<GameCreateFormViewModel>>(s => () => new GameCreateFormViewModel(
+                services.AddSingleton<Func<GameCreateViewModel>>(s => () => new GameCreateViewModel(
                     s.GetRequiredService<IGameInfoService>(),
                     s.GetRequiredService<ITeamService>(),
                     s.GetRequiredService<INavigator>(),
-                    s.GetRequiredService<ILogger<GameCreateFormViewModel>>()));
+                    s.GetRequiredService<ILogger<GameCreateViewModel>>()));
 
                 services.AddSingleton<Func<HelpViewModel>>(_ => () => new HelpViewModel());
 

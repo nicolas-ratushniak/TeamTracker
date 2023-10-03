@@ -11,10 +11,21 @@ public class GamesViewModel : ViewModelBase
 {
     private readonly IGameInfoService _gameInfoService;
     private readonly ILogger<GamesViewModel> _logger;
+    private GameDetailsItemViewModel? _selectedGameDetails;
 
     public ICommand AddGameCommand { get; }
-    public GameListViewModel GameList { get; set; }
-    public GameDetailsViewModel SelectedGameDetails { get; set; }
+    public GameListViewModel GameList { get; }
+
+    public GameDetailsItemViewModel? SelectedGameDetails
+    {
+        get => _selectedGameDetails;
+        set
+        {
+            if (Equals(value, _selectedGameDetails)) return;
+            _selectedGameDetails = value;
+            OnPropertyChanged();
+        }
+    }
 
     public GamesViewModel(IGameInfoService gameInfoService, ITeamService teamService, INavigator navigator,
         ILogger<GamesViewModel> logger)
@@ -23,7 +34,6 @@ public class GamesViewModel : ViewModelBase
         _logger = logger;
 
         GameList = new GameListViewModel(gameInfoService, teamService);
-        SelectedGameDetails = new GameDetailsViewModel();
         
         GameList.PropertyChanged += SelectedGame_OnPropertyChanged;
 
@@ -53,13 +63,13 @@ public class GamesViewModel : ViewModelBase
 
         if (selectedGame is null)
         {
-            SelectedGameDetails.Game = null;
+            SelectedGameDetails = null;
         }
         else
         {
             var game = _gameInfoService.Get(selectedGame.Id);
 
-            SelectedGameDetails.Game = new GameDetailsItemViewModel
+            SelectedGameDetails = new GameDetailsItemViewModel
             {
                 Id = selectedGame.Id,
                 Date = game.Date.ToShortDateString(),

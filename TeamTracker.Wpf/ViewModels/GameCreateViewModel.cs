@@ -10,12 +10,12 @@ using TeamTracker.Wpf.Navigation;
 
 namespace TeamTracker.Wpf.ViewModels;
 
-public class GameCreateFormViewModel : ViewModelBase
+public class GameCreateViewModel : ViewModelBase
 {
     private readonly IGameInfoService _gameInfoService;
     private readonly ITeamService _teamService;
     private readonly INavigator _navigator;
-    private readonly ILogger<GameCreateFormViewModel> _logger;
+    private readonly ILogger<GameCreateViewModel> _logger;
     private SelectTeamItemViewModel? _selectedHomeTeam;
     private SelectTeamItemViewModel? _selectedAwayTeam;
     private string _homeTeamSearchFilter = string.Empty;
@@ -160,8 +160,8 @@ public class GameCreateFormViewModel : ViewModelBase
     public ICollectionView AwayTeamCandidates { get; }
 
 
-    public GameCreateFormViewModel(IGameInfoService gameInfoService, ITeamService teamService, INavigator navigator,
-        ILogger<GameCreateFormViewModel> logger)
+    public GameCreateViewModel(IGameInfoService gameInfoService, ITeamService teamService, INavigator navigator,
+        ILogger<GameCreateViewModel> logger)
     {
         _gameInfoService = gameInfoService;
         _teamService = teamService;

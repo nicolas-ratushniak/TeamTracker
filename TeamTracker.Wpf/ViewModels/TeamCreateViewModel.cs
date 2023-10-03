@@ -1,12 +1,36 @@
-﻿using System.Windows.Input;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Windows.Input;
+using Microsoft.Extensions.Logging;
+using TeamTracker.Domain.Dto;
+using TeamTracker.Domain.Services;
+using TeamTracker.Wpf.Commands;
+using TeamTracker.Wpf.Navigation;
 
 namespace TeamTracker.Wpf.ViewModels;
 
 public class TeamCreateViewModel : ViewModelBase
 {
+    private readonly ITeamService _teamService;
+    private readonly INavigator _navigator;
+    private readonly ILogger<TeamCreateViewModel> _logger;
+    private string? _errorMessage;
     private string _name = string.Empty;
     private string _originCity = string.Empty;
     private int _membersCount;
+    
+    public ICommand SubmitCommand { get; }
+    public ICommand CancelCommand { get; }
+
+    public string? ErrorMessage
+    {
+        get => _errorMessage;
+        set
+        {
+            if (value == _errorMessage) return;
+            _errorMessage = value;
+            OnPropertyChanged();
+        }
+    }
 
     public string Name
     {
@@ -41,6 +65,45 @@ public class TeamCreateViewModel : ViewModelBase
             _membersCount = value;
             OnPropertyChanged();
             CommandManager.InvalidateRequerySuggested();
+        }
+    }
+
+    public TeamCreateViewModel(ITeamService teamService, INavigator navigator, ILogger<TeamCreateViewModel> logger)
+    {
+        _teamService = teamService;
+        _navigator = navigator;
+        _logger = logger;
+
+        SubmitCommand = new RelayCommand<object>(AddTeam, AddTeam_CanExecute);
+        CancelCommand = new RelayCommand<object>(_ => _navigator.UpdateCurrentViewType(ViewType.Teams, null));
+    }
+
+    private bool AddTeam_CanExecute(object obj)
+    {
+        return Name != string.Empty && OriginCity != string.Empty &&
+               MembersCount > 0;
+    }
+
+    private void AddTeam(object obj)
+    {
+        var dto = new TeamCreateDto
+        {
+            Name = Name,
+            OriginCity = OriginCity,
+            MembersCount = MembersCount
+        };
+
+        try
+        {
+            _teamService.Add(dto);
+            _logger.LogInformation("\"{NewTeamName}\" was successfully added", Name);
+            
+            _navigator.UpdateCurrentViewType(ViewType.Teams, null);
+        }
+        catch (ValidationException ex)
+        {
+            _logger.LogInformation("Validation exception was caught: {Message}", ex.Message);
+            ErrorMessage = ex.Message;
         }
     }
 }

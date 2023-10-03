@@ -2,7 +2,6 @@
 using System.Windows.Input;
 using Microsoft.Extensions.Logging;
 using TeamTracker.Domain.Dto;
-using TeamTracker.Domain.Exceptions;
 using TeamTracker.Domain.Services;
 using TeamTracker.Wpf.Commands;
 using TeamTracker.Wpf.Navigation;
@@ -14,8 +13,15 @@ public class TeamUpdateFormViewModel : ViewModelBase
     private readonly ITeamService _teamService;
     private readonly INavigator _navigator;
     private readonly ILogger<TeamUpdateFormViewModel> _logger;
-    private TeamUpdateViewModel _teamToEdit;
+    private readonly Guid _teamId;
+    
     private string? _errorMessage;
+    private string _name = string.Empty;
+    private string _originCity = string.Empty;
+    private int _membersCount;
+    
+    public ICommand SubmitCommand { get; }
+    public ICommand CancelCommand { get; }
 
     public string? ErrorMessage
     {
@@ -28,19 +34,41 @@ public class TeamUpdateFormViewModel : ViewModelBase
         }
     }
 
-    public TeamUpdateViewModel TeamToEdit
+    public string Name
     {
-        get => _teamToEdit;
+        get => _name;
         set
         {
-            if (Equals(value, _teamToEdit)) return;
-            _teamToEdit = value;
+            if (value == _name) return;
+            _name = value;
             OnPropertyChanged();
+            CommandManager.InvalidateRequerySuggested();
         }
     }
 
-    public ICommand SubmitCommand { get; }
-    public ICommand CancelCommand { get; }
+    public string OriginCity
+    {
+        get => _originCity;
+        set
+        {
+            if (value == _originCity) return;
+            _originCity = value;
+            OnPropertyChanged();
+            CommandManager.InvalidateRequerySuggested();
+        }
+    }
+
+    public int MembersCount
+    {
+        get => _membersCount;
+        set
+        {
+            if (value == _membersCount) return;
+            _membersCount = value;
+            OnPropertyChanged();
+            CommandManager.InvalidateRequerySuggested();
+        }
+    }
 
     public TeamUpdateFormViewModel(Guid teamId, ITeamService teamService, INavigator navigator,
         ILogger<TeamUpdateFormViewModel> logger)
@@ -48,43 +76,32 @@ public class TeamUpdateFormViewModel : ViewModelBase
         _teamService = teamService;
         _navigator = navigator;
         _logger = logger;
+        _teamId = teamId;
+        
+        var team = _teamService.Get(teamId);
 
+        Name = team.Name;
+        OriginCity = team.OriginCity;
+        MembersCount = team.MembersCount;
+        
         SubmitCommand = new RelayCommand<object>(EditTeam, EditTeam_CanExecute);
         CancelCommand = new RelayCommand<object>(_ => _navigator.UpdateCurrentViewType(ViewType.Teams, null));
-
-        try
-        {
-            var team = _teamService.Get(teamId);
-
-            _teamToEdit = new TeamUpdateViewModel
-            {
-                Id = team.Id,
-                Name = team.Name,
-                OriginCity = team.OriginCity,
-                MembersCount = team.MembersCount
-            };
-        }
-        catch (EntityNotFoundException)
-        {
-            _logger.LogWarning("Cannot find a team to update. Redirecting back");
-            CancelCommand.Execute(null);
-        }
     }
 
     private bool EditTeam_CanExecute(object obj)
     {
-        return TeamToEdit.Name != string.Empty && TeamToEdit.OriginCity != string.Empty &&
-               TeamToEdit.MembersCount > 0;
+        return Name != string.Empty && OriginCity != string.Empty &&
+               MembersCount > 0;
     }
 
     private void EditTeam(object obj)
     {
         var dto = new TeamUpdateDto()
         {
-            Id = TeamToEdit.Id,
-            Name = TeamToEdit.Name,
-            OriginCity = TeamToEdit.OriginCity,
-            MembersCount = TeamToEdit.MembersCount
+            Id = _teamId,
+            Name = Name,
+            OriginCity = OriginCity,
+            MembersCount = MembersCount
         };
 
         try

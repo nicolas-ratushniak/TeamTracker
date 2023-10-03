@@ -12,19 +12,30 @@ public class TeamsViewModel : ViewModelBase
 {
     private readonly ITeamService _teamService;
     private readonly ILogger<TeamsViewModel> _logger;
+    private TeamDetailsItemViewModel? _selectedTeamDetails;
 
-    public TeamListViewModel TeamList { get; set; }
-    public TeamDetailsViewModel SelectedTeamDetails { get; set; }
+    public TeamListViewModel TeamList { get; }
+
     public ICommand AddTeamCommand { get; }
     public ICommand EditTeamCommand { get; }
     public ICommand DeleteTeamCommand { get; }
+    
+    public TeamDetailsItemViewModel? SelectedTeamDetails
+    {
+        get => _selectedTeamDetails;
+        set
+        {
+            if (Equals(value, _selectedTeamDetails)) return;
+            _selectedTeamDetails = value;
+            OnPropertyChanged();
+        }
+    }
 
     public TeamsViewModel(ITeamService teamService, INavigator navigator, ILogger<TeamsViewModel> logger)
     {
         _teamService = teamService;
         _logger = logger;
         TeamList = new TeamListViewModel(teamService);
-        SelectedTeamDetails = new TeamDetailsViewModel();
 
         TeamList.PropertyChanged += TeamsList_OnPropertyChanged;
 
@@ -32,12 +43,12 @@ public class TeamsViewModel : ViewModelBase
             _ => navigator.UpdateCurrentViewType(ViewType.TeamCreate, null));
 
         EditTeamCommand = new RelayCommand<object>(
-            _ => navigator.UpdateCurrentViewType(ViewType.TeamUpdate, SelectedTeamDetails.Team!.Id),
-            _ => SelectedTeamDetails.Team is not null);
+            _ => navigator.UpdateCurrentViewType(ViewType.TeamUpdate, SelectedTeamDetails!.Id),
+            _ => SelectedTeamDetails is not null);
 
         DeleteTeamCommand = new RelayCommand<object>(
             DeleteTeam_Execute,
-            _ => SelectedTeamDetails.Team is not null);
+            _ => SelectedTeamDetails is not null);
     }
 
     public override void Dispose()
@@ -63,7 +74,7 @@ public class TeamsViewModel : ViewModelBase
         
         try
         {
-            _teamService.Delete(SelectedTeamDetails.Team!.Id);
+            _teamService.Delete(SelectedTeamDetails!.Id);
             TeamList.RefreshItemSource();
         }
         catch (InvalidOperationException)
@@ -84,13 +95,13 @@ public class TeamsViewModel : ViewModelBase
 
         if (selectedTeam is null)
         {
-            SelectedTeamDetails.Team = null;
+            SelectedTeamDetails = null;
         }
         else
         {
             var team = _teamService.Get(selectedTeam.Id);
 
-            SelectedTeamDetails.Team = new TeamDetailsItemViewModel
+            SelectedTeamDetails = new TeamDetailsItemViewModel
             {
                 Id = team.Id,
                 Name = team.Name,

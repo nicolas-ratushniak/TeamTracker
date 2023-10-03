@@ -397,7 +397,7 @@
             <views:GamesView />
         </DataTemplate>
 
-        <DataTemplate DataType="{x:Type viewModels:GameCreateFormViewModel}">
+        <DataTemplate DataType="{x:Type viewModels:GameCreateViewModel}">
             <views:GameCreateView />
         </DataTemplate>
 
@@ -405,7 +405,7 @@
             <views:HelpView />
         </DataTemplate>
 
-        <DataTemplate DataType="{x:Type viewModels:TeamCreateFormViewModel}">
+        <DataTemplate DataType="{x:Type viewModels:TeamCreateViewModel}">
             <views:TeamCreateView />
         </DataTemplate>
 

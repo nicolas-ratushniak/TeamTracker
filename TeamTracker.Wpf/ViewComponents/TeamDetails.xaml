@@ -15,8 +15,7 @@
     <Border BorderBrush="Black"
             BorderThickness="1"
             CornerRadius="5"
-            Padding="20"
-            DataContext="{Binding Team}">
+            Padding="20">
         <Grid>
             <TextBlock Text="Select a team from the list to see its details"
                        TextWrapping="Wrap"

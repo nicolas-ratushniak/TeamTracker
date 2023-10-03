@@ -5,18 +5,18 @@ namespace TeamTracker.Wpf.ViewModels.Factories;
 public class ViewModelFactory : IViewModelFactory
 {
     private readonly Func<TeamsViewModel> _createTeamsViewModel;
-    private readonly Func<TeamCreateFormViewModel> _createTeamCreateViewModel;
+    private readonly Func<TeamCreateViewModel> _createTeamCreateViewModel;
     private readonly Func<Guid, TeamUpdateFormViewModel> _createTeamUpdateViewModel;
     private readonly Func<GamesViewModel> _createGamesViewModel;
-    private readonly Func<GameCreateFormViewModel> _createGameCreateFormViewModel;
+    private readonly Func<GameCreateViewModel> _createGameCreateFormViewModel;
     private readonly Func<HelpViewModel> _createHelpViewModel;
 
     public ViewModelFactory(
         Func<TeamsViewModel> createTeamsViewModel,
-        Func<TeamCreateFormViewModel> createTeamCreateViewModel,
+        Func<TeamCreateViewModel> createTeamCreateViewModel,
         Func<Guid, TeamUpdateFormViewModel> createTeamUpdateViewModel,
         Func<GamesViewModel> createGamesViewModel,
-        Func<GameCreateFormViewModel> createGameCreateFormViewModel,
+        Func<GameCreateViewModel> createGameCreateFormViewModel,
         Func<HelpViewModel> createHelpViewModel
     )
     {

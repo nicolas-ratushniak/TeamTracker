@@ -15,8 +15,7 @@
     <Border BorderBrush="Black"
             BorderThickness="1"
             CornerRadius="5"
-            Padding="20"
-            DataContext="{Binding Game}">
+            Padding="20">
 
         <Grid>
             <TextBlock Text="Select a game from the list to see its details"
@@ -25,18 +24,18 @@
                        Foreground="{StaticResource BrushGrey}"
                        FontSize="18"
                        Visibility="{Binding ElementName=GameDetailsBox, Path=IsVisible,
-                           Converter={StaticResource InverseBoolToVisibilityConverter}}" />
+                       Converter={StaticResource InverseBoolToVisibilityConverter}}" />
 
-            <Grid x:Name="GameDetailsBox" 
+            <Grid x:Name="GameDetailsBox"
                   Visibility="{Binding Converter={StaticResource NullToVisibilityConverter}}">
-                
+
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
-                
+
                 <TextBlock Grid.Row="0"
                            FontSize="20"
                            FontWeight="Bold"

@@ -49,8 +49,7 @@
                            Text="Edit team"
                            Margin="0,0,0,35" />
 
-                <Grid Grid.Row="1"
-                      DataContext="{Binding TeamToEdit}">
+                <Grid Grid.Row="1">
 
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
