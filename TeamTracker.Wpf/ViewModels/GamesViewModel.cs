@@ -39,7 +39,7 @@ public class GamesViewModel : BaseViewModel
         GameList.PropertyChanged += SelectedGame_OnPropertyChanged;
 
         AddGameCommand = new RelayCommand<object>(
-            _ => navigationService.UpdateCurrentViewType(ViewType.GameCreate, null));
+            _ => navigationService.NavigateTo(ViewType.GameCreate, null));
     }
 
     public override void Dispose()

@@ -31,7 +31,7 @@
                          IsChecked="{Binding CurrentNavBarOption, Mode=OneWay,
                          Converter={StaticResource EqualsToBoolConverter},
                          ConverterParameter={x:Static navigation:ViewType.Teams}}"
-                         Command="{Binding Path=Navigator.UpdateCurrentViewTypeCommand}"
+                         Command="{Binding Path=NavigationService.UpdateCurrentViewTypeCommand}"
                          CommandParameter="{x:Static navigation:ViewType.Teams}"
                          Content="Teams" />
             
@@ -40,7 +40,7 @@
                          IsChecked="{Binding CurrentNavBarOption, Mode=OneWay,
                          Converter={StaticResource EqualsToBoolConverter},
                          ConverterParameter={x:Static navigation:ViewType.Games}}"
-                         Command="{Binding Path=Navigator.UpdateCurrentViewTypeCommand}"
+                         Command="{Binding Path=NavigationService.UpdateCurrentViewTypeCommand}"
                          CommandParameter="{x:Static navigation:ViewType.Games}"
                          Content="Games" />
             
@@ -49,7 +49,7 @@
                          IsChecked="{Binding CurrentNavBarOption, Mode=OneWay,
                          Converter={StaticResource EqualsToBoolConverter},
                          ConverterParameter={x:Static navigation:ViewType.Help}}"
-                         Command="{Binding Path=Navigator.UpdateCurrentViewTypeCommand}"
+                         Command="{Binding Path=NavigationService.UpdateCurrentViewTypeCommand}"
                          CommandParameter="{x:Static navigation:ViewType.Help}"
                          Content="Help" />
         </Grid>

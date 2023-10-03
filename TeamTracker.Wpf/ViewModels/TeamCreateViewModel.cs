@@ -75,7 +75,7 @@ public class TeamCreateViewModel : BaseViewModel
         _logger = logger;
 
         SubmitCommand = new RelayCommand<object>(AddTeam, AddTeam_CanExecute);
-        CancelCommand = new RelayCommand<object>(_ => _navigationService.UpdateCurrentViewType(ViewType.Teams, null));
+        CancelCommand = new RelayCommand<object>(_ => _navigationService.NavigateTo(ViewType.Teams, null));
     }
 
     private bool AddTeam_CanExecute(object obj)
@@ -98,7 +98,7 @@ public class TeamCreateViewModel : BaseViewModel
             _teamService.Add(dto);
             _logger.LogInformation("\"{NewTeamName}\" was successfully added", Name);
             
-            _navigationService.UpdateCurrentViewType(ViewType.Teams, null);
+            _navigationService.NavigateTo(ViewType.Teams, null);
         }
         catch (ValidationException ex)
         {

@@ -15,7 +15,7 @@
     
     <Window.InputBindings>
         <KeyBinding Key="F1"
-                    Command="{Binding Path=Navigator.UpdateCurrentViewTypeCommand}"
+                    Command="{Binding Path=NavigationService.UpdateCurrentViewTypeCommand}"
                     CommandParameter="{x:Static navigation:ViewType.Help}"/>
     </Window.InputBindings>
     

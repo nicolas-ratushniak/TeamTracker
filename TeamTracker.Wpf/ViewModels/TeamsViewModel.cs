@@ -42,10 +42,10 @@ public class TeamsViewModel : BaseViewModel
         TeamList.PropertyChanged += TeamsList_OnPropertyChanged;
 
         AddTeamCommand = new RelayCommand<object>(
-            _ => navigationService.UpdateCurrentViewType(ViewType.TeamCreate, null));
+            _ => navigationService.NavigateTo(ViewType.TeamCreate, null));
 
         EditTeamCommand = new RelayCommand<object>(
-            _ => navigationService.UpdateCurrentViewType(ViewType.TeamUpdate, SelectedTeamDetails!.Id),
+            _ => navigationService.NavigateTo(ViewType.TeamUpdate, SelectedTeamDetails!.Id),
             _ => SelectedTeamDetails is not null);
 
         DeleteTeamCommand = new RelayCommand<object>(

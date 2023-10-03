@@ -86,7 +86,7 @@ public class TeamUpdateViewModel : BaseViewModel
         MembersCount = team.MembersCount;
         
         SubmitCommand = new RelayCommand<object>(EditTeam, EditTeam_CanExecute);
-        CancelCommand = new RelayCommand<object>(_ => _navigationService.UpdateCurrentViewType(ViewType.Teams, null));
+        CancelCommand = new RelayCommand<object>(_ => _navigationService.NavigateTo(ViewType.Teams, null));
     }
 
     private bool EditTeam_CanExecute(object obj)
@@ -110,7 +110,7 @@ public class TeamUpdateViewModel : BaseViewModel
             _teamService.Update(dto);
             _logger.LogInformation("\"{TeamName}\" was successfully updated", dto.Name);
 
-            _navigationService.UpdateCurrentViewType(ViewType.Teams, null);
+            _navigationService.NavigateTo(ViewType.Teams, null);
         }
         catch (ValidationException ex)
         {

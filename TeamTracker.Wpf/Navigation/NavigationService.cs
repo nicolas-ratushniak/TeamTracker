@@ -16,10 +16,10 @@ public class NavigationService : INavigationService
     public NavigationService(ILogger<NavigationService> logger)
     {
         _logger = logger;
-        UpdateCurrentViewTypeCommand = new RelayCommand<ViewType>(viewType => UpdateCurrentViewType(viewType, null));
+        UpdateCurrentViewTypeCommand = new RelayCommand<ViewType>(viewType => NavigateTo(viewType, null));
     }
 
-    public void UpdateCurrentViewType(ViewType newViewType, object? viewParameter)
+    public void NavigateTo(ViewType newViewType, object? viewParameter)
     {
         var oldViewType = CurrentViewType;
 

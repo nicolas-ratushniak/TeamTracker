@@ -182,7 +182,7 @@ public class GameCreateViewModel : BaseViewModel
         AwayTeamCandidates.Filter = o => o is TeamDropdownListItemViewModel t && FilterTeamBySearch(t, AwayTeamSearchFilter);
 
         SubmitCommand = new RelayCommand<object>(AddGame_Execute, AddGame_CanExecute);
-        CancelCommand = new RelayCommand<object>(_ => navigationService.UpdateCurrentViewType(ViewType.Games, null));
+        CancelCommand = new RelayCommand<object>(_ => navigationService.NavigateTo(ViewType.Games, null));
     }
 
     private bool AddGame_CanExecute(object obj)
@@ -207,7 +207,7 @@ public class GameCreateViewModel : BaseViewModel
             _gameInfoService.PlayGame(dto);
             _logger.LogInformation("The Game was successfully created");
             
-            _navigationService.UpdateCurrentViewType(ViewType.Games, null);
+            _navigationService.NavigateTo(ViewType.Games, null);
         }
         catch (ValidationException ex)
         {
