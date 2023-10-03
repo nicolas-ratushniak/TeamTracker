@@ -91,7 +91,7 @@ public class GameListViewModel : BaseViewModel
     private void ShowMostCrushingGame_Execute(object obj)
     {
         _isAdvancedFilterActive = true;
-        
+
         GamesCollectionView.Filter = o =>
         {
             if (o is not GameListItemViewModel g)
@@ -109,7 +109,7 @@ public class GameListViewModel : BaseViewModel
     private void ShowDrawsCommand_Execute(object obj)
     {
         _isAdvancedFilterActive = true;
-        
+
         GamesCollectionView.Filter = o => o is GameListItemViewModel g && FilterGamesBySearch(g) &&
                                           g.HomeTeamScore == g.AwayTeamScore;
     }
@@ -123,9 +123,29 @@ public class GameListViewModel : BaseViewModel
     private bool FilterGamesBySearch(GameListItemViewModel game)
     {
         var lowerFilter = GamesSearchFilter.ToLower();
-        
-        return game.HomeTeamFullName.ToLower().StartsWith(lowerFilter) ||
-               game.AwayTeamFullName.ToLower().StartsWith(lowerFilter);
+        var underscoreIndex = lowerFilter.IndexOf('_');
+
+        if (underscoreIndex == -1)
+        {
+            return game.HomeTeamFullName.ToLower().StartsWith(lowerFilter) ||
+                   game.AwayTeamFullName.ToLower().StartsWith(lowerFilter);
+        }
+
+        var homeFilter = lowerFilter[..underscoreIndex];
+        var awayFilter = lowerFilter[(underscoreIndex + 1)..];
+
+        if (underscoreIndex == 0)
+        {
+            return game.AwayTeamFullName.ToLower().StartsWith(awayFilter);
+        }
+
+        if (underscoreIndex == lowerFilter.Length - 1)
+        {
+            return game.HomeTeamFullName.ToLower().StartsWith(homeFilter);
+        }
+
+        return game.HomeTeamFullName.ToLower().StartsWith(homeFilter) &&
+               game.AwayTeamFullName.ToLower().StartsWith(awayFilter);
     }
 
     private SortDescription GetSortStrategy(string sortStrategyName)
