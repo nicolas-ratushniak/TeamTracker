@@ -11,23 +11,30 @@ public partial class IntegerTextBox : UserControl
     public static readonly DependencyProperty ValueProperty;
     public static readonly DependencyProperty MaxDigitsProperty;
     public static readonly RoutedEvent ValueChangedEvent;
+    public static readonly DependencyProperty AcceptZeroProperty;
 
     public int Value
     {
         get => (int)GetValue(ValueProperty);
         set => SetValue(ValueProperty, value);
     }
-    
+
     public int MaxDigits
     {
         get => (int)GetValue(MaxDigitsProperty);
         set => SetValue(MaxDigitsProperty, value);
     }
-    
+
     private string Text
     {
         get => (string)GetValue(TextProperty);
         set => SetValue(TextProperty, value);
+    }
+
+    public bool AcceptZero
+    {
+        get => (bool)GetValue(AcceptZeroProperty);
+        set => SetValue(AcceptZeroProperty, value);
     }
 
     public event RoutedPropertyChangedEventHandler<int> ValueChanged
@@ -52,6 +59,9 @@ public partial class IntegerTextBox : UserControl
 
         ValueChangedEvent = EventManager.RegisterRoutedEvent(nameof(ValueChanged), RoutingStrategy.Bubble,
             typeof(RoutedPropertyChangedEventHandler<int>), typeof(IntegerTextBox));
+
+        AcceptZeroProperty = DependencyProperty.Register(nameof(AcceptZero), typeof(bool), typeof(IntegerTextBox),
+            new PropertyMetadata(true));
     }
 
     public IntegerTextBox()
@@ -83,7 +93,7 @@ public partial class IntegerTextBox : UserControl
     {
         var control = (IntegerTextBox)d;
         var newValue = (int)e.NewValue;
-        
+
         if (!string.IsNullOrEmpty(control.Text))
         {
             control.Text = newValue.ToString();
@@ -95,7 +105,15 @@ public partial class IntegerTextBox : UserControl
 
     private void OnPreviewTextInput(object sender, TextCompositionEventArgs e)
     {
-        if (!int.TryParse(e.Text, out _))
+        var oldText = ((TextBox)sender).Text;
+
+        if (!int.TryParse(e.Text, out int digit) || oldText.Length >= MaxDigits)
+        {
+            e.Handled = true;
+        }
+
+        // handle first zero if not acceptable
+        else if (!AcceptZero && string.IsNullOrEmpty(oldText) && digit == 0)
         {
             e.Handled = true;
         }
