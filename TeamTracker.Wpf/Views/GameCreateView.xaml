@@ -7,6 +7,7 @@
              xmlns:controls="clr-namespace:TeamTracker.Wpf.Controls"
              xmlns:viewModels="clr-namespace:TeamTracker.Wpf.ViewModels"
              xmlns:converters="clr-namespace:TeamTracker.Wpf.Converters"
+             xmlns:inners="clr-namespace:TeamTracker.Wpf.ViewModels.Inners"
              mc:Ignorable="d"
              d:DesignHeight="580" d:DesignWidth="400"
              Loaded="OnLoaded">
@@ -25,7 +26,7 @@
             <Setter Property="BorderThickness" Value="0" />
             <Setter Property="ItemTemplate">
                 <Setter.Value>
-                    <DataTemplate DataType="{x:Type viewModels:TeamListItemViewModel}">
+                    <DataTemplate DataType="{x:Type inners:TeamListItemViewModel}">
                         <TextBlock Text="{Binding Path=FullName}"
                                    FontSize="18" />
                     </DataTemplate>

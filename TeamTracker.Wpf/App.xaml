@@ -409,7 +409,7 @@
             <views:TeamCreateView />
         </DataTemplate>
 
-        <DataTemplate DataType="{x:Type viewModels:TeamUpdateFormViewModel}">
+        <DataTemplate DataType="{x:Type viewModels:TeamUpdateViewModel}">
             <views:TeamUpdateView />
         </DataTemplate>
 

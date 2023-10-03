@@ -4,6 +4,7 @@ using System.Windows.Data;
 using System.Windows.Input;
 using TeamTracker.Domain.Services;
 using TeamTracker.Wpf.Commands;
+using TeamTracker.Wpf.ViewModels.Inners;
 
 namespace TeamTracker.Wpf.ViewModels;
 

@@ -7,6 +7,7 @@
              xmlns:viewModels="clr-namespace:TeamTracker.Wpf.ViewModels"
              xmlns:controls="clr-namespace:TeamTracker.Wpf.Controls"
              xmlns:converters="clr-namespace:TeamTracker.Wpf.Converters"
+             xmlns:inners="clr-namespace:TeamTracker.Wpf.ViewModels.Inners"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300">
 
@@ -17,7 +18,7 @@
             <Setter Property="BorderThickness" Value="0" />
             <Setter Property="ItemTemplate">
                 <Setter.Value>
-                    <DataTemplate DataType="{x:Type viewModels:GameListItemViewModel}">
+                    <DataTemplate DataType="{x:Type inners:GameListItemViewModel}">
                         <Border Width="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=ListBox}}"
                                 Padding="0,0,15,0"
                                 BorderBrush="{StaticResource BrushGrey}"

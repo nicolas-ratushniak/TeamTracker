@@ -8,11 +8,11 @@ using TeamTracker.Wpf.Navigation;
 
 namespace TeamTracker.Wpf.ViewModels;
 
-public class TeamUpdateFormViewModel : ViewModelBase
+public class TeamUpdateViewModel : ViewModelBase
 {
     private readonly ITeamService _teamService;
     private readonly INavigator _navigator;
-    private readonly ILogger<TeamUpdateFormViewModel> _logger;
+    private readonly ILogger<TeamUpdateViewModel> _logger;
     private readonly Guid _teamId;
     
     private string? _errorMessage;
@@ -70,8 +70,8 @@ public class TeamUpdateFormViewModel : ViewModelBase
         }
     }
 
-    public TeamUpdateFormViewModel(Guid teamId, ITeamService teamService, INavigator navigator,
-        ILogger<TeamUpdateFormViewModel> logger)
+    public TeamUpdateViewModel(Guid teamId, ITeamService teamService, INavigator navigator,
+        ILogger<TeamUpdateViewModel> logger)
     {
         _teamService = teamService;
         _navigator = navigator;

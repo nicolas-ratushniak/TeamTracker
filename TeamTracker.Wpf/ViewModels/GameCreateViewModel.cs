@@ -7,6 +7,7 @@ using TeamTracker.Domain.Dto;
 using TeamTracker.Domain.Services;
 using TeamTracker.Wpf.Commands;
 using TeamTracker.Wpf.Navigation;
+using TeamTracker.Wpf.ViewModels.Inners;
 
 namespace TeamTracker.Wpf.ViewModels;
 
@@ -16,8 +17,8 @@ public class GameCreateViewModel : ViewModelBase
     private readonly ITeamService _teamService;
     private readonly INavigator _navigator;
     private readonly ILogger<GameCreateViewModel> _logger;
-    private SelectTeamItemViewModel? _selectedHomeTeam;
-    private SelectTeamItemViewModel? _selectedAwayTeam;
+    private TeamDropdownListItemViewModel? _selectedHomeTeam;
+    private TeamDropdownListItemViewModel? _selectedAwayTeam;
     private string _homeTeamSearchFilter = string.Empty;
     private string _awayTeamSearchFilter = string.Empty;
     private bool _areHomeCandidatesVisible;
@@ -80,7 +81,7 @@ public class GameCreateViewModel : ViewModelBase
         }
     }
 
-    public SelectTeamItemViewModel? SelectedHomeTeam
+    public TeamDropdownListItemViewModel? SelectedHomeTeam
     {
         get => _selectedHomeTeam;
         set
@@ -94,7 +95,7 @@ public class GameCreateViewModel : ViewModelBase
         }
     }
 
-    public SelectTeamItemViewModel? SelectedAwayTeam
+    public TeamDropdownListItemViewModel? SelectedAwayTeam
     {
         get => _selectedAwayTeam;
         set
@@ -170,12 +171,12 @@ public class GameCreateViewModel : ViewModelBase
         _date = DateTime.Now;
 
         HomeTeamCandidates = CollectionViewSource.GetDefaultView(GetTeams());
-        HomeTeamCandidates.SortDescriptions.Add(new SortDescription(nameof(SelectTeamItemViewModel.FullName), ListSortDirection.Ascending));
-        HomeTeamCandidates.Filter = o => o is SelectTeamItemViewModel t && FilterTeamBySearch(t, HomeTeamSearchFilter);
+        HomeTeamCandidates.SortDescriptions.Add(new SortDescription(nameof(TeamDropdownListItemViewModel.FullName), ListSortDirection.Ascending));
+        HomeTeamCandidates.Filter = o => o is TeamDropdownListItemViewModel t && FilterTeamBySearch(t, HomeTeamSearchFilter);
 
         AwayTeamCandidates = CollectionViewSource.GetDefaultView(GetTeams());
-        AwayTeamCandidates.SortDescriptions.Add(new SortDescription(nameof(SelectTeamItemViewModel.FullName), ListSortDirection.Ascending));
-        AwayTeamCandidates.Filter = o => o is SelectTeamItemViewModel t && FilterTeamBySearch(t, AwayTeamSearchFilter);
+        AwayTeamCandidates.SortDescriptions.Add(new SortDescription(nameof(TeamDropdownListItemViewModel.FullName), ListSortDirection.Ascending));
+        AwayTeamCandidates.Filter = o => o is TeamDropdownListItemViewModel t && FilterTeamBySearch(t, AwayTeamSearchFilter);
 
         SubmitCommand = new RelayCommand<object>(AddGame_Execute, AddGame_CanExecute);
         CancelCommand = new RelayCommand<object>(_ => navigator.UpdateCurrentViewType(ViewType.Games, null));
@@ -280,18 +281,18 @@ public class GameCreateViewModel : ViewModelBase
         AwayTeamCandidates.Refresh();
     }
 
-    private bool FilterTeamBySearch(SelectTeamItemViewModel team, string filter)
+    private bool FilterTeamBySearch(TeamDropdownListItemViewModel teamDropdownList, string filter)
     {
         var lowerFilter = filter.ToLower();
         
-        return team.FullName.ToLower().StartsWith(lowerFilter) ||
-               team.OriginCity.ToLower().StartsWith(lowerFilter);
+        return teamDropdownList.FullName.ToLower().StartsWith(lowerFilter) ||
+               teamDropdownList.OriginCity.ToLower().StartsWith(lowerFilter);
     }
 
-    private IEnumerable<SelectTeamItemViewModel> GetTeams()
+    private IEnumerable<TeamDropdownListItemViewModel> GetTeams()
     {
         return _teamService.GetAll()
-            .Select(t => new SelectTeamItemViewModel
+            .Select(t => new TeamDropdownListItemViewModel
             {
                 Id = t.Id,
                 Name = t.Name,

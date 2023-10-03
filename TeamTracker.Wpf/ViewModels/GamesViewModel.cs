@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging;
 using TeamTracker.Domain.Services;
 using TeamTracker.Wpf.Commands;
 using TeamTracker.Wpf.Navigation;
+using TeamTracker.Wpf.ViewModels.Inners;
 
 namespace TeamTracker.Wpf.ViewModels;
 

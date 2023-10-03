@@ -63,11 +63,11 @@ public partial class App : Application
                     s.GetRequiredService<INavigator>(),
                     s.GetRequiredService<ILogger<TeamCreateViewModel>>()));
 
-                services.AddSingleton<Func<Guid, TeamUpdateFormViewModel>>(s => id => new TeamUpdateFormViewModel(
+                services.AddSingleton<Func<Guid, TeamUpdateViewModel>>(s => id => new TeamUpdateViewModel(
                     id,
                     s.GetRequiredService<ITeamService>(),
                     s.GetRequiredService<INavigator>(),
-                    s.GetRequiredService<ILogger<TeamUpdateFormViewModel>>()));
+                    s.GetRequiredService<ILogger<TeamUpdateViewModel>>()));
 
                 services.AddSingleton<Func<GamesViewModel>>(s => () => new GamesViewModel(
                     s.GetRequiredService<IGameInfoService>(),

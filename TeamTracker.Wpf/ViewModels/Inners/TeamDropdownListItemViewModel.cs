@@ -1,6 +1,6 @@
-﻿namespace TeamTracker.Wpf.ViewModels;
+﻿namespace TeamTracker.Wpf.ViewModels.Inners;
 
-public class SelectTeamItemViewModel
+public class TeamDropdownListItemViewModel
 {
     public Guid Id { get; set; }
     public string Name { get; set; } = string.Empty;

@@ -6,7 +6,7 @@ public class ViewModelFactory : IViewModelFactory
 {
     private readonly Func<TeamsViewModel> _createTeamsViewModel;
     private readonly Func<TeamCreateViewModel> _createTeamCreateViewModel;
-    private readonly Func<Guid, TeamUpdateFormViewModel> _createTeamUpdateViewModel;
+    private readonly Func<Guid, TeamUpdateViewModel> _createTeamUpdateViewModel;
     private readonly Func<GamesViewModel> _createGamesViewModel;
     private readonly Func<GameCreateViewModel> _createGameCreateFormViewModel;
     private readonly Func<HelpViewModel> _createHelpViewModel;
@@ -14,7 +14,7 @@ public class ViewModelFactory : IViewModelFactory
     public ViewModelFactory(
         Func<TeamsViewModel> createTeamsViewModel,
         Func<TeamCreateViewModel> createTeamCreateViewModel,
-        Func<Guid, TeamUpdateFormViewModel> createTeamUpdateViewModel,
+        Func<Guid, TeamUpdateViewModel> createTeamUpdateViewModel,
         Func<GamesViewModel> createGamesViewModel,
         Func<GameCreateViewModel> createGameCreateFormViewModel,
         Func<HelpViewModel> createHelpViewModel
