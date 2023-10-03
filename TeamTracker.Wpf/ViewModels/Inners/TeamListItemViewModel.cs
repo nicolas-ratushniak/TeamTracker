@@ -1,4 +1,6 @@
-﻿namespace TeamTracker.Wpf.ViewModels.Inners;
+﻿using System;
+
+namespace TeamTracker.Wpf.ViewModels.Inners;
 
 public class TeamListItemViewModel
 {

@@ -1,4 +1,5 @@
-﻿using TeamTracker.Wpf.Navigation;
+﻿using System;
+using TeamTracker.Wpf.Navigation;
 
 namespace TeamTracker.Wpf.ViewModels.Factories;
 

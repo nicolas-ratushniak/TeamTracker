@@ -1,4 +1,6 @@
-﻿namespace TeamTracker.Wpf.Navigation;
+﻿using System;
+
+namespace TeamTracker.Wpf.Navigation;
 
 public class ViewTypeChangedEventArgs : EventArgs
 {
