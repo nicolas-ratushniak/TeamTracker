@@ -5,15 +5,15 @@ using TeamTracker.Wpf.Commands;
 
 namespace TeamTracker.Wpf.Navigation;
 
-public class Navigator : INavigator
+public class NavigationService : INavigationService
 {
     public event EventHandler<ViewTypeChangedEventArgs> CurrentViewTypeChanged;
     
-    private readonly ILogger<Navigator> _logger;
+    private readonly ILogger<NavigationService> _logger;
     public ViewType? CurrentViewType { get; private set; }
     public ICommand UpdateCurrentViewTypeCommand { get; }
 
-    public Navigator(ILogger<Navigator> logger)
+    public NavigationService(ILogger<NavigationService> logger)
     {
         _logger = logger;
         UpdateCurrentViewTypeCommand = new RelayCommand<ViewType>(viewType => UpdateCurrentViewType(viewType, null));

@@ -12,7 +12,7 @@ public class MainViewModel : ViewModelBase
     private ViewModelBase _currentViewModel;
     private ViewType _currentNavBarOption;
 
-    public INavigator Navigator { get; }
+    public INavigationService NavigationService { get; }
 
     public ViewModelBase CurrentViewModel
     {
@@ -38,13 +38,13 @@ public class MainViewModel : ViewModelBase
         }
     }
 
-    public MainViewModel(INavigator navigator, IViewModelFactory viewModelFactory, ILogger<MainViewModel> logger)
+    public MainViewModel(INavigationService navigationService, IViewModelFactory viewModelFactory, ILogger<MainViewModel> logger)
     {
         _viewModelFactory = viewModelFactory;
         _logger = logger;
-        Navigator = navigator;
+        NavigationService = navigationService;
 
-        Navigator.CurrentViewTypeChanged += Navigator_OnCurrentViewTypeChanged;
+        NavigationService.CurrentViewTypeChanged += Navigator_OnCurrentViewTypeChanged;
 
         _logger.LogInformation("Setting default view");
         CurrentViewModel = _viewModelFactory.CreateViewModel(ViewType.Teams);

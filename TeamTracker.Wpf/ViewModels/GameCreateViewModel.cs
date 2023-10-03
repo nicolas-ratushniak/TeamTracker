@@ -18,7 +18,7 @@ public class GameCreateViewModel : ViewModelBase
 {
     private readonly IGameInfoService _gameInfoService;
     private readonly ITeamService _teamService;
-    private readonly INavigator _navigator;
+    private readonly INavigationService _navigationService;
     private readonly ILogger<GameCreateViewModel> _logger;
     private TeamDropdownListItemViewModel? _selectedHomeTeam;
     private TeamDropdownListItemViewModel? _selectedAwayTeam;
@@ -164,12 +164,12 @@ public class GameCreateViewModel : ViewModelBase
     public ICollectionView AwayTeamCandidates { get; }
 
 
-    public GameCreateViewModel(IGameInfoService gameInfoService, ITeamService teamService, INavigator navigator,
+    public GameCreateViewModel(IGameInfoService gameInfoService, ITeamService teamService, INavigationService navigationService,
         ILogger<GameCreateViewModel> logger)
     {
         _gameInfoService = gameInfoService;
         _teamService = teamService;
-        _navigator = navigator;
+        _navigationService = navigationService;
         _logger = logger;
         _date = DateTime.Now;
 
@@ -182,7 +182,7 @@ public class GameCreateViewModel : ViewModelBase
         AwayTeamCandidates.Filter = o => o is TeamDropdownListItemViewModel t && FilterTeamBySearch(t, AwayTeamSearchFilter);
 
         SubmitCommand = new RelayCommand<object>(AddGame_Execute, AddGame_CanExecute);
-        CancelCommand = new RelayCommand<object>(_ => navigator.UpdateCurrentViewType(ViewType.Games, null));
+        CancelCommand = new RelayCommand<object>(_ => navigationService.UpdateCurrentViewType(ViewType.Games, null));
     }
 
     private bool AddGame_CanExecute(object obj)
@@ -207,7 +207,7 @@ public class GameCreateViewModel : ViewModelBase
             _gameInfoService.PlayGame(dto);
             _logger.LogInformation("The Game was successfully created");
             
-            _navigator.UpdateCurrentViewType(ViewType.Games, null);
+            _navigationService.UpdateCurrentViewType(ViewType.Games, null);
         }
         catch (ValidationException ex)
         {

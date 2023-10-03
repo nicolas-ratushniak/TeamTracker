@@ -52,34 +52,34 @@ public partial class App : Application
                 services.AddScoped<ITeamService, TeamService>();
                 services.AddScoped<IGameInfoService, GameInfoService>();
                 services.AddScoped<IViewModelFactory, ViewModelFactory>();
-                services.AddScoped<INavigator, Navigator>();
+                services.AddScoped<INavigationService, NavigationService>();
 
                 services.AddSingleton<Func<TeamsViewModel>>(s => () => new TeamsViewModel(
                     s.GetRequiredService<ITeamService>(),
-                    s.GetRequiredService<INavigator>(),
+                    s.GetRequiredService<INavigationService>(),
                     s.GetRequiredService<ILogger<TeamsViewModel>>()));
 
                 services.AddSingleton<Func<TeamCreateViewModel>>(s => () => new TeamCreateViewModel(
                     s.GetRequiredService<ITeamService>(),
-                    s.GetRequiredService<INavigator>(),
+                    s.GetRequiredService<INavigationService>(),
                     s.GetRequiredService<ILogger<TeamCreateViewModel>>()));
 
                 services.AddSingleton<Func<Guid, TeamUpdateViewModel>>(s => id => new TeamUpdateViewModel(
                     id,
                     s.GetRequiredService<ITeamService>(),
-                    s.GetRequiredService<INavigator>(),
+                    s.GetRequiredService<INavigationService>(),
                     s.GetRequiredService<ILogger<TeamUpdateViewModel>>()));
 
                 services.AddSingleton<Func<GamesViewModel>>(s => () => new GamesViewModel(
                     s.GetRequiredService<IGameInfoService>(),
                     s.GetRequiredService<ITeamService>(),
-                    s.GetRequiredService<INavigator>(),
+                    s.GetRequiredService<INavigationService>(),
                     s.GetRequiredService<ILogger<GamesViewModel>>()));
 
                 services.AddSingleton<Func<GameCreateViewModel>>(s => () => new GameCreateViewModel(
                     s.GetRequiredService<IGameInfoService>(),
                     s.GetRequiredService<ITeamService>(),
-                    s.GetRequiredService<INavigator>(),
+                    s.GetRequiredService<INavigationService>(),
                     s.GetRequiredService<ILogger<GameCreateViewModel>>()));
 
                 services.AddSingleton<Func<HelpViewModel>>(_ => () => new HelpViewModel());

@@ -3,7 +3,7 @@ using System.Windows.Input;
 
 namespace TeamTracker.Wpf.Navigation;
 
-public interface INavigator
+public interface INavigationService
 {
     public event EventHandler<ViewTypeChangedEventArgs> CurrentViewTypeChanged;
     public ICommand UpdateCurrentViewTypeCommand { get; }

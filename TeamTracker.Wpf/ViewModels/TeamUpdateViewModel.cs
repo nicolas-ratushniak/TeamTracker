@@ -12,7 +12,7 @@ namespace TeamTracker.Wpf.ViewModels;
 public class TeamUpdateViewModel : ViewModelBase
 {
     private readonly ITeamService _teamService;
-    private readonly INavigator _navigator;
+    private readonly INavigationService _navigationService;
     private readonly ILogger<TeamUpdateViewModel> _logger;
     private readonly Guid _teamId;
     
@@ -71,11 +71,11 @@ public class TeamUpdateViewModel : ViewModelBase
         }
     }
 
-    public TeamUpdateViewModel(Guid teamId, ITeamService teamService, INavigator navigator,
+    public TeamUpdateViewModel(Guid teamId, ITeamService teamService, INavigationService navigationService,
         ILogger<TeamUpdateViewModel> logger)
     {
         _teamService = teamService;
-        _navigator = navigator;
+        _navigationService = navigationService;
         _logger = logger;
         _teamId = teamId;
         
@@ -86,7 +86,7 @@ public class TeamUpdateViewModel : ViewModelBase
         MembersCount = team.MembersCount;
         
         SubmitCommand = new RelayCommand<object>(EditTeam, EditTeam_CanExecute);
-        CancelCommand = new RelayCommand<object>(_ => _navigator.UpdateCurrentViewType(ViewType.Teams, null));
+        CancelCommand = new RelayCommand<object>(_ => _navigationService.UpdateCurrentViewType(ViewType.Teams, null));
     }
 
     private bool EditTeam_CanExecute(object obj)
@@ -110,7 +110,7 @@ public class TeamUpdateViewModel : ViewModelBase
             _teamService.Update(dto);
             _logger.LogInformation("\"{TeamName}\" was successfully updated", dto.Name);
 
-            _navigator.UpdateCurrentViewType(ViewType.Teams, null);
+            _navigationService.UpdateCurrentViewType(ViewType.Teams, null);
         }
         catch (ValidationException ex)
         {

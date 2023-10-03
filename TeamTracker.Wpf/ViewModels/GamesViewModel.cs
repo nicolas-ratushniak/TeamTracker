@@ -28,7 +28,7 @@ public class GamesViewModel : ViewModelBase
         }
     }
 
-    public GamesViewModel(IGameInfoService gameInfoService, ITeamService teamService, INavigator navigator,
+    public GamesViewModel(IGameInfoService gameInfoService, ITeamService teamService, INavigationService navigationService,
         ILogger<GamesViewModel> logger)
     {
         _gameInfoService = gameInfoService;
@@ -39,7 +39,7 @@ public class GamesViewModel : ViewModelBase
         GameList.PropertyChanged += SelectedGame_OnPropertyChanged;
 
         AddGameCommand = new RelayCommand<object>(
-            _ => navigator.UpdateCurrentViewType(ViewType.GameCreate, null));
+            _ => navigationService.UpdateCurrentViewType(ViewType.GameCreate, null));
     }
 
     public override void Dispose()

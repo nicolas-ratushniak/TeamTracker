@@ -11,7 +11,7 @@ namespace TeamTracker.Wpf.ViewModels;
 public class TeamCreateViewModel : ViewModelBase
 {
     private readonly ITeamService _teamService;
-    private readonly INavigator _navigator;
+    private readonly INavigationService _navigationService;
     private readonly ILogger<TeamCreateViewModel> _logger;
     private string? _errorMessage;
     private string _name = string.Empty;
@@ -68,14 +68,14 @@ public class TeamCreateViewModel : ViewModelBase
         }
     }
 
-    public TeamCreateViewModel(ITeamService teamService, INavigator navigator, ILogger<TeamCreateViewModel> logger)
+    public TeamCreateViewModel(ITeamService teamService, INavigationService navigationService, ILogger<TeamCreateViewModel> logger)
     {
         _teamService = teamService;
-        _navigator = navigator;
+        _navigationService = navigationService;
         _logger = logger;
 
         SubmitCommand = new RelayCommand<object>(AddTeam, AddTeam_CanExecute);
-        CancelCommand = new RelayCommand<object>(_ => _navigator.UpdateCurrentViewType(ViewType.Teams, null));
+        CancelCommand = new RelayCommand<object>(_ => _navigationService.UpdateCurrentViewType(ViewType.Teams, null));
     }
 
     private bool AddTeam_CanExecute(object obj)
@@ -98,7 +98,7 @@ public class TeamCreateViewModel : ViewModelBase
             _teamService.Add(dto);
             _logger.LogInformation("\"{NewTeamName}\" was successfully added", Name);
             
-            _navigator.UpdateCurrentViewType(ViewType.Teams, null);
+            _navigationService.UpdateCurrentViewType(ViewType.Teams, null);
         }
         catch (ValidationException ex)
         {

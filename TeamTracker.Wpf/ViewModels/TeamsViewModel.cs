@@ -33,7 +33,7 @@ public class TeamsViewModel : ViewModelBase
         }
     }
 
-    public TeamsViewModel(ITeamService teamService, INavigator navigator, ILogger<TeamsViewModel> logger)
+    public TeamsViewModel(ITeamService teamService, INavigationService navigationService, ILogger<TeamsViewModel> logger)
     {
         _teamService = teamService;
         _logger = logger;
@@ -42,10 +42,10 @@ public class TeamsViewModel : ViewModelBase
         TeamList.PropertyChanged += TeamsList_OnPropertyChanged;
 
         AddTeamCommand = new RelayCommand<object>(
-            _ => navigator.UpdateCurrentViewType(ViewType.TeamCreate, null));
+            _ => navigationService.UpdateCurrentViewType(ViewType.TeamCreate, null));
 
         EditTeamCommand = new RelayCommand<object>(
-            _ => navigator.UpdateCurrentViewType(ViewType.TeamUpdate, SelectedTeamDetails!.Id),
+            _ => navigationService.UpdateCurrentViewType(ViewType.TeamUpdate, SelectedTeamDetails!.Id),
             _ => SelectedTeamDetails is not null);
 
         DeleteTeamCommand = new RelayCommand<object>(
