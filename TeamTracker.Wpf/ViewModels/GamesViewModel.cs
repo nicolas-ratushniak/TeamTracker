@@ -72,7 +72,6 @@ public class GamesViewModel : BaseViewModel
 
             SelectedGameDetails = new GameDetailsItemViewModel
             {
-                Id = selectedGame.Id,
                 Date = game.Date.ToShortDateString(),
                 HomeTeamName = selectedGame.HomeTeamName,
                 HomeTeamOriginCity = selectedGame.HomeTeamOriginCity,

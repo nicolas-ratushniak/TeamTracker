@@ -1,10 +1,7 @@
-﻿using System;
-
-namespace TeamTracker.Wpf.ViewModels.Inners;
+﻿namespace TeamTracker.Wpf.ViewModels.Inners;
 
 public class GameDetailsItemViewModel
 {
-    public Guid Id { get; set; }
     public string Date { get; set; } = string.Empty;
     public string HomeTeamName { get; set; } = string.Empty;
     public string HomeTeamOriginCity { get; set; } = string.Empty;

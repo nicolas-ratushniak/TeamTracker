@@ -14,6 +14,7 @@ public class TeamsViewModel : BaseViewModel
 {
     private readonly ITeamService _teamService;
     private readonly ILogger<TeamsViewModel> _logger;
+    private Guid? _selectedTeamId;
     private TeamDetailsItemViewModel? _selectedTeamDetails;
 
     public TeamListViewModel TeamList { get; }
@@ -45,7 +46,7 @@ public class TeamsViewModel : BaseViewModel
             _ => navigationService.NavigateTo(ViewType.TeamCreate, null));
 
         EditTeamCommand = new RelayCommand<object>(
-            _ => navigationService.NavigateTo(ViewType.TeamUpdate, SelectedTeamDetails!.Id),
+            _ => navigationService.NavigateTo(ViewType.TeamUpdate, _selectedTeamId),
             _ => SelectedTeamDetails is not null);
 
         DeleteTeamCommand = new RelayCommand<object>(
@@ -76,7 +77,7 @@ public class TeamsViewModel : BaseViewModel
         
         try
         {
-            _teamService.Delete(SelectedTeamDetails!.Id);
+            _teamService.Delete((Guid)_selectedTeamId!);
             TeamList.RefreshItemSource();
         }
         catch (InvalidOperationException)
@@ -102,10 +103,10 @@ public class TeamsViewModel : BaseViewModel
         else
         {
             var team = _teamService.Get(selectedTeam.Id);
+            _selectedTeamId = team.Id;
 
             SelectedTeamDetails = new TeamDetailsItemViewModel
             {
-                Id = team.Id,
                 Name = team.Name,
                 OriginCity = team.OriginCity,
                 GamesWon = _teamService.GetGamesWon(team),
