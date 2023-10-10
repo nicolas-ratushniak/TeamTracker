@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
+using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
 using TeamTracker.Domain.Services;
@@ -166,23 +168,32 @@ public class GameListViewModel : BaseViewModel
 
     private IEnumerable<GameListItemViewModel> GetGames()
     {
-        return _gameInfoService.GetAll()
-            .Select(g =>
-            {
-                var homeTeam = _teamService.Get(g.TeamHomeId);
-                var awayTeam = _teamService.Get(g.TeamAwayId);
-
-                return new GameListItemViewModel
+        try
+        {
+            return _gameInfoService.GetAll()
+                .Select(g =>
                 {
-                    Id = g.Id,
-                    Date = g.Date,
-                    HomeTeamName = homeTeam.Name,
-                    HomeTeamOriginCity = homeTeam.OriginCity,
-                    HomeTeamScore = g.TeamHomeScore,
-                    AwayTeamName = awayTeam.Name,
-                    AwayTeamOriginCity = awayTeam.OriginCity,
-                    AwayTeamScore = g.TeamAwayScore
-                };
-            });
+                    var homeTeam = _teamService.Get(g.TeamHomeId);
+                    var awayTeam = _teamService.Get(g.TeamAwayId);
+
+                    return new GameListItemViewModel
+                    {
+                        Id = g.Id,
+                        Date = g.Date,
+                        HomeTeamName = homeTeam.Name,
+                        HomeTeamOriginCity = homeTeam.OriginCity,
+                        HomeTeamScore = g.TeamHomeScore,
+                        AwayTeamName = awayTeam.Name,
+                        AwayTeamOriginCity = awayTeam.OriginCity,
+                        AwayTeamScore = g.TeamAwayScore
+                    };
+                });
+        }
+        catch (InvalidDataException ex)
+        {
+            MessageBox.Show("The database file is broken", 
+                "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            throw;
+        }
     }
 }

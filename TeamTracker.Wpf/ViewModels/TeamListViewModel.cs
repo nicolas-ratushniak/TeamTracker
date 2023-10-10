@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
+using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
 using TeamTracker.Domain.Services;
@@ -264,17 +266,26 @@ public class TeamListViewModel : BaseViewModel
 
     private List<TeamListItemViewModel> GetTeams()
     {
-        return _teamService.GetAll()
-            .Select(t => new TeamListItemViewModel
-            {
-                Id = t.Id,
-                Name = t.Name,
-                OriginCity = t.OriginCity,
-                Points = _teamService.GetPoints(t),
-                Members = t.MembersCount,
-                TotalGames = _teamService.GetTotalGames(t),
-                Wins = _teamService.GetGamesWon(t)
-            })
-            .ToList();
+        try
+        {
+            return _teamService.GetAll()
+                .Select(t => new TeamListItemViewModel
+                {
+                    Id = t.Id,
+                    Name = t.Name,
+                    OriginCity = t.OriginCity,
+                    Points = _teamService.GetPoints(t),
+                    Members = t.MembersCount,
+                    TotalGames = _teamService.GetTotalGames(t),
+                    Wins = _teamService.GetGamesWon(t)
+                })
+                .ToList();
+        }
+        catch (InvalidDataException ex)
+        {
+            MessageBox.Show("The database file is broken", 
+                "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            throw;
+        }
     }
 }
