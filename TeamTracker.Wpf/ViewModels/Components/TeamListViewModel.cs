@@ -11,7 +11,7 @@ using TeamTracker.Domain.Services;
 using TeamTracker.Wpf.Commands;
 using TeamTracker.Wpf.ViewModels.Inners;
 
-namespace TeamTracker.Wpf.ViewModels;
+namespace TeamTracker.Wpf.ViewModels.Components;
 
 public class TeamListViewModel : BaseViewModel
 {
@@ -26,7 +26,7 @@ public class TeamListViewModel : BaseViewModel
     private int _maxPoints;
     private bool _isAdvancedFilterActive;
 
-    private List<Predicate<TeamListItemViewModel>> _filters = new();
+    private readonly List<Predicate<TeamListItemViewModel>> _filters = new();
 
     public ICommand ShowMostWinsCommand { get; }
     public ICommand ShowMostPointsCommand { get; }

@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 
-             xmlns:viewComponents="clr-namespace:TeamTracker.Wpf.ViewComponents"
+             xmlns:components="clr-namespace:TeamTracker.Wpf.Views.Components"
              mc:Ignorable="d"
              d:DesignHeight="500" d:DesignWidth="1000">
 
@@ -38,10 +38,10 @@
                     Content="Delete" />
         </StackPanel>
 
-        <viewComponents:TeamList Grid.Row="0" Grid.RowSpan="2" Grid.Column="0"
+        <components:TeamList Grid.Row="0" Grid.RowSpan="2" Grid.Column="0"
                                  DataContext="{Binding TeamList}" />
 
-        <viewComponents:TeamDetails Grid.Row="1" Grid.Column="1"
+        <components:TeamDetails Grid.Row="1" Grid.Column="1"
                                     Margin="24,0,0,0"
                                     DataContext="{Binding SelectedTeamDetails}" />
 
