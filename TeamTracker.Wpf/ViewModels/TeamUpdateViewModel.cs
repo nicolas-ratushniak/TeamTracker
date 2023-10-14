@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Windows.Input;
 using Microsoft.Extensions.Logging;
 using TeamTracker.Domain.Dto;
+using TeamTracker.Domain.Exceptions;
 using TeamTracker.Domain.Services;
 using TeamTracker.Wpf.Commands;
 using TeamTracker.Wpf.Navigation;
@@ -86,11 +87,19 @@ public class TeamUpdateViewModel : BaseViewModel
 
     private void LoadData(object obj)
     {
-        var team = _teamService.Get(_teamId);
-
-        Name = team.Name;
-        OriginCity = team.OriginCity;
-        MembersCount = team.MembersCount;
+        try
+        {
+            var team = _teamService.Get(_teamId);
+            
+            Name = team.Name;
+            OriginCity = team.OriginCity;
+            MembersCount = team.MembersCount;
+        }
+        catch (EntityNotFoundException)
+        {
+            _logger.LogError("Failed to get data of team with id {TeamId}. Redirecting to Teams view", _teamId);
+            _navigationService.NavigateTo(ViewType.Teams, null);
+        }
     }
 
     private bool EditTeam_CanExecute(object obj)

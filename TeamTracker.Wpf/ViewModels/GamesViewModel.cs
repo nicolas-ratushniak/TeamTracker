@@ -125,9 +125,11 @@ public class GamesViewModel : BaseViewModel
                     };
                 });
         }
-        catch (InvalidDataException ex)
+        catch (InvalidDataException)
         {
-            MessageBox.Show("The database file is broken", 
+            _logger.LogError("Failed to read games from the file");
+            
+            MessageBox.Show("The database file is broken. Please, contact the developer", 
                 "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             throw;
         }

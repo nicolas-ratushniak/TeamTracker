@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.IO;
 using System.Linq;
+using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
 using Microsoft.Extensions.Logging;
@@ -320,12 +322,24 @@ public class GameCreateViewModel : BaseViewModel
 
     private IEnumerable<TeamDropdownListItemViewModel> GetTeams()
     {
-        return _teamService.GetAll()
-            .Select(t => new TeamDropdownListItemViewModel
-            {
-                Id = t.Id,
-                Name = t.Name,
-                OriginCity = t.OriginCity
-            }).ToList();
+        try
+        {
+            return _teamService.GetAll()
+                .Select(t => new TeamDropdownListItemViewModel
+                {
+                    Id = t.Id,
+                    Name = t.Name,
+                    OriginCity = t.OriginCity
+                }).ToList();
+        }
+        catch (InvalidDataException)
+        {
+            _logger.LogError("Failed to read teams from the file");
+            
+            MessageBox.Show("The database file is broken. Please, contact the developer", 
+                "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            
+            throw;
+        }
     }
 }

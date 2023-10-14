@@ -84,8 +84,8 @@ public class TeamsViewModel : BaseViewModel
 
     private void DeleteTeam_Execute(object obj)
     {
-        var messageBoxResult = MessageBox.Show("Are you sure, you want to delete this team?", "Warning",
-            MessageBoxButton.YesNo, MessageBoxImage.Warning);
+        var messageBoxResult = MessageBox.Show("Are you sure, you want to delete this team?", 
+            "Warning", MessageBoxButton.YesNo, MessageBoxImage.Warning);
 
         if (messageBoxResult != MessageBoxResult.Yes)
         {
@@ -95,10 +95,16 @@ public class TeamsViewModel : BaseViewModel
         try
         {
             _teamService.Delete((Guid)_selectedTeamId!);
+            _logger.LogInformation("Successfully deleted a team with id {TeamId}", (Guid)_selectedTeamId!);
+            
             RefreshTeamListItems();
         }
         catch (InvalidOperationException)
         {
+            _logger.LogInformation(
+                "The team with id {TeamId} is not a newcomer. The deletion is cancelled", 
+                (Guid)_selectedTeamId!);
+            
             MessageBox.Show("Sorry, cannot delete this team. It's not a newcomer.", "Sorry", 
                 MessageBoxButton.OK, MessageBoxImage.Hand);
         }
@@ -163,10 +169,13 @@ public class TeamsViewModel : BaseViewModel
                 })
                 .ToList();
         }
-        catch (InvalidDataException ex)
+        catch (InvalidDataException)
         {
-            MessageBox.Show("The database file is broken", 
+            _logger.LogError("Failed to read teams from the file");
+            
+            MessageBox.Show("The database file is broken. Please, contact the developer", 
                 "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            
             throw;
         }
     }
