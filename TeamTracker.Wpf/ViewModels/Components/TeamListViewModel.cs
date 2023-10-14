@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.IO;
 using System.Linq;
-using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
 using TeamTracker.Domain.Services;
@@ -15,8 +13,6 @@ namespace TeamTracker.Wpf.ViewModels.Components;
 
 public class TeamListViewModel : BaseViewModel
 {
-    private readonly ITeamService _teamService;
-    private readonly ObservableCollection<TeamListItemViewModel> _teams;
     private TeamListItemViewModel? _selectedTeam;
     private string _teamsSearchFilter;
     private string _sortStrategyName;
@@ -35,6 +31,8 @@ public class TeamListViewModel : BaseViewModel
 
     public string[] SortOptions { get; }
     public ICollectionView TeamsCollectionView { get; }
+
+    public ObservableCollection<TeamListItemViewModel> Teams { get; }
 
     public int MinMembers
     {
@@ -125,7 +123,7 @@ public class TeamListViewModel : BaseViewModel
         }
     }
 
-    public TeamListViewModel(ITeamService teamService)
+    public TeamListViewModel()
     {
         SortOptions = new[]
         {
@@ -137,11 +135,10 @@ public class TeamListViewModel : BaseViewModel
             "Members Desc"
         };
 
-        _teamService = teamService;
         _teamsSearchFilter = string.Empty;
-        _teams = new ObservableCollection<TeamListItemViewModel>(GetTeams());
+        Teams = new ObservableCollection<TeamListItemViewModel>();
 
-        TeamsCollectionView = CollectionViewSource.GetDefaultView(_teams);
+        TeamsCollectionView = CollectionViewSource.GetDefaultView(Teams);
         AddDefaultFilters();
         ApplyFilters();
         TeamsCollectionView.SortDescriptions.Add(new SortDescription("FullName", ListSortDirection.Ascending));
@@ -173,7 +170,7 @@ public class TeamListViewModel : BaseViewModel
     private void ShowMostPoints_Execute(object obj)
     {
         AddDefaultFilters();
-        _filters.Add(t => t.Points == _teams.Max(team => team.Points));
+        _filters.Add(t => t.Points == Teams.Max(team => team.Points));
         ApplyFilters();
 
         _isAdvancedFilterActive = true;
@@ -182,7 +179,7 @@ public class TeamListViewModel : BaseViewModel
     private void ShowMostWins_Execute(object obj)
     {
         AddDefaultFilters();
-        _filters.Add(t => t.Wins == _teams.Max(team => team.Wins));
+        _filters.Add(t => t.Wins == Teams.Max(team => team.Wins));
         ApplyFilters();
 
         _isAdvancedFilterActive = true;
@@ -252,40 +249,5 @@ public class TeamListViewModel : BaseViewModel
         }
 
         return team.Points >= MinPoints && team.Points <= actualMaxPoints;
-    }
-
-    public void RefreshItemSource()
-    {
-        _teams.Clear();
-
-        foreach (var team in GetTeams())
-        {
-            _teams.Add(team);
-        }
-    }
-
-    private List<TeamListItemViewModel> GetTeams()
-    {
-        try
-        {
-            return _teamService.GetAll()
-                .Select(t => new TeamListItemViewModel
-                {
-                    Id = t.Id,
-                    Name = t.Name,
-                    OriginCity = t.OriginCity,
-                    Points = _teamService.GetPoints(t),
-                    Members = t.MembersCount,
-                    TotalGames = _teamService.GetTotalGames(t),
-                    Wins = _teamService.GetGamesWon(t)
-                })
-                .ToList();
-        }
-        catch (InvalidDataException ex)
-        {
-            MessageBox.Show("The database file is broken", 
-                "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            throw;
-        }
     }
 }

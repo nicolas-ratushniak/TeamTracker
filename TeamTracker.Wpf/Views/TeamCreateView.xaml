@@ -6,8 +6,7 @@
 
              xmlns:controls="clr-namespace:TeamTracker.Wpf.Controls"
              mc:Ignorable="d"
-             d:DesignHeight="600" d:DesignWidth="1000"
-             Loaded="OnLoaded">
+             d:DesignHeight="600" d:DesignWidth="1000">
     
     <UserControl.InputBindings>
         <KeyBinding Key="Enter"

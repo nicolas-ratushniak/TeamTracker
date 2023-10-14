@@ -15,9 +15,6 @@ namespace TeamTracker.Wpf.ViewModels.Components;
 
 public class GameListViewModel : BaseViewModel
 {
-    private readonly IGameInfoService _gameInfoService;
-    private readonly ITeamService _teamService;
-    private readonly ObservableCollection<GameListItemViewModel> _games;
     private GameListItemViewModel? _selectedGame;
     private string _gamesSearchFilter = string.Empty;
     private string _sortStrategyName;
@@ -30,6 +27,8 @@ public class GameListViewModel : BaseViewModel
 
     public string[] SortOptions { get; }
     public ICollectionView GamesCollectionView { get; }
+
+    public ObservableCollection<GameListItemViewModel> Games { get; }
 
     public string GamesSearchFilter
     {
@@ -68,7 +67,7 @@ public class GameListViewModel : BaseViewModel
         }
     }
 
-    public GameListViewModel(IGameInfoService gameInfoService, ITeamService teamService)
+    public GameListViewModel()
     {
         SortOptions = new[]
         {
@@ -76,12 +75,9 @@ public class GameListViewModel : BaseViewModel
             "Older first"
         };
 
-        _gameInfoService = gameInfoService;
-        _teamService = teamService;
+        Games = new ObservableCollection<GameListItemViewModel>();
 
-        _games = new ObservableCollection<GameListItemViewModel>(GetGames());
-
-        GamesCollectionView = CollectionViewSource.GetDefaultView(_games);
+        GamesCollectionView = CollectionViewSource.GetDefaultView(Games);
         SetDefaultFilters();
         UpdateSortStrategy(new SortDescription(nameof(SelectedGame.Date), ListSortDirection.Ascending));
 
@@ -102,7 +98,7 @@ public class GameListViewModel : BaseViewModel
             }
 
             var currentGoalsDiff = Math.Abs(g.HomeTeamScore - g.AwayTeamScore);
-            var maxGoalsDiff = _games.Max(game => Math.Abs(game.HomeTeamScore - game.AwayTeamScore));
+            var maxGoalsDiff = Games.Max(game => Math.Abs(game.HomeTeamScore - game.AwayTeamScore));
 
             return FilterGamesBySearch(g) && currentGoalsDiff == maxGoalsDiff;
         };
@@ -164,36 +160,5 @@ public class GameListViewModel : BaseViewModel
     {
         GamesCollectionView.SortDescriptions.Clear();
         GamesCollectionView.SortDescriptions.Add(sortDescription);
-    }
-
-    private IEnumerable<GameListItemViewModel> GetGames()
-    {
-        try
-        {
-            return _gameInfoService.GetAll()
-                .Select(g =>
-                {
-                    var homeTeam = _teamService.Get(g.TeamHomeId);
-                    var awayTeam = _teamService.Get(g.TeamAwayId);
-
-                    return new GameListItemViewModel
-                    {
-                        Id = g.Id,
-                        Date = g.Date,
-                        HomeTeamName = homeTeam.Name,
-                        HomeTeamOriginCity = homeTeam.OriginCity,
-                        HomeTeamScore = g.TeamHomeScore,
-                        AwayTeamName = awayTeam.Name,
-                        AwayTeamOriginCity = awayTeam.OriginCity,
-                        AwayTeamScore = g.TeamAwayScore
-                    };
-                });
-        }
-        catch (InvalidDataException ex)
-        {
-            MessageBox.Show("The database file is broken", 
-                "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            throw;
-        }
     }
 }

@@ -79,14 +79,18 @@ public class TeamUpdateViewModel : BaseViewModel
         _logger = logger;
         _teamId = teamId;
         
-        var team = _teamService.Get(teamId);
+        SubmitCommand = new RelayCommand<object>(EditTeam, EditTeam_CanExecute);
+        CancelCommand = new RelayCommand<object>(_ => _navigationService.NavigateTo(ViewType.Teams, null));
+        LoadedCommand = new RelayCommand<object>(LoadData);
+    }
+
+    private void LoadData(object obj)
+    {
+        var team = _teamService.Get(_teamId);
 
         Name = team.Name;
         OriginCity = team.OriginCity;
         MembersCount = team.MembersCount;
-        
-        SubmitCommand = new RelayCommand<object>(EditTeam, EditTeam_CanExecute);
-        CancelCommand = new RelayCommand<object>(_ => _navigationService.NavigateTo(ViewType.Teams, null));
     }
 
     private bool EditTeam_CanExecute(object obj)

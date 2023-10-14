@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -27,9 +28,10 @@ public class GameCreateViewModel : BaseViewModel
     private bool _areHomeCandidatesVisible;
     private bool _areAwayCandidatesVisible;
     private DateTime _date;
-    private int _homeTeamScore; 
+    private int _homeTeamScore;
     private int _awayTeamScore;
     private string? _errorMessage;
+    private readonly ObservableCollection<TeamDropdownListItemViewModel> _teams;
 
     public ICommand SubmitCommand { get; }
     public ICommand CancelCommand { get; }
@@ -52,7 +54,7 @@ public class GameCreateViewModel : BaseViewModel
         {
             if (value.Equals(_date)) return;
             _date = value;
-            
+
             OnPropertyChanged();
             CommandManager.InvalidateRequerySuggested();
         }
@@ -65,7 +67,7 @@ public class GameCreateViewModel : BaseViewModel
         {
             if (value == _homeTeamScore) return;
             _homeTeamScore = value;
-            
+
             OnPropertyChanged();
             CommandManager.InvalidateRequerySuggested();
         }
@@ -78,7 +80,7 @@ public class GameCreateViewModel : BaseViewModel
         {
             if (value == _awayTeamScore) return;
             _awayTeamScore = value;
-            
+
             OnPropertyChanged();
             CommandManager.InvalidateRequerySuggested();
         }
@@ -105,7 +107,7 @@ public class GameCreateViewModel : BaseViewModel
         {
             if (Equals(value, _selectedAwayTeam)) return;
             _selectedAwayTeam = value;
-            
+
             OnPropertyChanged();
             OnSelectedAwayTeamChanged();
             CommandManager.InvalidateRequerySuggested();
@@ -132,7 +134,7 @@ public class GameCreateViewModel : BaseViewModel
         {
             if (value == _awayTeamSearchFilter) return;
             _awayTeamSearchFilter = value ?? string.Empty;
-            
+
             OnPropertyChanged();
             OnAwayTeamFilterChanged();
         }
@@ -164,7 +166,8 @@ public class GameCreateViewModel : BaseViewModel
     public ICollectionView AwayTeamCandidates { get; }
 
 
-    public GameCreateViewModel(IGameInfoService gameInfoService, ITeamService teamService, INavigationService navigationService,
+    public GameCreateViewModel(IGameInfoService gameInfoService, ITeamService teamService,
+        INavigationService navigationService,
         ILogger<GameCreateViewModel> logger)
     {
         _gameInfoService = gameInfoService;
@@ -173,16 +176,39 @@ public class GameCreateViewModel : BaseViewModel
         _logger = logger;
         _date = DateTime.Now;
 
-        HomeTeamCandidates = CollectionViewSource.GetDefaultView(GetTeams());
-        HomeTeamCandidates.SortDescriptions.Add(new SortDescription(nameof(TeamDropdownListItemViewModel.FullName), ListSortDirection.Ascending));
-        HomeTeamCandidates.Filter = o => o is TeamDropdownListItemViewModel t && FilterTeamBySearch(t, HomeTeamSearchFilter);
+        _teams = new ObservableCollection<TeamDropdownListItemViewModel>();
 
-        AwayTeamCandidates = CollectionViewSource.GetDefaultView(GetTeams());
-        AwayTeamCandidates.SortDescriptions.Add(new SortDescription(nameof(TeamDropdownListItemViewModel.FullName), ListSortDirection.Ascending));
-        AwayTeamCandidates.Filter = o => o is TeamDropdownListItemViewModel t && FilterTeamBySearch(t, AwayTeamSearchFilter);
+        HomeTeamCandidates = CollectionViewSource.GetDefaultView(_teams);
+
+        HomeTeamCandidates.SortDescriptions.Add(new SortDescription(
+            nameof(TeamDropdownListItemViewModel.FullName),
+            ListSortDirection.Ascending));
+        
+        HomeTeamCandidates.Filter = o => 
+            o is TeamDropdownListItemViewModel t && 
+            FilterTeamBySearch(t, HomeTeamSearchFilter);
+
+        AwayTeamCandidates = CollectionViewSource.GetDefaultView(_teams);
+        
+        AwayTeamCandidates.SortDescriptions.Add(
+            new SortDescription(nameof(TeamDropdownListItemViewModel.FullName),
+            ListSortDirection.Ascending));
+        
+        AwayTeamCandidates.Filter = o => 
+            o is TeamDropdownListItemViewModel t && 
+            FilterTeamBySearch(t, AwayTeamSearchFilter);
 
         SubmitCommand = new RelayCommand<object>(AddGame_Execute, AddGame_CanExecute);
         CancelCommand = new RelayCommand<object>(_ => navigationService.NavigateTo(ViewType.Games, null));
+        LoadedCommand = new RelayCommand<object>(LoadData);
+    }
+
+    private void LoadData(object obj)
+    {
+        foreach (var team in GetTeams())
+        {
+            _teams.Add(team);
+        }
     }
 
     private bool AddGame_CanExecute(object obj)
@@ -206,7 +232,7 @@ public class GameCreateViewModel : BaseViewModel
         {
             _gameInfoService.PlayGame(dto);
             _logger.LogInformation("The Game was successfully created");
-            
+
             _navigationService.NavigateTo(ViewType.Games, null);
         }
         catch (ValidationException ex)
@@ -226,7 +252,7 @@ public class GameCreateViewModel : BaseViewModel
         HomeTeamSearchFilter = _selectedHomeTeam.FullName;
         AreHomeCandidatesVisible = false;
     }
-    
+
     private void OnSelectedAwayTeamChanged()
     {
         if (_selectedAwayTeam is null)
@@ -257,10 +283,10 @@ public class GameCreateViewModel : BaseViewModel
             AreHomeCandidatesVisible = true;
             _selectedHomeTeam = null;
         }
-        
+
         HomeTeamCandidates.Refresh();
     }
-    
+
     private void OnAwayTeamFilterChanged()
     {
         var filter = AwayTeamSearchFilter;
@@ -280,14 +306,14 @@ public class GameCreateViewModel : BaseViewModel
             AreAwayCandidatesVisible = true;
             _selectedAwayTeam = null;
         }
-        
+
         AwayTeamCandidates.Refresh();
     }
 
     private bool FilterTeamBySearch(TeamDropdownListItemViewModel teamDropdownList, string filter)
     {
         var lowerFilter = filter.ToLower();
-        
+
         return teamDropdownList.FullName.ToLower().StartsWith(lowerFilter) ||
                teamDropdownList.OriginCity.ToLower().StartsWith(lowerFilter);
     }

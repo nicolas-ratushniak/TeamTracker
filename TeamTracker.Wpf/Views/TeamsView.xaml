@@ -6,7 +6,8 @@
 
              xmlns:components="clr-namespace:TeamTracker.Wpf.Views.Components"
              mc:Ignorable="d"
-             d:DesignHeight="500" d:DesignWidth="1000">
+             d:DesignHeight="500" d:DesignWidth="1000"
+             Loaded="OnLoaded">
 
     <Grid Margin="24">
         <Grid.RowDefinitions>

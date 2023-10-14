@@ -68,7 +68,10 @@ public class TeamCreateViewModel : BaseViewModel
         }
     }
 
-    public TeamCreateViewModel(ITeamService teamService, INavigationService navigationService, ILogger<TeamCreateViewModel> logger)
+    public TeamCreateViewModel(
+        ITeamService teamService, 
+        INavigationService navigationService, 
+        ILogger<TeamCreateViewModel> logger)
     {
         _teamService = teamService;
         _navigationService = navigationService;

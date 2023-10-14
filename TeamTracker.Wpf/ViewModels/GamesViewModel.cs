@@ -1,4 +1,8 @@
-﻿using System.ComponentModel;
+﻿using System.Collections.Generic;
+using System.ComponentModel;
+using System.IO;
+using System.Linq;
+using System.Windows;
 using System.Windows.Input;
 using Microsoft.Extensions.Logging;
 using TeamTracker.Domain.Services;
@@ -12,6 +16,7 @@ namespace TeamTracker.Wpf.ViewModels;
 public class GamesViewModel : BaseViewModel
 {
     private readonly IGameInfoService _gameInfoService;
+    private readonly ITeamService _teamService;
     private readonly ILogger<GamesViewModel> _logger;
     private GameDetailsItemViewModel? _selectedGameDetails;
 
@@ -29,18 +34,31 @@ public class GamesViewModel : BaseViewModel
         }
     }
 
-    public GamesViewModel(IGameInfoService gameInfoService, ITeamService teamService, INavigationService navigationService,
+    public GamesViewModel(
+        IGameInfoService gameInfoService, 
+        ITeamService teamService, 
+        INavigationService navigationService,
         ILogger<GamesViewModel> logger)
     {
         _gameInfoService = gameInfoService;
+        _teamService = teamService;
         _logger = logger;
 
-        GameList = new GameListViewModel(gameInfoService, teamService);
-        
+        GameList = new GameListViewModel();
         GameList.PropertyChanged += SelectedGame_OnPropertyChanged;
 
         AddGameCommand = new RelayCommand<object>(
             _ => navigationService.NavigateTo(ViewType.GameCreate, null));
+
+        LoadedCommand = new RelayCommand<object>(LoadData);
+    }
+
+    private void LoadData(object obj)
+    {
+        foreach (var game in GetGames())
+        {
+            GameList.Games.Add(game);
+        }
     }
 
     public override void Dispose()
@@ -81,6 +99,37 @@ public class GamesViewModel : BaseViewModel
                 AwayTeamOriginCity = selectedGame.AwayTeamOriginCity,
                 AwayTeamScore = selectedGame.AwayTeamScore
             };
+        }
+    }
+    
+    private IEnumerable<GameListItemViewModel> GetGames()
+    {
+        try
+        {
+            return _gameInfoService.GetAll()
+                .Select(g =>
+                {
+                    var homeTeam = _teamService.Get(g.TeamHomeId);
+                    var awayTeam = _teamService.Get(g.TeamAwayId);
+
+                    return new GameListItemViewModel
+                    {
+                        Id = g.Id,
+                        Date = g.Date,
+                        HomeTeamName = homeTeam.Name,
+                        HomeTeamOriginCity = homeTeam.OriginCity,
+                        HomeTeamScore = g.TeamHomeScore,
+                        AwayTeamName = awayTeam.Name,
+                        AwayTeamOriginCity = awayTeam.OriginCity,
+                        AwayTeamScore = g.TeamAwayScore
+                    };
+                });
+        }
+        catch (InvalidDataException ex)
+        {
+            MessageBox.Show("The database file is broken", 
+                "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            throw;
         }
     }
 }

@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
+using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using Microsoft.Extensions.Logging;
@@ -35,11 +38,14 @@ public class TeamsViewModel : BaseViewModel
         }
     }
 
-    public TeamsViewModel(ITeamService teamService, INavigationService navigationService, ILogger<TeamsViewModel> logger)
+    public TeamsViewModel(
+        ITeamService teamService, 
+        INavigationService navigationService, 
+        ILogger<TeamsViewModel> logger)
     {
         _teamService = teamService;
         _logger = logger;
-        TeamList = new TeamListViewModel(teamService);
+        TeamList = new TeamListViewModel();
 
         TeamList.PropertyChanged += TeamsList_OnPropertyChanged;
 
@@ -53,6 +59,16 @@ public class TeamsViewModel : BaseViewModel
         DeleteTeamCommand = new RelayCommand<object>(
             DeleteTeam_Execute,
             _ => SelectedTeamDetails is not null);
+
+        LoadedCommand = new RelayCommand<object>(LoadData);
+    }
+
+    private void LoadData(object obj)
+    {
+        foreach (var team in GetTeams())
+        {
+            TeamList.Teams.Add(team);
+        }
     }
 
     public override void Dispose()
@@ -79,7 +95,7 @@ public class TeamsViewModel : BaseViewModel
         try
         {
             _teamService.Delete((Guid)_selectedTeamId!);
-            TeamList.RefreshItemSource();
+            RefreshTeamListItems();
         }
         catch (InvalidOperationException)
         {
@@ -117,6 +133,41 @@ public class TeamsViewModel : BaseViewModel
                 TotalGames = _teamService.GetTotalGames(team),
                 Points = _teamService.GetPoints(team)
             };
+        }
+    }
+    
+    private void RefreshTeamListItems()
+    {
+        TeamList.Teams.Clear();
+    
+        foreach (var team in GetTeams())
+        {
+            TeamList.Teams.Add(team);
+        }
+    }
+    
+    private IEnumerable<TeamListItemViewModel> GetTeams()
+    {
+        try
+        {
+            return _teamService.GetAll()
+                .Select(t => new TeamListItemViewModel
+                {
+                    Id = t.Id,
+                    Name = t.Name,
+                    OriginCity = t.OriginCity,
+                    Points = _teamService.GetPoints(t),
+                    Members = t.MembersCount,
+                    TotalGames = _teamService.GetTotalGames(t),
+                    Wins = _teamService.GetGamesWon(t)
+                })
+                .ToList();
+        }
+        catch (InvalidDataException ex)
+        {
+            MessageBox.Show("The database file is broken", 
+                "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            throw;
         }
     }
 }
