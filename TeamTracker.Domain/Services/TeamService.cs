@@ -72,7 +72,7 @@ public class TeamService : ITeamService
     {
         var team = Get(id);
 
-        if (GetTotalGames(team) > 0)
+        if (GetTotalGames(id) > 0)
         {
             throw new InvalidOperationException("Cannot delete a team having played once");
         }
@@ -81,8 +81,10 @@ public class TeamService : ITeamService
         _teamRepository.SaveChanges();
     }
 
-    public int GetGamesWon(Team team)
+    public int GetGamesWon(Guid id)
     {
+        var team = Get(id);
+        
         var gamesWonAtHome = _gameRepository.GetAll()
             .Count(g => g.TeamHomeId == team.Id && g.TeamHomeScore > g.TeamAwayScore);
         
@@ -92,14 +94,19 @@ public class TeamService : ITeamService
         return gamesWonAtHome + gamesWonAway;
     }
     
-    public int GetGamesDrawn(Team team)
+    public int GetGamesDrawn(Guid id)
     {
+        var team = Get(id);
+        
         return _gameRepository.GetAll()
-            .Count(g => (g.TeamHomeId == team.Id || g.TeamAwayId == team.Id) && g.TeamHomeScore == g.TeamAwayScore);
+            .Count(g => (g.TeamHomeId == team.Id || g.TeamAwayId == team.Id) && 
+                        g.TeamHomeScore == g.TeamAwayScore);
     }
     
-    public int GetGamesLost(Team team)
+    public int GetGamesLost(Guid id)
     {
+        var team = Get(id);
+        
         var gamesLostAtHome = _gameRepository.GetAll()
             .Count(g => g.TeamHomeId == team.Id && g.TeamHomeScore < g.TeamAwayScore);
         
@@ -109,13 +116,15 @@ public class TeamService : ITeamService
         return gamesLostAtHome + gamesLostAway;
     }
 
-    public int GetPoints(Team team)
+    public int GetPoints(Guid id)
     {
-        return GetGamesWon(team) * 3 + GetGamesDrawn(team);
+        return GetGamesWon(id) * 3 + GetGamesDrawn(id);
     }
 
-    public int GetTotalGames(Team team)
+    public int GetTotalGames(Guid id)
     {
+        var team = Get(id);
+        
         return _gameRepository.GetAll()
             .Count(g => g.TeamHomeId == team.Id || g.TeamAwayId == team.Id);
     }

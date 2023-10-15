@@ -10,9 +10,9 @@ public interface ITeamService
     public void Add(TeamCreateDto dto); 
     public void Update(TeamUpdateDto dto);
     public void Delete(Guid id);
-    public int GetPoints(Team team);
-    public int GetGamesWon(Team team);
-    public int GetGamesDrawn(Team team);
-    public int GetGamesLost(Team team);
-    public int GetTotalGames(Team team);
+    public int GetPoints(Guid id);
+    public int GetGamesWon(Guid id);
+    public int GetGamesDrawn(Guid id);
+    public int GetGamesLost(Guid id);
+    public int GetTotalGames(Guid id);
 }
