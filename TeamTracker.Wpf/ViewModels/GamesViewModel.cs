@@ -21,7 +21,7 @@ public class GamesViewModel : BaseViewModel
     private GameDetailsItemViewModel? _selectedGameDetails;
 
     public ICommand AddGameCommand { get; }
-    public GameListViewModel GameList { get; }
+    public GameListComponent GameList { get; }
 
     public GameDetailsItemViewModel? SelectedGameDetails
     {
@@ -44,7 +44,7 @@ public class GamesViewModel : BaseViewModel
         _teamService = teamService;
         _logger = logger;
 
-        GameList = new GameListViewModel();
+        GameList = new GameListComponent();
         GameList.PropertyChanged += SelectedGame_OnPropertyChanged;
 
         AddGameCommand = new RelayCommand<object>(
@@ -79,7 +79,7 @@ public class GamesViewModel : BaseViewModel
             return;
         }
 
-        var selectedGame = ((GameListViewModel)sender!).SelectedGame;
+        var selectedGame = ((GameListComponent)sender!).SelectedGame;
 
         if (selectedGame is null)
         {

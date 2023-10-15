@@ -5,9 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 
              xmlns:controls="clr-namespace:TeamTracker.Wpf.Controls"
-             xmlns:viewModels="clr-namespace:TeamTracker.Wpf.ViewModels"
-             xmlns:converters="clr-namespace:TeamTracker.Wpf.Converters"
-             xmlns:inners="clr-namespace:TeamTracker.Wpf.ViewModels.Inners"
+             xmlns:components="clr-namespace:TeamTracker.Wpf.Views.Components"
              mc:Ignorable="d"
              d:DesignHeight="580" d:DesignWidth="400"
              Loaded="OnLoaded">
@@ -18,22 +16,6 @@
         <KeyBinding Key="Escape"
                     Command="{Binding Path=CancelCommand}" />
     </UserControl.InputBindings>
-
-    <UserControl.Resources>
-        <converters:InverseBoolToVisibilityConverter x:Key="InverseBoolToVisibilityConverter" />
-
-        <Style x:Key="SelectTeamListBox" TargetType="ListBox">
-            <Setter Property="BorderThickness" Value="0" />
-            <Setter Property="ItemTemplate">
-                <Setter.Value>
-                    <DataTemplate DataType="{x:Type inners:TeamListItemViewModel}">
-                        <TextBlock Text="{Binding Path=FullName}"
-                                   FontSize="18" />
-                    </DataTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-    </UserControl.Resources>
 
     <Grid>
         <Grid.RowDefinitions>
@@ -109,48 +91,9 @@
                                Margin="0,0,0,15" />
 
                     <!-- Select Home Team -->
-                    <Grid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"
-                          Margin="0,0,0,10">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                        </Grid.RowDefinitions>
-
-                        <controls:PlaceholderTextBox Grid.Row="0"
-                                                     Text="{Binding HomeTeamSearchFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                     Placeholder="Select Home Team" />
-
-                        <Popup Grid.Row="1"
-                               IsOpen="{Binding AreHomeCandidatesVisible}"
-                               ClipToBounds="True"
-                               AllowsTransparency="True"
-                               PopupAnimation="Slide"
-                               StaysOpen="False">
-
-                            <Border Style="{StaticResource NiceBorder}"
-                                    Width="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=Grid}}"
-                                    MaxHeight="250"
-                                    Background="White">
-                                <Grid>
-                                    <TextBlock Text="Nothing found"
-                                               Panel.ZIndex="1"
-                                               TextWrapping="Wrap"
-                                               Foreground="{StaticResource BrushGrey}"
-                                               FontSize="16"
-                                               Visibility="{Binding ElementName=LbPopup1, Path=HasItems,
-                                               Converter={StaticResource InverseBoolToVisibilityConverter}}" />
-
-                                    <ListBox x:Name="LbPopup1"
-                                             ScrollViewer.CanContentScroll="True"
-                                             ScrollViewer.VerticalScrollBarVisibility="Hidden"
-                                             ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                                             Style="{StaticResource SelectTeamListBox}"
-                                             ItemsSource="{Binding HomeTeamCandidates}"
-                                             SelectedItem="{Binding SelectedHomeTeam, Mode=TwoWay}" />
-                                </Grid>
-                            </Border>
-                        </Popup>
-                    </Grid>
+                    <components:TeamSelector Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"
+                                             Margin="0,0,0,10"
+                                             DataContext="{Binding HomeTeamSelector}" />
 
                     <TextBlock Grid.Row="3" Grid.Column="0"
                                Text="Scored:"
@@ -168,50 +111,9 @@
                                Margin="0,0,0,15" />
 
                     <!-- Select Away Team -->
-                    <Grid Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2"
-                          Margin="0,0,0,10">
-
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                        </Grid.RowDefinitions>
-
-                        <controls:PlaceholderTextBox Grid.Row="0"
-                                                     Text="{Binding Path=AwayTeamSearchFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                     Placeholder="Select Away Team" />
-
-                        <Popup Grid.Row="1"
-                               IsOpen="{Binding AreAwayCandidatesVisible}"
-                               ClipToBounds="True"
-                               AllowsTransparency="True"
-                               PopupAnimation="Slide"
-                               StaysOpen="False">
-
-                            <Border Style="{StaticResource NiceBorder}"
-                                    Width="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=Grid}}"
-                                    MaxHeight="250"
-                                    Background="White">
-
-                                <Grid>
-
-                                    <TextBlock Text="Nothing found"
-                                               Panel.ZIndex="1"
-                                               Foreground="{StaticResource BrushGrey}"
-                                               FontSize="16"
-                                               Visibility="{Binding ElementName=LbPopup2, Path=HasItems,
-                                               Converter={StaticResource InverseBoolToVisibilityConverter}}" />
-
-                                    <ListBox x:Name="LbPopup2"
-                                             ScrollViewer.CanContentScroll="True"
-                                             ScrollViewer.VerticalScrollBarVisibility="Hidden"
-                                             ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                                             Style="{StaticResource SelectTeamListBox}"
-                                             ItemsSource="{Binding AwayTeamCandidates}"
-                                             SelectedItem="{Binding SelectedAwayTeam, Mode=TwoWay}" />
-                                </Grid>
-                            </Border>
-                        </Popup>
-                    </Grid>
+                    <components:TeamSelector Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2"
+                                             Margin="0,0,0,10"
+                                             DataContext="{Binding AwayTeamSelector}" />
 
                     <TextBlock Grid.Row="6" Grid.Column="0"
                                Text="Scored:"
