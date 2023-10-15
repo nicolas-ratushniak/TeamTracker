@@ -221,12 +221,12 @@ public class TeamsViewModel : BaseViewModel
 
         Name = team.Name;
         OriginCity = team.OriginCity;
-        GamesWon = _teamService.GetGamesWon(team.Id);
-        GamesLost = _teamService.GetGamesLost(team.Id);
-        GamesDrawn = _teamService.GetGamesDrawn(team.Id);
+        GamesWon = _teamService.CountGamesWon(team.Id);
+        GamesLost = _teamService.CountGamesLost(team.Id);
+        GamesDrawn = _teamService.CountGamesDrawn(team.Id);
         MembersCount = team.MembersCount;
-        TotalGames = _teamService.GetTotalGames(team.Id);
-        Points = _teamService.GetPoints(team.Id);
+        TotalGames = _teamService.CountTotalGames(team.Id);
+        Points = _teamService.CountPoints(team.Id);
         IsTeamSelected = true;
     }
 
@@ -250,10 +250,10 @@ public class TeamsViewModel : BaseViewModel
                     Id = t.Id,
                     Name = t.Name,
                     OriginCity = t.OriginCity,
-                    Points = _teamService.GetPoints(t.Id),
+                    Points = _teamService.CountPoints(t.Id),
                     Members = t.MembersCount,
-                    TotalGames = _teamService.GetTotalGames(t.Id),
-                    Wins = _teamService.GetGamesWon(t.Id)
+                    TotalGames = _teamService.CountTotalGames(t.Id),
+                    Wins = _teamService.CountGamesWon(t.Id)
                 })
                 .ToList();
         }

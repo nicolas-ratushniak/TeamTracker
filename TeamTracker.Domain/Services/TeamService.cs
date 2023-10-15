@@ -72,7 +72,7 @@ public class TeamService : ITeamService
     {
         var team = Get(id);
 
-        if (GetTotalGames(id) > 0)
+        if (CountTotalGames(id) > 0)
         {
             throw new InvalidOperationException("Cannot delete a team having played once");
         }
@@ -81,7 +81,7 @@ public class TeamService : ITeamService
         _teamRepository.SaveChanges();
     }
 
-    public int GetGamesWon(Guid id)
+    public int CountGamesWon(Guid id)
     {
         var team = Get(id);
         
@@ -94,7 +94,7 @@ public class TeamService : ITeamService
         return gamesWonAtHome + gamesWonAway;
     }
     
-    public int GetGamesDrawn(Guid id)
+    public int CountGamesDrawn(Guid id)
     {
         var team = Get(id);
         
@@ -103,7 +103,7 @@ public class TeamService : ITeamService
                         g.TeamHomeScore == g.TeamAwayScore);
     }
     
-    public int GetGamesLost(Guid id)
+    public int CountGamesLost(Guid id)
     {
         var team = Get(id);
         
@@ -116,12 +116,12 @@ public class TeamService : ITeamService
         return gamesLostAtHome + gamesLostAway;
     }
 
-    public int GetPoints(Guid id)
+    public int CountPoints(Guid id)
     {
-        return GetGamesWon(id) * 3 + GetGamesDrawn(id);
+        return CountGamesWon(id) * 3 + CountGamesDrawn(id);
     }
 
-    public int GetTotalGames(Guid id)
+    public int CountTotalGames(Guid id)
     {
         var team = Get(id);
         
