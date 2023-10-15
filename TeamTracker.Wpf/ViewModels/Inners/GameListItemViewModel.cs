@@ -12,6 +12,7 @@ public class GameListItemViewModel
     public string AwayTeamName { get; set; } = string.Empty;
     public string AwayTeamOriginCity { get; set; } = string.Empty;
     public int AwayTeamScore { get; set; }
+    public int GoalDifference => Math.Abs(HomeTeamScore - AwayTeamScore);
     public string HomeTeamFullName => $"{HomeTeamName}-{HomeTeamOriginCity}";
     public string AwayTeamFullName => $"{AwayTeamName}-{AwayTeamOriginCity}";
 }

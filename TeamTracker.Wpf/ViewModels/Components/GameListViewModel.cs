@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.IO;
 using System.Linq;
-using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
-using TeamTracker.Domain.Services;
 using TeamTracker.Wpf.Commands;
 using TeamTracker.Wpf.ViewModels.Inners;
 
@@ -15,11 +11,20 @@ namespace TeamTracker.Wpf.ViewModels.Components;
 
 public class GameListViewModel : BaseViewModel
 {
-    private GameListItemViewModel? _selectedGame;
-    private string _gamesSearchFilter = string.Empty;
-    private string _sortStrategyName;
-    private bool _isAdvancedFilterActive;
+    private class GamesFilter
+    {
+        public string? HomeTeamFullName { get; set; }
+        public string? AwayTeamFullName { get; set; }
+        public int? GoalDifference { get; set; }
+        public int? ResultsToShowCount { get; set; }
+    }
 
+    private readonly GamesFilter _gamesFilter;
+    private GameListItemViewModel? _selectedGame;
+    private string _sortStrategyName;
+    private string _homeTeamNameFilter = string.Empty;
+    private string _awayTeamNameFilter = string.Empty;
+    private bool _isAdvancedFilterActive;
 
     public ICommand ShowMostCrushingGameCommand { get; }
     public ICommand ShowDrawsCommand { get; }
@@ -30,16 +35,31 @@ public class GameListViewModel : BaseViewModel
 
     public ObservableCollection<GameListItemViewModel> Games { get; }
 
-    public string GamesSearchFilter
+    public string HomeTeamNameFilter
     {
-        get => _gamesSearchFilter;
+        get => _homeTeamNameFilter;
         set
         {
-            if (value == _gamesSearchFilter) return;
-            _gamesSearchFilter = value ?? string.Empty;
+            if (value == _homeTeamNameFilter) return;
+            _homeTeamNameFilter = value;
+            _gamesFilter.HomeTeamFullName = value;
 
             OnPropertyChanged();
-            GamesCollectionView.Refresh();
+            FilterGames();
+        }
+    }
+
+    public string AwayTeamNameFilter
+    {
+        get => _awayTeamNameFilter;
+        set
+        {
+            if (value == _awayTeamNameFilter) return;
+            _awayTeamNameFilter = value;
+            _gamesFilter.AwayTeamFullName = value;
+
+            OnPropertyChanged();
+            FilterGames();
         }
     }
 
@@ -75,75 +95,36 @@ public class GameListViewModel : BaseViewModel
             "Older first"
         };
 
+        _gamesFilter = new GamesFilter();
         Games = new ObservableCollection<GameListItemViewModel>();
 
         GamesCollectionView = CollectionViewSource.GetDefaultView(Games);
-        SetDefaultFilters();
         UpdateSortStrategy(new SortDescription(nameof(SelectedGame.Date), ListSortDirection.Ascending));
 
         ShowMostCrushingGameCommand = new RelayCommand<object>(ShowMostCrushingGame_Execute);
         ShowDrawsCommand = new RelayCommand<object>(ShowDrawsCommand_Execute);
-        ResetAdvancedFiltersCommand = new RelayCommand<object>(_ => SetDefaultFilters(), _ => _isAdvancedFilterActive);
+        ResetAdvancedFiltersCommand =
+            new RelayCommand<object>(_ => SetFiltersToDefault(), _ => _isAdvancedFilterActive);
     }
 
     private void ShowMostCrushingGame_Execute(object obj)
     {
+        RemoveAdvancedFilters();
         _isAdvancedFilterActive = true;
 
-        GamesCollectionView.Filter = o =>
-        {
-            if (o is not GameListItemViewModel g)
-            {
-                return false;
-            }
+        var maxGoalDifference = Games.Max(game => Math.Abs(game.HomeTeamScore - game.AwayTeamScore));
+        _gamesFilter.GoalDifference = maxGoalDifference;
 
-            var currentGoalsDiff = Math.Abs(g.HomeTeamScore - g.AwayTeamScore);
-            var maxGoalsDiff = Games.Max(game => Math.Abs(game.HomeTeamScore - game.AwayTeamScore));
-
-            return FilterGamesBySearch(g) && currentGoalsDiff == maxGoalsDiff;
-        };
+        FilterGames();
     }
 
     private void ShowDrawsCommand_Execute(object obj)
     {
+        RemoveAdvancedFilters();
         _isAdvancedFilterActive = true;
 
-        GamesCollectionView.Filter = o => o is GameListItemViewModel g && FilterGamesBySearch(g) &&
-                                          g.HomeTeamScore == g.AwayTeamScore;
-    }
-
-    private void SetDefaultFilters()
-    {
-        _isAdvancedFilterActive = false;
-        GamesCollectionView.Filter = o => o is GameListItemViewModel g && FilterGamesBySearch(g);
-    }
-
-    private bool FilterGamesBySearch(GameListItemViewModel game)
-    {
-        var lowerFilter = GamesSearchFilter.ToLower();
-        var underscoreIndex = lowerFilter.IndexOf('_');
-
-        if (underscoreIndex == -1)
-        {
-            return game.HomeTeamFullName.ToLower().StartsWith(lowerFilter) ||
-                   game.AwayTeamFullName.ToLower().StartsWith(lowerFilter);
-        }
-
-        var homeFilter = lowerFilter[..underscoreIndex];
-        var awayFilter = lowerFilter[(underscoreIndex + 1)..];
-
-        if (underscoreIndex == 0)
-        {
-            return game.AwayTeamFullName.ToLower().StartsWith(awayFilter);
-        }
-
-        if (underscoreIndex == lowerFilter.Length - 1)
-        {
-            return game.HomeTeamFullName.ToLower().StartsWith(homeFilter);
-        }
-
-        return game.HomeTeamFullName.ToLower().StartsWith(homeFilter) &&
-               game.AwayTeamFullName.ToLower().StartsWith(awayFilter);
+        _gamesFilter.GoalDifference = 0;
+        FilterGames();
     }
 
     private SortDescription GetSortStrategy(string sortStrategyName)
@@ -160,5 +141,57 @@ public class GameListViewModel : BaseViewModel
     {
         GamesCollectionView.SortDescriptions.Clear();
         GamesCollectionView.SortDescriptions.Add(sortDescription);
+    }
+
+    private void FilterGames()
+    {
+        var remainsResults = _gamesFilter.ResultsToShowCount ?? int.MaxValue;
+
+        GamesCollectionView.Filter = o =>
+        {
+            if (o is not GameListItemViewModel game)
+            {
+                return false;
+            }
+
+            if (_gamesFilter.AwayTeamFullName != null &&
+                !game.AwayTeamFullName.ToLower().StartsWith(_gamesFilter.AwayTeamFullName))
+            {
+                return false;
+            }
+
+            if (_gamesFilter.HomeTeamFullName != null &&
+                !game.HomeTeamFullName.ToLower().StartsWith(_gamesFilter.HomeTeamFullName))
+            {
+                return false;
+            }
+
+            if (_gamesFilter.GoalDifference != null &&
+                _gamesFilter.GoalDifference != Math.Abs(game.HomeTeamScore - game.AwayTeamScore))
+            {
+                return false;
+            }
+
+            if (remainsResults <= 0)
+            {
+                return false;
+            }
+
+            remainsResults--;
+            return true;
+        };
+    }
+
+    private void SetFiltersToDefault()
+    {
+        _isAdvancedFilterActive = false;
+        RemoveAdvancedFilters();
+
+        FilterGames();
+    }
+
+    private void RemoveAdvancedFilters()
+    {
+        _gamesFilter.GoalDifference = null;
     }
 }

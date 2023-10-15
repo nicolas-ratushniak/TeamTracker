@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows.Data;
 using System.Windows.Input;
-using TeamTracker.Domain.Services;
 using TeamTracker.Wpf.Commands;
 using TeamTracker.Wpf.ViewModels.Inners;
 
@@ -13,16 +10,27 @@ namespace TeamTracker.Wpf.ViewModels.Components;
 
 public class TeamListViewModel : BaseViewModel
 {
+    private class TeamsFilter
+    {
+        public string? NameOrCity { get; set; }
+        public int? MinMembers { get; set; }
+        public int? MaxMembers { get; set; }
+        public int? MinPoints { get; set; }
+        public int? MaxPoints { get; set; }
+        public int? TotalGames { get; set; }
+        public int? TotalWins { get; set; }
+        public int? ResultsToShowCount { get; set; }
+    }
+
+    private readonly TeamsFilter _teamsFilter;
     private TeamListItemViewModel? _selectedTeam;
-    private string _teamsSearchFilter;
+    private string _teamsNameFilter;
     private string _sortStrategyName;
     private int _minMembers;
     private int _maxMembers;
     private int _minPoints;
     private int _maxPoints;
     private bool _isAdvancedFilterActive;
-
-    private readonly List<Predicate<TeamListItemViewModel>> _filters = new();
 
     public ICommand ShowMostWinsCommand { get; }
     public ICommand ShowMostPointsCommand { get; }
@@ -41,9 +49,10 @@ public class TeamListViewModel : BaseViewModel
         {
             if (value == _minMembers) return;
             _minMembers = value;
+            _teamsFilter.MinMembers = value;
 
             OnPropertyChanged();
-            TeamsCollectionView.Refresh();
+            FilterTeams();
         }
     }
 
@@ -54,9 +63,10 @@ public class TeamListViewModel : BaseViewModel
         {
             if (value == _maxMembers) return;
             _maxMembers = value;
+            _teamsFilter.MaxMembers = value == 0 ? null : value;
 
             OnPropertyChanged();
-            TeamsCollectionView.Refresh();
+            FilterTeams();
         }
     }
 
@@ -67,9 +77,10 @@ public class TeamListViewModel : BaseViewModel
         {
             if (value == _minPoints) return;
             _minPoints = value;
-            
+            _teamsFilter.MinPoints = value;
+
             OnPropertyChanged();
-            TeamsCollectionView.Refresh();
+            FilterTeams();
         }
     }
 
@@ -80,22 +91,24 @@ public class TeamListViewModel : BaseViewModel
         {
             if (value == _maxPoints) return;
             _maxPoints = value;
-            
+            _teamsFilter.MaxPoints = value == 0 ? null : value;
+
             OnPropertyChanged();
-            TeamsCollectionView.Refresh();
+            FilterTeams();
         }
     }
 
-    public string TeamsSearchFilter
+    public string TeamsNameFilter
     {
-        get => _teamsSearchFilter;
+        get => _teamsNameFilter;
         set
         {
-            if (value == _teamsSearchFilter) return;
-            _teamsSearchFilter = value ?? string.Empty;
+            if (value == _teamsNameFilter) return;
+            _teamsNameFilter = value ?? string.Empty;
+            _teamsFilter.NameOrCity = value;
 
             OnPropertyChanged();
-            TeamsCollectionView.Refresh();
+            FilterTeams();
         }
     }
 
@@ -135,74 +148,60 @@ public class TeamListViewModel : BaseViewModel
             "Members Desc"
         };
 
-        _teamsSearchFilter = string.Empty;
+        _teamsFilter = new TeamsFilter();
+        _teamsNameFilter = string.Empty;
         Teams = new ObservableCollection<TeamListItemViewModel>();
 
         TeamsCollectionView = CollectionViewSource.GetDefaultView(Teams);
-        AddDefaultFilters();
-        ApplyFilters();
-        TeamsCollectionView.SortDescriptions.Add(new SortDescription("FullName", ListSortDirection.Ascending));
+
+        TeamsCollectionView.SortDescriptions.Add(
+            new SortDescription("FullName",
+                ListSortDirection.Ascending));
 
         ShowMostWinsCommand = new RelayCommand<object>(ShowMostWins_Execute);
         ShowMostPointsCommand = new RelayCommand<object>(ShowMostPoints_Execute);
         ShowNewcomersCommand = new RelayCommand<object>(ShowNewcomers_Execute);
         ResetAdvancedFiltersCommand =
-            new RelayCommand<object>(ResetAdvancedFilters_Execute, _ => _isAdvancedFilterActive);
-    }
-
-    private void ResetAdvancedFilters_Execute(object obj)
-    {
-        AddDefaultFilters();
-        ApplyFilters();
-
-        _isAdvancedFilterActive = false;
+            new RelayCommand<object>(_ => SetFiltersToDefault(), _ => _isAdvancedFilterActive);
     }
 
     private void ShowNewcomers_Execute(object obj)
     {
-        AddDefaultFilters();
-        _filters.Add(t => t.TotalGames == 0);
-        ApplyFilters();
-
+        RemoveAdvancedFilters();
         _isAdvancedFilterActive = true;
+
+        _teamsFilter.TotalGames = 0;
+
+        FilterTeams();
     }
 
     private void ShowMostPoints_Execute(object obj)
     {
-        AddDefaultFilters();
-        _filters.Add(t => t.Points == Teams.Max(team => team.Points));
-        ApplyFilters();
-
+        RemoveAdvancedFilters();
         _isAdvancedFilterActive = true;
+
+        var mostPoints = Teams.Max(team => team.Points);
+        _teamsFilter.MinPoints = mostPoints;
+        _teamsFilter.MaxPoints = mostPoints;
+
+        FilterTeams();
     }
 
     private void ShowMostWins_Execute(object obj)
     {
-        AddDefaultFilters();
-        _filters.Add(t => t.Wins == Teams.Max(team => team.Wins));
-        ApplyFilters();
-
+        RemoveAdvancedFilters();
         _isAdvancedFilterActive = true;
-    }
 
-    private void AddDefaultFilters()
-    {
-        _filters.Clear();
-        _filters.Add(FilterTeamsBySearch);
-        _filters.Add(FilterTeamsByMembers);
-        _filters.Add(FilterTeamsByPoints);
-    }
+        var mostWins = Teams.Max(team => team.Wins);
+        _teamsFilter.TotalWins = mostWins;
 
-    private void ApplyFilters()
-    {
-        TeamsCollectionView.Filter = o =>
-            o is TeamListItemViewModel t && _filters.All(filter => filter(t));
+        FilterTeams();
     }
 
     private void OnSortStrategyNameChanged()
     {
         TeamsCollectionView.SortDescriptions.Clear();
-        
+
         var newSortDescription = SortStrategyName switch
         {
             "Team Name Asc" => new SortDescription(nameof(SelectedTeam.FullName), ListSortDirection.Ascending),
@@ -213,41 +212,81 @@ public class TeamListViewModel : BaseViewModel
             "Members Desc" => new SortDescription(nameof(SelectedTeam.Members), ListSortDirection.Descending),
             _ => new SortDescription()
         };
-        
+
         TeamsCollectionView.SortDescriptions.Add(newSortDescription);
     }
 
-    private bool FilterTeamsBySearch(TeamListItemViewModel team)
+    private void FilterTeams()
     {
-        var lowerFilter = TeamsSearchFilter.ToLower();
+        var remainsResults = _teamsFilter.ResultsToShowCount ?? int.MaxValue;
 
-        return team.FullName.ToLower().StartsWith(lowerFilter) ||
-               team.OriginCity.ToLower().StartsWith(lowerFilter);
+        TeamsCollectionView.Filter = o =>
+        {
+            if (o is not TeamListItemViewModel team)
+            {
+                return false;
+            }
+
+            if (_teamsFilter.NameOrCity != null &&
+                !team.FullName.ToLower().StartsWith(_teamsFilter.NameOrCity) &&
+                !team.OriginCity.ToLower().StartsWith(_teamsFilter.NameOrCity))
+            {
+                return false;
+            }
+
+            if (_teamsFilter.MinPoints != null && team.Points < _teamsFilter.MinPoints)
+            {
+                return false;
+            }
+
+            if (_teamsFilter.MaxPoints != null && team.Points > _teamsFilter.MaxPoints)
+            {
+                return false;
+            }
+
+            if (_teamsFilter.MinMembers != null && team.Members < _teamsFilter.MinMembers)
+            {
+                return false;
+            }
+
+            if (_teamsFilter.MaxMembers != null && team.Members > _teamsFilter.MaxMembers)
+            {
+                return false;
+            }
+
+            if (_teamsFilter.TotalGames != null && team.TotalGames != _teamsFilter.TotalGames)
+            {
+                return false;
+            }
+
+            if (_teamsFilter.TotalWins != null && team.Wins != _teamsFilter.TotalWins)
+            {
+                return false;
+            }
+
+            if (remainsResults <= 0)
+            {
+                return false;
+            }
+
+            remainsResults--;
+            return true;
+        };
     }
 
-    private bool FilterTeamsByMembers(TeamListItemViewModel team)
+    private void SetFiltersToDefault()
     {
-        // if Max is not specified it is set to infinity 
-        var actualMaxMembers = MaxMembers == 0 ? int.MaxValue : MaxMembers;
+        _isAdvancedFilterActive = false;
+        RemoveAdvancedFilters();
 
-        if (MinMembers > actualMaxMembers)
-        {
-            return false;
-        }
-
-        return team.Members >= MinMembers && team.Members <= actualMaxMembers;
+        FilterTeams();
     }
 
-    private bool FilterTeamsByPoints(TeamListItemViewModel team)
+    private void RemoveAdvancedFilters()
     {
-        // if Max is not specified it is set to infinity 
-        var actualMaxPoints = MaxPoints == 0 ? int.MaxValue : MaxPoints;
-
-        if (MinPoints > actualMaxPoints)
-        {
-            return false;
-        }
-
-        return team.Points >= MinPoints && team.Points <= actualMaxPoints;
+        _teamsFilter.TotalGames = null;
+        _teamsFilter.TotalWins = null;
+        _teamsFilter.MinPoints = MinPoints;
+        _teamsFilter.MaxPoints = MaxPoints == 0 ? null : MaxPoints;
     }
 }
