@@ -142,6 +142,7 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
                     <RowDefinition Height="*" />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
@@ -161,9 +162,15 @@
                         Content="Draws"
                         Command="{Binding ShowDrawsCommand}"
                         Style="{StaticResource AdvancedButton}"
+                        Margin="0,0,0,5" />
+                
+                <Button Grid.Row="3"
+                        Content="Same City"
+                        Command="{Binding ShowSameCityCommand}"
+                        Style="{StaticResource AdvancedButton}"
                         Margin="0,0,0,10" />
                 
-                <Button Grid.Row="4"
+                <Button Grid.Row="5"
                         Content="Reset"
                         Command="{Binding ResetAdvancedFiltersCommand}"
                         Style="{StaticResource AdvancedCancelButton}"

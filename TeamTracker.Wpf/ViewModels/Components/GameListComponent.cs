@@ -9,13 +9,14 @@ using TeamTracker.Wpf.ViewModels.Inners;
 
 namespace TeamTracker.Wpf.ViewModels.Components;
 
-public class GameListViewModel : BaseViewModel
+public class GameListComponent : BaseViewModel
 {
     private class GamesFilter
     {
         public string? HomeTeamFullName { get; set; }
         public string? AwayTeamFullName { get; set; }
         public int? GoalDifference { get; set; }
+        public bool? IsSameCity { get; set; }
         public int? ResultsToShowCount { get; set; }
     }
 
@@ -28,6 +29,7 @@ public class GameListViewModel : BaseViewModel
 
     public ICommand ShowMostCrushingGameCommand { get; }
     public ICommand ShowDrawsCommand { get; }
+    public ICommand ShowSameCityCommand { get; }
     public ICommand ResetAdvancedFiltersCommand { get; }
 
     public string[] SortOptions { get; }
@@ -87,7 +89,7 @@ public class GameListViewModel : BaseViewModel
         }
     }
 
-    public GameListViewModel()
+    public GameListComponent()
     {
         SortOptions = new[]
         {
@@ -103,8 +105,20 @@ public class GameListViewModel : BaseViewModel
 
         ShowMostCrushingGameCommand = new RelayCommand<object>(ShowMostCrushingGame_Execute);
         ShowDrawsCommand = new RelayCommand<object>(ShowDrawsCommand_Execute);
+        ShowSameCityCommand = new RelayCommand<object>(ShowSameCity_Execute);
+        
         ResetAdvancedFiltersCommand =
             new RelayCommand<object>(_ => SetFiltersToDefault(), _ => _isAdvancedFilterActive);
+    }
+
+    private void ShowSameCity_Execute(object obj)
+    {
+        RemoveAdvancedFilters();
+        
+        _isAdvancedFilterActive = true;
+        _gamesFilter.IsSameCity = true;
+
+        FilterGames();
     }
 
     private void ShowMostCrushingGame_Execute(object obj)
@@ -155,19 +169,24 @@ public class GameListViewModel : BaseViewModel
             }
 
             if (_gamesFilter.AwayTeamFullName != null &&
-                !game.AwayTeamFullName.ToLower().StartsWith(_gamesFilter.AwayTeamFullName))
+                !game.AwayTeamFullName.ToLower().StartsWith(_gamesFilter.AwayTeamFullName.ToLower()))
             {
                 return false;
             }
 
             if (_gamesFilter.HomeTeamFullName != null &&
-                !game.HomeTeamFullName.ToLower().StartsWith(_gamesFilter.HomeTeamFullName))
+                !game.HomeTeamFullName.ToLower().StartsWith(_gamesFilter.HomeTeamFullName.ToLower()))
             {
                 return false;
             }
 
             if (_gamesFilter.GoalDifference != null &&
                 _gamesFilter.GoalDifference != Math.Abs(game.HomeTeamScore - game.AwayTeamScore))
+            {
+                return false;
+            }
+
+            if (_gamesFilter.IsSameCity != null && game.HomeTeamOriginCity != game.AwayTeamOriginCity)
             {
                 return false;
             }
@@ -193,5 +212,6 @@ public class GameListViewModel : BaseViewModel
     private void RemoveAdvancedFilters()
     {
         _gamesFilter.GoalDifference = null;
+        _gamesFilter.IsSameCity = null;
     }
 }

@@ -21,7 +21,7 @@ public class TeamsViewModel : BaseViewModel
     private Guid? _selectedTeamId;
     private TeamDetailsItemViewModel? _selectedTeamDetails;
 
-    public TeamListViewModel TeamList { get; }
+    public TeamListComponent TeamList { get; }
 
     public ICommand AddTeamCommand { get; }
     public ICommand EditTeamCommand { get; }
@@ -45,7 +45,7 @@ public class TeamsViewModel : BaseViewModel
     {
         _teamService = teamService;
         _logger = logger;
-        TeamList = new TeamListViewModel();
+        TeamList = new TeamListComponent();
 
         TeamList.PropertyChanged += TeamsList_OnPropertyChanged;
 
@@ -117,7 +117,7 @@ public class TeamsViewModel : BaseViewModel
             return;
         }
 
-        var selectedTeam = ((TeamListViewModel)sender!).SelectedTeam;
+        var selectedTeam = ((TeamListComponent)sender!).SelectedTeam;
 
         if (selectedTeam is null)
         {

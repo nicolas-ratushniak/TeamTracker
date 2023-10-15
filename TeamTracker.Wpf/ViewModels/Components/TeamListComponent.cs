@@ -8,7 +8,7 @@ using TeamTracker.Wpf.ViewModels.Inners;
 
 namespace TeamTracker.Wpf.ViewModels.Components;
 
-public class TeamListViewModel : BaseViewModel
+public class TeamListComponent : BaseViewModel
 {
     private class TeamsFilter
     {
@@ -136,7 +136,7 @@ public class TeamListViewModel : BaseViewModel
         }
     }
 
-    public TeamListViewModel()
+    public TeamListComponent()
     {
         SortOptions = new[]
         {
@@ -228,8 +228,8 @@ public class TeamListViewModel : BaseViewModel
             }
 
             if (_teamsFilter.NameOrCity != null &&
-                !team.FullName.ToLower().StartsWith(_teamsFilter.NameOrCity) &&
-                !team.OriginCity.ToLower().StartsWith(_teamsFilter.NameOrCity))
+                !team.FullName.ToLower().StartsWith(_teamsFilter.NameOrCity.ToLower()) &&
+                !team.OriginCity.ToLower().StartsWith(_teamsFilter.NameOrCity.ToLower()))
             {
                 return false;
             }
