@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Windows;
@@ -18,18 +18,102 @@ public class GamesViewModel : BaseViewModel
     private readonly IGameInfoService _gameInfoService;
     private readonly ITeamService _teamService;
     private readonly ILogger<GamesViewModel> _logger;
-    private GameDetailsItemViewModel? _selectedGameDetails;
+    private string _date;
+    private string _homeTeamName;
+    private string _homeTeamOriginCity;
+    private int _homeTeamScore;
+    private string _awayTeamName;
+    private string _awayTeamOriginCity;
+    private int _awayTeamScore;
+    private bool _isGameSelected;
 
     public ICommand AddGameCommand { get; }
     public GameListComponent GameList { get; }
 
-    public GameDetailsItemViewModel? SelectedGameDetails
+    public bool IsGameSelected
     {
-        get => _selectedGameDetails;
+        get => _isGameSelected;
         set
         {
-            if (Equals(value, _selectedGameDetails)) return;
-            _selectedGameDetails = value;
+            if (value == _isGameSelected) return;
+            _isGameSelected = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public string Date
+    {
+        get => _date;
+        set
+        {
+            if (value == _date) return;
+            _date = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public string HomeTeamName
+    {
+        get => _homeTeamName;
+        set
+        {
+            if (value == _homeTeamName) return;
+            _homeTeamName = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public string HomeTeamOriginCity
+    {
+        get => _homeTeamOriginCity;
+        set
+        {
+            if (value == _homeTeamOriginCity) return;
+            _homeTeamOriginCity = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public int HomeTeamScore
+    {
+        get => _homeTeamScore;
+        set
+        {
+            if (value == _homeTeamScore) return;
+            _homeTeamScore = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public string AwayTeamName
+    {
+        get => _awayTeamName;
+        set
+        {
+            if (value == _awayTeamName) return;
+            _awayTeamName = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public string AwayTeamOriginCity
+    {
+        get => _awayTeamOriginCity;
+        set
+        {
+            if (value == _awayTeamOriginCity) return;
+            _awayTeamOriginCity = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public int AwayTeamScore
+    {
+        get => _awayTeamScore;
+        set
+        {
+            if (value == _awayTeamScore) return;
+            _awayTeamScore = value;
             OnPropertyChanged();
         }
     }
@@ -45,7 +129,7 @@ public class GamesViewModel : BaseViewModel
         _logger = logger;
 
         GameList = new GameListComponent();
-        GameList.PropertyChanged += SelectedGame_OnPropertyChanged;
+        GameList.SelectedGameChanged += OnSelectedGameChanged;
 
         AddGameCommand = new RelayCommand<object>(
             _ => navigationService.NavigateTo(ViewType.GameCreate, null));
@@ -63,7 +147,7 @@ public class GamesViewModel : BaseViewModel
 
     public override void Dispose()
     {
-        GameList.PropertyChanged -= SelectedGame_OnPropertyChanged;
+        GameList.SelectedGameChanged -= OnSelectedGameChanged;
         base.Dispose();
     }
 
@@ -72,36 +156,26 @@ public class GamesViewModel : BaseViewModel
         _logger.LogDebug("The {ViewModel} was destroyed", nameof(GamesViewModel));
     }
 
-    private void SelectedGame_OnPropertyChanged(object? sender, PropertyChangedEventArgs e)
+    private void OnSelectedGameChanged(object? sender, EventArgs e)
     {
-        if (e.PropertyName != nameof(GameList.SelectedGame))
-        {
-            return;
-        }
-
-        var selectedGame = ((GameListComponent)sender!).SelectedGame;
+        var selectedGame = GameList.SelectedGame;
 
         if (selectedGame is null)
         {
-            SelectedGameDetails = null;
+            IsGameSelected = false;
+            return;
         }
-        else
-        {
-            var game = _gameInfoService.Get(selectedGame.Id);
 
-            SelectedGameDetails = new GameDetailsItemViewModel
-            {
-                Date = game.Date.ToShortDateString(),
-                HomeTeamName = selectedGame.HomeTeamName,
-                HomeTeamOriginCity = selectedGame.HomeTeamOriginCity,
-                HomeTeamScore = selectedGame.HomeTeamScore,
-                AwayTeamName = selectedGame.AwayTeamName,
-                AwayTeamOriginCity = selectedGame.AwayTeamOriginCity,
-                AwayTeamScore = selectedGame.AwayTeamScore
-            };
-        }
+        Date = selectedGame.Date.ToShortDateString();
+        HomeTeamName = selectedGame.HomeTeamName;
+        HomeTeamOriginCity = selectedGame.HomeTeamOriginCity;
+        HomeTeamScore = selectedGame.HomeTeamScore;
+        AwayTeamName = selectedGame.AwayTeamName;
+        AwayTeamOriginCity = selectedGame.AwayTeamOriginCity;
+        AwayTeamScore = selectedGame.AwayTeamScore;
+        IsGameSelected = true;
     }
-    
+
     private IEnumerable<GameListItemViewModel> GetGames()
     {
         try

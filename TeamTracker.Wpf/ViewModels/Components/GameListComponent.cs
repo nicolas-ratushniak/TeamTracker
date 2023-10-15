@@ -20,6 +20,8 @@ public class GameListComponent : BaseViewModel
         public int? ResultsToShowCount { get; set; }
     }
 
+    public event EventHandler SelectedGameChanged;
+
     private readonly GamesFilter _gamesFilter;
     private GameListItemViewModel? _selectedGame;
     private string _sortStrategyName;
@@ -72,7 +74,9 @@ public class GameListComponent : BaseViewModel
         {
             if (Equals(value, _selectedGame)) return;
             _selectedGame = value;
+            
             OnPropertyChanged();
+            SelectedGameChanged?.Invoke(this, EventArgs.Empty);
         }
     }
 

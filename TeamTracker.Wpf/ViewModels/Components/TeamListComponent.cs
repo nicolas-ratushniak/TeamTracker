@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows.Data;
@@ -21,6 +22,8 @@ public class TeamListComponent : BaseViewModel
         public int? TotalWins { get; set; }
         public int? ResultsToShowCount { get; set; }
     }
+
+    public event EventHandler SelectedTeamChanged;
 
     private readonly TeamsFilter _teamsFilter;
     private TeamListItemViewModel? _selectedTeam;
@@ -132,7 +135,9 @@ public class TeamListComponent : BaseViewModel
         {
             if (Equals(value, _selectedTeam)) return;
             _selectedTeam = value;
+            
             OnPropertyChanged();
+            SelectedTeamChanged?.Invoke(this, EventArgs.Empty);
         }
     }
 

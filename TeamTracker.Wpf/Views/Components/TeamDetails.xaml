@@ -9,7 +9,7 @@
              d:DesignHeight="300" d:DesignWidth="300">
 
     <UserControl.Resources>
-        <converters:NullToVisibilityConverter x:Key="NullToVisibilityConverter" />
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     </UserControl.Resources>
 
     <Border BorderBrush="Black"
@@ -26,7 +26,8 @@
                            Converter={StaticResource InverseBoolToVisibilityConverter}}" />
 
             <Grid x:Name="TeamDetailsBox" 
-                  Visibility="{Binding Converter={StaticResource NullToVisibilityConverter}}">
+                  Visibility="{Binding IsTeamSelected, 
+                  Converter={StaticResource BooleanToVisibilityConverter}}">
                 
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />

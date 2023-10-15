@@ -4,12 +4,11 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 
-             xmlns:converters="clr-namespace:TeamTracker.Wpf.Converters"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300">
-
+    
     <UserControl.Resources>
-        <converters:NullToVisibilityConverter x:Key="NullToVisibilityConverter" />
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"></BooleanToVisibilityConverter>
     </UserControl.Resources>
 
     <Border BorderBrush="Black"
@@ -27,7 +26,8 @@
                        Converter={StaticResource InverseBoolToVisibilityConverter}}" />
 
             <Grid x:Name="GameDetailsBox"
-                  Visibility="{Binding Converter={StaticResource NullToVisibilityConverter}}">
+                  Visibility="{Binding IsGameSelected, 
+                  Converter={StaticResource BooleanToVisibilityConverter}}">
 
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />

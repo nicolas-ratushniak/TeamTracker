@@ -40,11 +40,10 @@
         </StackPanel>
 
         <components:TeamList Grid.Row="0" Grid.RowSpan="2" Grid.Column="0"
-                                 DataContext="{Binding TeamList}" />
+                             DataContext="{Binding TeamList}" />
 
         <components:TeamDetails Grid.Row="1" Grid.Column="1"
-                                    Margin="24,0,0,0"
-                                    DataContext="{Binding SelectedTeamDetails}" />
+                                Margin="24,0,0,0" />
 
     </Grid>
 </UserControl>

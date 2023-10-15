@@ -8,7 +8,7 @@
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300"
              Loaded="OnLoaded">
-    
+
     <Grid Margin="24">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -33,11 +33,10 @@
         </StackPanel>
 
         <components:GameList Grid.Row="0" Grid.RowSpan="2" Grid.Column="0"
-                                  DataContext="{Binding GameList}" />
+                             DataContext="{Binding GameList}" />
 
         <components:GameDetails Grid.Row="1" Grid.Column="1"
-                                    Margin="24,0,0,0"
-                                    DataContext="{Binding SelectedGameDetails}" />
+                                Margin="24,0,0,0" />
 
     </Grid>
 </UserControl>
