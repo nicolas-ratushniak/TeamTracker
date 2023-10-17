@@ -115,16 +115,6 @@ public class GameListComponent : BaseViewModel
             new RelayCommand<object>(_ => SetFiltersToDefault(), _ => _isAdvancedFilterActive);
     }
 
-    private void ShowSameCity_Execute(object obj)
-    {
-        RemoveAdvancedFilters();
-        
-        _isAdvancedFilterActive = true;
-        _gamesFilter.IsSameCity = true;
-
-        FilterGames();
-    }
-
     private void ShowMostCrushingGame_Execute(object obj)
     {
         RemoveAdvancedFilters();
@@ -142,6 +132,16 @@ public class GameListComponent : BaseViewModel
         _isAdvancedFilterActive = true;
 
         _gamesFilter.GoalDifference = 0;
+        FilterGames();
+    }
+
+    private void ShowSameCity_Execute(object obj)
+    {
+        RemoveAdvancedFilters();
+        
+        _isAdvancedFilterActive = true;
+        _gamesFilter.IsSameCity = true;
+
         FilterGames();
     }
 
