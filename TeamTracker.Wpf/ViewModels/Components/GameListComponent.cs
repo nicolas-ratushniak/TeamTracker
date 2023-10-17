@@ -89,7 +89,7 @@ public class GameListComponent : BaseViewModel
             _sortStrategyName = value;
 
             OnPropertyChanged();
-            UpdateSortStrategy(GetSortStrategy(value));
+            OnSortStrategyNameChanged();
         }
     }
 
@@ -105,7 +105,9 @@ public class GameListComponent : BaseViewModel
         Games = new ObservableCollection<GameListItemViewModel>();
 
         GamesCollectionView = CollectionViewSource.GetDefaultView(Games);
-        UpdateSortStrategy(new SortDescription(nameof(SelectedGame.Date), ListSortDirection.Ascending));
+        
+        GamesCollectionView.SortDescriptions.Add(
+            new SortDescription(nameof(SelectedGame.Date), ListSortDirection.Ascending));
 
         ShowMostCrushingGameCommand = new RelayCommand<object>(ShowMostCrushingGame_Execute);
         ShowDrawsCommand = new RelayCommand<object>(ShowDrawsCommand_Execute);
@@ -144,21 +146,19 @@ public class GameListComponent : BaseViewModel
 
         FilterGames();
     }
-
-    private SortDescription GetSortStrategy(string sortStrategyName)
+    
+    private void OnSortStrategyNameChanged()
     {
-        return sortStrategyName switch
+        GamesCollectionView.SortDescriptions.Clear();
+
+        var newSortDescription = SortStrategyName switch
         {
             "Recent first" => new SortDescription(nameof(SelectedGame.Date), ListSortDirection.Descending),
             "Older first" => new SortDescription(nameof(SelectedGame.Date), ListSortDirection.Ascending),
             _ => new SortDescription()
         };
-    }
 
-    private void UpdateSortStrategy(SortDescription sortDescription)
-    {
-        GamesCollectionView.SortDescriptions.Clear();
-        GamesCollectionView.SortDescriptions.Add(sortDescription);
+        GamesCollectionView.SortDescriptions.Add(newSortDescription);
     }
 
     private void FilterGames()
