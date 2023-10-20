@@ -26,6 +26,7 @@ public class GamesViewModel : BaseViewModel
     private string _awayTeamOriginCity;
     private int _awayTeamScore;
     private bool _isGameSelected;
+    private Guid? _selectedGameId;
 
     public ICommand AddGameCommand { get; }
     public GameListComponent GameList { get; }
@@ -134,6 +135,10 @@ public class GamesViewModel : BaseViewModel
         AddGameCommand = new RelayCommand<object>(
             _ => navigationService.NavigateTo(ViewType.GameCreate, null));
 
+        DeleteGameCommand = new RelayCommand<object>(
+            DeleteGame_Execute,
+            _ => GameList.SelectedGame is not null);
+
         LoadedCommand = new RelayCommand<object>(LoadData);
     }
 
@@ -151,9 +156,28 @@ public class GamesViewModel : BaseViewModel
         base.Dispose();
     }
 
-    ~GamesViewModel()
+    private void DeleteGame_Execute(object obj)
     {
-        _logger.LogDebug("The {ViewModel} was destroyed", nameof(GamesViewModel));
+        var messageBoxResult = MessageBox.Show("Are you sure, you want to delete this game?",
+            "Warning", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+
+        if (messageBoxResult != MessageBoxResult.Yes)
+        {
+            return;
+        }
+
+        _gameInfoService.Delete((Guid)_selectedGameId!);
+        _logger.LogInformation("Successfully deleted a game with id {GameId}", (Guid)_selectedGameId!);
+
+        RefreshGameListItems();
+    }
+
+    private void LoadData(object obj)
+    {
+        foreach (var game in GetGames())
+        {
+            GameList.Games.Add(game);
+        }
     }
 
     private void OnSelectedGameChanged(object? sender, EventArgs e)
@@ -163,8 +187,11 @@ public class GamesViewModel : BaseViewModel
         if (selectedGame is null)
         {
             IsGameSelected = false;
+            _selectedGameId = null;
             return;
         }
+
+        _selectedGameId = selectedGame.Id;
 
         Date = selectedGame.Date.ToShortDateString();
         HomeTeamName = selectedGame.HomeTeamName;
@@ -174,6 +201,16 @@ public class GamesViewModel : BaseViewModel
         AwayTeamOriginCity = selectedGame.AwayTeamOriginCity;
         AwayTeamScore = selectedGame.AwayTeamScore;
         IsGameSelected = true;
+    }
+
+    private void RefreshGameListItems()
+    {
+        GameList.Games.Clear();
+
+        foreach (var game in GetGames())
+        {
+            GameList.Games.Add(game);
+        }
     }
 
     private IEnumerable<GameListItemViewModel> GetGames()

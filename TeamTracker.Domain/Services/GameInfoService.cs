@@ -26,7 +26,7 @@ public class GameInfoService : IGameInfoService
                ?? throw new EntityNotFoundException();
     }
 
-    public void PlayGame(GameInfoCreateDto dto)
+    public void Add(GameInfoCreateDto dto)
     {
         Validator.ValidateObject(dto, new ValidationContext(dto), true);
 
@@ -56,6 +56,14 @@ public class GameInfoService : IGameInfoService
         };
         
         _gamesRepository.Add(game);
+        _gamesRepository.SaveChanges();
+    }
+
+    public void Delete(Guid id)
+    {
+        var game = Get(id);
+        
+        _gamesRepository.Remove(game);
         _gamesRepository.SaveChanges();
     }
 }

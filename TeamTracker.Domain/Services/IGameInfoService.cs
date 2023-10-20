@@ -7,5 +7,6 @@ public interface IGameInfoService
 {
     public IReadOnlyList<GameInfo> GetAll();
     public GameInfo Get(Guid id);
-    public void PlayGame(GameInfoCreateDto dto);
+    public void Add(GameInfoCreateDto dto);
+    public void Delete(Guid id);
 }

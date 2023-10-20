@@ -134,7 +134,7 @@ public class GameCreateViewModel : BaseViewModel
 
         try
         {
-            _gameInfoService.PlayGame(dto);
+            _gameInfoService.Add(dto);
             _logger.LogInformation("The Game was successfully created");
 
             _navigationService.NavigateTo(ViewType.Games, null);
