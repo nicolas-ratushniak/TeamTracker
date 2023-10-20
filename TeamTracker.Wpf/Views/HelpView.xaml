@@ -107,9 +107,9 @@
 
                     <TextBlock Style="{StaticResource Paragraph}">
                         In the top left corner of the Teams/Games page, there are a bunch of tools for better analysis.
-                        Choose one of the sortings suggested and try to play with range filters (on the Teams page).
-                        You can specify one or both of the fields of such filter (Min, Max), and the list will
-                        automatically refresh itself.
+                        Choose one of the sortings suggested with the direction (Asc - ascending, Desc - descending) and try to 
+                        play with range filters (on the Teams page).You can specify one or both of the fields 
+                        of such filter (Min, Max), and the list will be automatically refreshed.
                     </TextBlock>
 
                     <TextBlock Style="{StaticResource H3}">
