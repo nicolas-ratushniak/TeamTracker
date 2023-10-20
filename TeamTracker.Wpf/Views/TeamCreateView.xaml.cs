@@ -11,4 +11,9 @@ public partial class TeamCreateView : UserControl
     {
         InitializeComponent();
     }
+    
+    private void OnLoaded(object sender, RoutedEventArgs e)
+    {
+        Keyboard.Focus(DefaultFocusedItem);
+    }
 }
