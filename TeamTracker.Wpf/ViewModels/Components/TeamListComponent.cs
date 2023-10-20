@@ -170,6 +170,14 @@ public class TeamListComponent : BaseViewModel
             new RelayCommand<object>(_ => SetFiltersToDefault(), _ => _isAdvancedFilterActive);
     }
 
+    public void SetFiltersToDefault()
+    {
+        _isAdvancedFilterActive = false;
+        RemoveAdvancedFilters();
+
+        FilterTeams();
+    }
+
     private void ShowNewcomers_Execute(object obj)
     {
         RemoveAdvancedFilters();
@@ -277,14 +285,6 @@ public class TeamListComponent : BaseViewModel
             remainsResults--;
             return true;
         };
-    }
-
-    private void SetFiltersToDefault()
-    {
-        _isAdvancedFilterActive = false;
-        RemoveAdvancedFilters();
-
-        FilterTeams();
     }
 
     private void RemoveAdvancedFilters()

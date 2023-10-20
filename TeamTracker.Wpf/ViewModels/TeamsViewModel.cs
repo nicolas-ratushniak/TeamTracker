@@ -238,6 +238,8 @@ public class TeamsViewModel : BaseViewModel
         {
             TeamList.Teams.Add(team);
         }
+        
+        TeamList.SetFiltersToDefault();
     }
 
     private IEnumerable<TeamListItemViewModel> GetTeams()

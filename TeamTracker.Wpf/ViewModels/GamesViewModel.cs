@@ -210,6 +210,8 @@ public class GamesViewModel : BaseViewModel
         {
             GameList.Games.Add(game);
         }
+        
+        GameList.SetFiltersToDefault();
     }
 
     private IEnumerable<GameListItemViewModel> GetGames()

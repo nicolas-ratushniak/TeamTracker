@@ -117,6 +117,14 @@ public class GameListComponent : BaseViewModel
             new RelayCommand<object>(_ => SetFiltersToDefault(), _ => _isAdvancedFilterActive);
     }
 
+    public void SetFiltersToDefault()
+    {
+        _isAdvancedFilterActive = false;
+        RemoveAdvancedFilters();
+
+        FilterGames();
+    }
+
     private void ShowMostCrushingGame_Execute(object obj)
     {
         RemoveAdvancedFilters();
@@ -146,7 +154,7 @@ public class GameListComponent : BaseViewModel
 
         FilterGames();
     }
-    
+
     private void OnSortStrategyNameChanged()
     {
         GamesCollectionView.SortDescriptions.Clear();
@@ -203,14 +211,6 @@ public class GameListComponent : BaseViewModel
             remainsResults--;
             return true;
         };
-    }
-
-    private void SetFiltersToDefault()
-    {
-        _isAdvancedFilterActive = false;
-        RemoveAdvancedFilters();
-
-        FilterGames();
     }
 
     private void RemoveAdvancedFilters()
