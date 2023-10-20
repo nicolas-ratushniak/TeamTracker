@@ -27,11 +27,11 @@
                     Margin="0,0,0,24">
 
             <Button Style="{StaticResource NiceButton}"
-                    Command="{Binding AddTeamCommand}"
+                    Command="{Binding GoToTeamCreateCommand}"
                     Margin="0,0,10,0"
                     Content="Add" />
             <Button Style="{StaticResource NiceButton}"
-                    Command="{Binding EditTeamCommand}"
+                    Command="{Binding GoToTeamUpdateCommand}"
                     Margin="0,0,10,0"
                     Content="Edit" />
             <Button Style="{StaticResource NiceButton}"

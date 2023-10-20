@@ -28,7 +28,9 @@ public class GamesViewModel : BaseViewModel
     private bool _isGameSelected;
     private Guid? _selectedGameId;
 
-    public ICommand AddGameCommand { get; }
+    public ICommand GoToGameCreateCommand { get; }
+    public ICommand DeleteGameCommand { get; }
+
     public GameListComponent GameList { get; }
 
     public bool IsGameSelected
@@ -120,8 +122,8 @@ public class GamesViewModel : BaseViewModel
     }
 
     public GamesViewModel(
-        IGameInfoService gameInfoService, 
-        ITeamService teamService, 
+        IGameInfoService gameInfoService,
+        ITeamService teamService,
         INavigationService navigationService,
         ILogger<GamesViewModel> logger)
     {
@@ -132,7 +134,7 @@ public class GamesViewModel : BaseViewModel
         GameList = new GameListComponent();
         GameList.SelectedGameChanged += OnSelectedGameChanged;
 
-        AddGameCommand = new RelayCommand<object>(
+        GoToGameCreateCommand = new RelayCommand<object>(
             _ => navigationService.NavigateTo(ViewType.GameCreate, null));
 
         DeleteGameCommand = new RelayCommand<object>(
@@ -142,12 +144,9 @@ public class GamesViewModel : BaseViewModel
         LoadedCommand = new RelayCommand<object>(LoadData);
     }
 
-    private void LoadData(object obj)
+    ~GamesViewModel()
     {
-        foreach (var game in GetGames())
-        {
-            GameList.Games.Add(game);
-        }
+        _logger.LogDebug("The {ViewModel} was destroyed", nameof(GamesViewModel));
     }
 
     public override void Dispose()
@@ -239,8 +238,8 @@ public class GamesViewModel : BaseViewModel
         catch (InvalidDataException)
         {
             _logger.LogError("Failed to read games from the file");
-            
-            MessageBox.Show("The database file is broken. Please, contact the developer", 
+
+            MessageBox.Show("The database file is broken. Please, contact the developer",
                 "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             throw;
         }

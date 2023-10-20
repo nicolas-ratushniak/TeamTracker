@@ -30,8 +30,8 @@ public class TeamsViewModel : BaseViewModel
 
     public TeamListComponent TeamList { get; }
 
-    public ICommand AddTeamCommand { get; }
-    public ICommand EditTeamCommand { get; }
+    public ICommand GoToTeamCreateCommand { get; }
+    public ICommand GoToTeamUpdateCommand { get; }
     public ICommand DeleteTeamCommand { get; }
 
     public bool IsTeamSelected
@@ -144,10 +144,10 @@ public class TeamsViewModel : BaseViewModel
 
         TeamList.SelectedTeamChanged += OnSelectedTeamChanged;
 
-        AddTeamCommand = new RelayCommand<object>(
+        GoToTeamCreateCommand = new RelayCommand<object>(
             _ => navigationService.NavigateTo(ViewType.TeamCreate, null));
 
-        EditTeamCommand = new RelayCommand<object>(
+        GoToTeamUpdateCommand = new RelayCommand<object>(
             _ => navigationService.NavigateTo(ViewType.TeamUpdate, _selectedTeamId),
             _ => TeamList.SelectedTeam is not null);
 
@@ -158,12 +158,9 @@ public class TeamsViewModel : BaseViewModel
         LoadedCommand = new RelayCommand<object>(LoadData);
     }
 
-    private void LoadData(object obj)
+    ~TeamsViewModel()
     {
-        foreach (var team in GetTeams())
-        {
-            TeamList.Teams.Add(team);
-        }
+        _logger.LogDebug("The {ViewModel} was destroyed", nameof(TeamsViewModel));
     }
 
     public override void Dispose()
@@ -172,9 +169,12 @@ public class TeamsViewModel : BaseViewModel
         base.Dispose();
     }
 
-    ~TeamsViewModel()
+    private void LoadData(object obj)
     {
-        _logger.LogDebug("The {ViewModel} was destroyed", nameof(TeamsViewModel));
+        foreach (var team in GetTeams())
+        {
+            TeamList.Teams.Add(team);
+        }
     }
 
     private void DeleteTeam_Execute(object obj)
