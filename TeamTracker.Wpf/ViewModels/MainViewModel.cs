@@ -47,7 +47,7 @@ public class MainViewModel : BaseViewModel
         NavigationService.CurrentViewTypeChanged += Navigator_OnCurrentViewTypeChanged;
 
         _logger.LogInformation("Setting default view");
-        CurrentViewModel = _viewModelFactory.CreateViewModel(ViewType.Teams);
+        navigationService.NavigateTo(ViewType.Teams, null);
     }
 
     private void Navigator_OnCurrentViewTypeChanged(object? sender, EventArgs args)
