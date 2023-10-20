@@ -110,10 +110,10 @@ public class TeamSelectorComponent : BaseViewModel
             _selectedTeam = null;
         }
 
-        FilterTeam();
+        FilterTeams();
     }
     
-    private void FilterTeam()
+    private void FilterTeams()
     {
         TeamCollectionView.Filter = o =>
         {

@@ -146,7 +146,7 @@ public class TeamListComponent : BaseViewModel
         SortOptions = new[]
         {
             "Team Name Asc",
-            "Team name Desc",
+            "Team Name Desc",
             "Points Asc",
             "Points Desc",
             "Members Asc",
@@ -210,7 +210,7 @@ public class TeamListComponent : BaseViewModel
         var newSortDescription = SortStrategyName switch
         {
             "Team Name Asc" => new SortDescription(nameof(SelectedTeam.FullName), ListSortDirection.Ascending),
-            "Team name Desc" => new SortDescription(nameof(SelectedTeam.FullName), ListSortDirection.Descending),
+            "Team Name Desc" => new SortDescription(nameof(SelectedTeam.FullName), ListSortDirection.Descending),
             "Points Asc" => new SortDescription(nameof(SelectedTeam.Points), ListSortDirection.Ascending),
             "Points Desc" => new SortDescription(nameof(SelectedTeam.Points), ListSortDirection.Descending),
             "Members Asc" => new SortDescription(nameof(SelectedTeam.Members), ListSortDirection.Ascending),
