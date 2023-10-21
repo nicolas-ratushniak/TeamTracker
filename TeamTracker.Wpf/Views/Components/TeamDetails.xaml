@@ -45,10 +45,11 @@
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
 
-                <TextBlock Grid.Row="0" Grid.ColumnSpan="2"
+                <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
                            FontSize="20"
                            FontWeight="Bold"
                            Text="{Binding Path=Name}"
+                           TextWrapping="Wrap"
                            Margin="0,0,0,15" />
 
                 <TextBlock Grid.Row="1" Grid.Column="0"
@@ -71,6 +72,7 @@
                 <TextBlock Grid.Row="2" Grid.Column="1"
                            FontSize="18"
                            Text="{Binding Path=OriginCity}"
+                           TextWrapping="Wrap"
                            Margin="0,0,0,8" />
 
                 <TextBlock Grid.Row="3" Grid.Column="0"
