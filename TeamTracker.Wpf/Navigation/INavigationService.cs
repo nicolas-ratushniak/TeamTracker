@@ -6,7 +6,6 @@ namespace TeamTracker.Wpf.Navigation;
 public interface INavigationService
 {
     public event EventHandler<ViewTypeChangedEventArgs> CurrentViewTypeChanged;
-    public ICommand UpdateCurrentViewTypeCommand { get; }
     public ViewType? CurrentViewType { get; }
     public void NavigateTo(ViewType newViewType, object? viewParameter);
 }
