@@ -200,8 +200,8 @@ public class TeamsViewModel : BaseViewModel
                 "The team with id {TeamId} is not a newcomer. The deletion is cancelled",
                 (Guid)_selectedTeamId!);
 
-            MessageBox.Show("Sorry, cannot delete this team. It's not a newcomer.", "Sorry",
-                MessageBoxButton.OK, MessageBoxImage.Hand);
+            MessageBox.Show("Cannot delete this team. It's not a newcomer.\nDelete all referring games to succeed", 
+                "Operation cancelled", MessageBoxButton.OK, MessageBoxImage.Hand);
         }
     }
 
