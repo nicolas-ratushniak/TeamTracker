@@ -11,7 +11,8 @@
         Height="650" 
         Width="1000"
         MinHeight="620"
-        MinWidth="810">
+        MinWidth="810"
+        WindowStartupLocation="CenterScreen">
     
     <Window.InputBindings>
         <KeyBinding Key="F1"

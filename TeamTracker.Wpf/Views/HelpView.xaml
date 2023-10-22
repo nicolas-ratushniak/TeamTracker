@@ -23,7 +23,7 @@
                                Text="About the Sports Team app" />
 
                     <TextBlock Style="{StaticResource Paragraph}">
-                        Sports Team is a minimalistic app for keeping track of your favorite and
+                        Sports Team is a minimalistic app for keeping track of your favorite teams and
                         their performance.
                     </TextBlock>
 
@@ -86,8 +86,16 @@
 
                     <TextBlock Style="{StaticResource Paragraph}">
                         After some teams are created, let's go ahead to add the first game result!
-                        Go to "Games" =&gt; "Add Game" and fill out the form. To select a home/away team start typing
+                        Go to "Games" =&gt; "Add" and fill out the form. To select a home/away team start typing
                         its name in an appropriate field: The suggestions will be shown in a drop-down menu.
+                    </TextBlock>
+                    
+                    <TextBlock Style="{StaticResource H3}">
+                        Deleting a game
+                    </TextBlock>
+
+                    <TextBlock Style="{StaticResource Paragraph}">
+                        To delete a game just go to "Games", and select a game you want to delete and press "Delete".
                     </TextBlock>
 
                     <TextBlock Style="{StaticResource H3}">
@@ -118,9 +126,9 @@
 
                     <TextBlock Style="{StaticResource Paragraph}">
                         This type of filters (just below the common ones) can help you with more sophisticated
-                        calculations. Choose one of the options available and press "Reset" when you're done.
+                        tasks. Choose one of the options available and press "Reset" when you're done.
                         Remember, you can combine the selected advanced filter with other common filters and even
-                        apply sorting to the result set of items.
+                        apply sorting to the result set of items, but you can't use many advanced filters at once.
                     </TextBlock>
 
                     <TextBlock Style="{StaticResource H2}"
@@ -132,8 +140,9 @@
 
                     <TextBlock Style="{StaticResource Paragraph}">
                         If you want to search for a concrete team from the whole list, use the search box
-                        above the Team list on the Teams page. Start typing the name of the team or its origin city.
-                        Remember that to search within the WHOLE list you should remove all filters applied.
+                        above the Team list on the Teams page. Start typing the name of the team or its origin city or
+                        even both using "-" as a delimiter (e.g. Inter-Miami).
+                        If you want to search within the whole list you should remove all the filters applied.
                     </TextBlock>
 
                     <TextBlock Style="{StaticResource H3}">
@@ -141,16 +150,16 @@
                     </TextBlock>
 
                     <TextBlock Style="{StaticResource Paragraph}">
-                        If you want to search for a concrete game from the whole list, use the search box
-                        above the Team list on the Games page. Start typing the full name (TEAM_NAME-ORIGIN_CITY).
-                        Remember that to search within the WHOLE list you should remove all filters applied.
+                        You are provided with two search boxes so you can find the game you want.
+                        Start typing the a name or a combination of the name and origin city (e.g. Inter-Miami).
+                        If you want to search within the whole list you should remove all the filters applied.
                     </TextBlock>
 
                     <TextBlock Style="{StaticResource H2}"
                                Text="Shortcuts" />
 
                     <Label Style="{StaticResource BulletListItem}"
-                           Content="F1 - go to the Home page" />
+                           Content="F1 - go to the Help page" />
 
                     <Label Style="{StaticResource BulletListItem}"
                            Content="Escape - cancel the form" />
