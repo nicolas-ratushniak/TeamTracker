@@ -172,7 +172,6 @@
                                 <ContentPresenter Margin="17,7"
                                                   HorizontalAlignment="Center" />
                             </Border>
-
                         </Border>
                     </ControlTemplate>
                 </Setter.Value>

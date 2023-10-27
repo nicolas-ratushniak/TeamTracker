@@ -11,8 +11,8 @@
              d:DesignHeight="600" d:DesignWidth="300">
 
     <UserControl.Resources>
-        <converters:InverseBoolToVisibilityConverter x:Key="InverseBoolToVisibilityConverter"/>
-        
+        <converters:InverseBoolToVisibilityConverter x:Key="InverseBoolToVisibilityConverter" />
+
         <Style x:Key="TeamListBox" TargetType="ListBox">
             <Setter Property="BorderThickness" Value="0" />
             <Setter Property="ItemTemplate">
@@ -192,16 +192,14 @@
                         Content="Newcomers"
                         Command="{Binding ShowNewcomersCommand}"
                         Style="{StaticResource AdvancedButton}"
-                        Margin="0,0,0,5"/>
-                
+                        Margin="0,0,0,5" />
+
                 <Button Grid.Row="5"
                         Content="Reset"
                         Command="{Binding ResetAdvancedFiltersCommand}"
-                        Style="{StaticResource AdvancedCancelButton}"/>
-
+                        Style="{StaticResource AdvancedCancelButton}" />
             </Grid>
         </Border>
-
 
         <!-- Search Box -->
         <controls:PlaceholderTextBox Grid.Row="0" Grid.Column="1"
@@ -215,7 +213,7 @@
                 BorderThickness="1"
                 CornerRadius="5"
                 Padding="5">
-            
+
             <Grid>
                 <TextBlock Text="No teams found"
                            Panel.ZIndex="1"
@@ -223,9 +221,9 @@
                            FontSize="18"
                            Padding="15"
                            Visibility="{Binding ElementName=TeamsList, Path=HasItems,
-                           Converter={StaticResource InverseBoolToVisibilityConverter}}"/>
+                           Converter={StaticResource InverseBoolToVisibilityConverter}}" />
 
-                <ListBox x:Name="TeamsList" 
+                <ListBox x:Name="TeamsList"
                          ItemsSource="{Binding TeamsCollectionView}"
                          SelectedItem="{Binding SelectedTeam}"
                          SelectionMode="Single"
@@ -234,6 +232,5 @@
                          Style="{StaticResource TeamListBox}" />
             </Grid>
         </Border>
-
     </Grid>
 </UserControl>

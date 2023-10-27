@@ -166,11 +166,9 @@
 
                     <Label Style="{StaticResource BulletListItem}"
                            Content="Enter - submit the form" />
-
-
+                    
                 </StackPanel>
             </Grid>
-
         </ScrollViewer>
     </Grid>
 </UserControl>

@@ -76,7 +76,6 @@
                                            Foreground="{StaticResource BrushGrey}"
                                            TextAlignment="Center"
                                            FontSize="18" />
-
                             </Grid>
                         </Border>
                     </DataTemplate>
@@ -175,7 +174,6 @@
                         Command="{Binding ResetAdvancedFiltersCommand}"
                         Style="{StaticResource AdvancedCancelButton}"
                         Margin="0,0,0,10" />
-
             </Grid>
         </Border>
 
@@ -226,5 +224,4 @@
             </Grid>
         </Border>
     </Grid>
-    
 </UserControl>

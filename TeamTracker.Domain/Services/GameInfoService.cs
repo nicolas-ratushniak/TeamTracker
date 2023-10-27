@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using TeamTracker.Data;
+using TeamTracker.Data.Abstract;
 using TeamTracker.Data.Models;
+using TeamTracker.Domain.Abstract;
 using TeamTracker.Domain.Dto;
 using TeamTracker.Domain.Exceptions;
 

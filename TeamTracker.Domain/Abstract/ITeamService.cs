@@ -1,7 +1,7 @@
 ﻿using TeamTracker.Data.Models;
 using TeamTracker.Domain.Dto;
 
-namespace TeamTracker.Domain.Services;
+namespace TeamTracker.Domain.Abstract;
 
 public interface ITeamService
 {

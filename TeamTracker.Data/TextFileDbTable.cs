@@ -1,4 +1,5 @@
 ﻿using System.Text.RegularExpressions;
+using TeamTracker.Data.Abstract;
 
 namespace TeamTracker.Data;
 
@@ -26,12 +27,10 @@ public class TextFileDbTable : ITextBasedStorage
     {
         List<string> result = new();
 
-        using (TextReader reader = new StreamReader(File.Open(_filePath, FileMode.OpenOrCreate)))
+        using TextReader reader = new StreamReader(File.Open(_filePath, FileMode.OpenOrCreate));
+        while (reader.Peek() > -1)
         {
-            while (reader.Peek() > -1)
-            {
-                result.Add(reader.ReadLine()!);
-            }
+            result.Add(reader.ReadLine()!);
         }
 
         return result;

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using Microsoft.Extensions.Logging;
-using TeamTracker.Domain.Services;
+using TeamTracker.Domain.Abstract;
 using TeamTracker.Wpf.Commands;
 using TeamTracker.Wpf.Navigation;
 using TeamTracker.Wpf.ViewModels.Components;

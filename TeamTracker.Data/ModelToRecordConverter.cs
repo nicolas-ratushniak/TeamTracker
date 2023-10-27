@@ -1,17 +1,21 @@
 ﻿using System.Globalization;
 using System.Reflection;
+using TeamTracker.Data.Abstract;
 using TeamTracker.Data.Exceptions;
 
 namespace TeamTracker.Data;
 
-public class ModelToRecordConverter<TModel> : IModelToRecordConverter<TModel>
+public class ModelToRecordConverter<TModel> : IModelToRecordConverter<TModel> 
+    where TModel : new()
 {
     private readonly CultureInfo _cultureInfo;
     private readonly string _separator;
 
     private readonly List<PropertyInfo> _propertyInfos;
 
-    public ModelToRecordConverter() : this(CultureInfo.CurrentCulture) { }
+    public ModelToRecordConverter() : this(CultureInfo.CurrentCulture)
+    {
+    }
 
     public ModelToRecordConverter(CultureInfo cultureInfo)
     {
@@ -60,6 +64,7 @@ public class ModelToRecordConverter<TModel> : IModelToRecordConverter<TModel>
                     throw new FormatException($"Cannot parse \"{values[i]}\" to {propertyType.Name}");
                 }
             }
+
             propertyInfo.SetValue(target, value);
         }
 
@@ -88,9 +93,10 @@ public class ModelToRecordConverter<TModel> : IModelToRecordConverter<TModel>
     /// 2. The types of properties should be string or implement generic IParsable interface</remarks>
     private static bool ValidateModelType()
     {
-        return typeof(TModel).GetProperties()
-            .All(p => p.CanRead && p.CanWrite && p.PropertyType == typeof(string) ||
-                      InheritsGenericInterface(p.PropertyType, typeof(IParsable<>)));
+        return typeof(TModel).GetProperties().All(p =>
+            p is { CanRead: true, CanWrite: true } &&
+            p.PropertyType == typeof(string) ||
+            InheritsGenericInterface(p.PropertyType, typeof(IParsable<>)));
 
         bool InheritsGenericInterface(Type valueType, Type genericInterface)
         {

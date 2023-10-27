@@ -1,8 +1,10 @@
-﻿using TeamTracker.Data.Models;
+﻿using TeamTracker.Data.Abstract;
+using TeamTracker.Data.Models;
 
 namespace TeamTracker.Data;
 
-public class Repository<TModel> : IRepository<TModel> where TModel : BaseModel
+public class Repository<TModel> : IRepository<TModel> 
+    where TModel : BaseModel
 {
     private readonly ITextBasedStorage _textBasedStorage;
     private readonly IModelToRecordConverter<TModel> _modelToRecordConverter;
@@ -74,7 +76,10 @@ public class Repository<TModel> : IRepository<TModel> where TModel : BaseModel
             return;
         }
 
-        var records = _entities.Select(t => _modelToRecordConverter.ToDbRecord(t)).ToList();
+        var records = _entities
+            .Select(t => _modelToRecordConverter.ToDbRecord(t))
+            .ToList();
+        
         _textBasedStorage.WriteRecords(records);
         _changesSaved = true;
     }
@@ -84,7 +89,8 @@ public class Repository<TModel> : IRepository<TModel> where TModel : BaseModel
         try
         {
             return _textBasedStorage.ReadRecords()
-                .Select(record => _modelToRecordConverter.ParseFromDbRecord(record)).ToList();
+                .Select(record => _modelToRecordConverter.ParseFromDbRecord(record))
+                .ToList();
         }
         catch (Exception ex)
         {

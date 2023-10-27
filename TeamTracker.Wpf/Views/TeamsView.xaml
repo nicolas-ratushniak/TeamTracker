@@ -20,7 +20,6 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-
         <StackPanel Grid.Row="0" Grid.Column="1"
                     Orientation="Horizontal"
                     HorizontalAlignment="Right"
@@ -44,6 +43,5 @@
 
         <components:TeamDetails Grid.Row="1" Grid.Column="1"
                                 Margin="24,0,0,0" />
-
     </Grid>
 </UserControl>

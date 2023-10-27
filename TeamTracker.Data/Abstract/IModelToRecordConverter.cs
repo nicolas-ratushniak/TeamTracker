@@ -1,4 +1,4 @@
-﻿namespace TeamTracker.Data;
+﻿namespace TeamTracker.Data.Abstract;
 
 public interface IModelToRecordConverter<TModel>
 {

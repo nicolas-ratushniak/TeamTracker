@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using TeamTracker.Data;
+using TeamTracker.Data.Abstract;
 using TeamTracker.Data.Models;
+using TeamTracker.Domain.Abstract;
 using TeamTracker.Domain.Dto;
 using TeamTracker.Domain.Exceptions;
 
@@ -32,7 +33,9 @@ public class TeamService : ITeamService
     {
         Validator.ValidateObject(dto, new ValidationContext(dto), true);
 
-        if (GetAll().Any(t => t.Name == dto.Name && t.OriginCity == dto.OriginCity))
+        if (GetAll().Any(t =>
+                t.Name == dto.Name &&
+                t.OriginCity == dto.OriginCity))
         {
             throw new ValidationException("No way having two identical teams in one city");
         }
@@ -44,7 +47,7 @@ public class TeamService : ITeamService
             OriginCity = dto.OriginCity,
             MembersCount = dto.MembersCount
         };
-        
+
         _teamRepository.Add(team);
         _teamRepository.SaveChanges();
     }
@@ -53,7 +56,10 @@ public class TeamService : ITeamService
     {
         Validator.ValidateObject(dto, new ValidationContext(dto), true);
 
-        if (_teamRepository.GetAll().Any(t => t.Name == dto.Name && t.OriginCity == dto.OriginCity && t.Id != dto.Id))
+        if (_teamRepository.GetAll().Any(t =>
+                t.Name == dto.Name &&
+                t.OriginCity == dto.OriginCity &&
+                t.Id != dto.Id))
         {
             throw new ValidationException("No way having two identical teams in one city");
         }
@@ -63,7 +69,7 @@ public class TeamService : ITeamService
         team.Name = dto.Name;
         team.OriginCity = dto.OriginCity;
         team.MembersCount = dto.MembersCount;
-        
+
         _teamRepository.Update(team);
         _teamRepository.SaveChanges();
     }
@@ -76,7 +82,7 @@ public class TeamService : ITeamService
         {
             throw new InvalidOperationException("Cannot delete a team having played once");
         }
-        
+
         _teamRepository.Remove(team);
         _teamRepository.SaveChanges();
     }
@@ -84,34 +90,39 @@ public class TeamService : ITeamService
     public int CountGamesWon(Guid id)
     {
         var team = Get(id);
-        
+
         var gamesWonAtHome = _gameRepository.GetAll()
-            .Count(g => g.TeamHomeId == team.Id && g.TeamHomeScore > g.TeamAwayScore);
-        
+            .Count(g => g.TeamHomeId == team.Id &&
+                        g.TeamHomeScore > g.TeamAwayScore);
+
         var gamesWonAway = _gameRepository.GetAll()
-            .Count(g => g.TeamAwayId == team.Id && g.TeamHomeScore < g.TeamAwayScore);
+            .Count(g => g.TeamAwayId == team.Id &&
+                        g.TeamHomeScore < g.TeamAwayScore);
 
         return gamesWonAtHome + gamesWonAway;
     }
-    
+
     public int CountGamesDrawn(Guid id)
     {
         var team = Get(id);
-        
+
         return _gameRepository.GetAll()
-            .Count(g => (g.TeamHomeId == team.Id || g.TeamAwayId == team.Id) && 
-                        g.TeamHomeScore == g.TeamAwayScore);
+            .Count(g =>
+                (g.TeamHomeId == team.Id || g.TeamAwayId == team.Id) &&
+                g.TeamHomeScore == g.TeamAwayScore);
     }
-    
+
     public int CountGamesLost(Guid id)
     {
         var team = Get(id);
-        
+
         var gamesLostAtHome = _gameRepository.GetAll()
-            .Count(g => g.TeamHomeId == team.Id && g.TeamHomeScore < g.TeamAwayScore);
-        
+            .Count(g => g.TeamHomeId == team.Id && 
+                        g.TeamHomeScore < g.TeamAwayScore);
+
         var gamesLostAway = _gameRepository.GetAll()
-            .Count(g => g.TeamAwayId == team.Id && g.TeamHomeScore > g.TeamAwayScore);
+            .Count(g => g.TeamAwayId == team.Id && 
+                        g.TeamHomeScore > g.TeamAwayScore);
 
         return gamesLostAtHome + gamesLostAway;
     }
@@ -124,8 +135,9 @@ public class TeamService : ITeamService
     public int CountTotalGames(Guid id)
     {
         var team = Get(id);
-        
+
         return _gameRepository.GetAll()
-            .Count(g => g.TeamHomeId == team.Id || g.TeamAwayId == team.Id);
+            .Count(g => g.TeamHomeId == team.Id || 
+                        g.TeamAwayId == team.Id);
     }
 }

@@ -2,9 +2,9 @@
 using System.ComponentModel.DataAnnotations;
 using System.Windows.Input;
 using Microsoft.Extensions.Logging;
+using TeamTracker.Domain.Abstract;
 using TeamTracker.Domain.Dto;
 using TeamTracker.Domain.Exceptions;
-using TeamTracker.Domain.Services;
 using TeamTracker.Wpf.Commands;
 using TeamTracker.Wpf.Navigation;
 
