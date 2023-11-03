@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
 using TeamTracker.Wpf.Commands;
@@ -109,9 +110,9 @@ public class GameListComponent : BaseViewModel
         GamesCollectionView.SortDescriptions.Add(
             new SortDescription(nameof(SelectedGame.Date), ListSortDirection.Ascending));
 
-        ShowMostCrushingGameCommand = new RelayCommand<object>(ShowMostCrushingGame_Execute);
-        ShowDrawsCommand = new RelayCommand<object>(ShowDrawsCommand_Execute);
-        ShowSameCityCommand = new RelayCommand<object>(ShowSameCity_Execute);
+        ShowMostCrushingGameCommand = new RelayCommand<object>(ShowMostCrushingGame_Execute, _ => Games.Any());
+        ShowDrawsCommand = new RelayCommand<object>(ShowDrawsCommand_Execute, _ => Games.Any());
+        ShowSameCityCommand = new RelayCommand<object>(ShowSameCity_Execute, _ => Games.Any());
         
         ResetAdvancedFiltersCommand =
             new RelayCommand<object>(_ => SetFiltersToDefault(), _ => _isAdvancedFilterActive);

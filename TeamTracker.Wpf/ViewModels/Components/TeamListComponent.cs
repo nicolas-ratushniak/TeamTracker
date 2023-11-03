@@ -163,9 +163,9 @@ public class TeamListComponent : BaseViewModel
             new SortDescription("FullName",
                 ListSortDirection.Ascending));
 
-        ShowMostWinsCommand = new RelayCommand<object>(ShowMostWins_Execute);
-        ShowMostPointsCommand = new RelayCommand<object>(ShowMostPoints_Execute);
-        ShowNewcomersCommand = new RelayCommand<object>(ShowNewcomers_Execute);
+        ShowMostWinsCommand = new RelayCommand<object>(ShowMostWins_Execute, _ => Teams.Any());
+        ShowMostPointsCommand = new RelayCommand<object>(ShowMostPoints_Execute, _ => Teams.Any());
+        ShowNewcomersCommand = new RelayCommand<object>(ShowNewcomers_Execute, _ => Teams.Any());
         ResetAdvancedFiltersCommand =
             new RelayCommand<object>(_ => SetFiltersToDefault(), _ => _isAdvancedFilterActive);
     }
