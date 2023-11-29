@@ -1,7 +1,3 @@
-# User Specific
-Test*/
-*Db*/
-
 # Rider
 .idea/
 *.user
@@ -37,3 +33,8 @@ packages/
 # Logs and temporary files
 *.log
 *.tmp
+
+# User Specific
+Test*/
+*Db*/
+IDE_INFO.txt
