@@ -29,6 +29,7 @@ public class GameListComponent : BaseViewModel
     private string _homeTeamNameFilter = string.Empty;
     private string _awayTeamNameFilter = string.Empty;
     private bool _isAdvancedFilterActive;
+    private int _gamesFound;
 
     public ICommand ShowMostCrushingGameCommand { get; }
     public ICommand ShowDrawsCommand { get; }
@@ -39,6 +40,17 @@ public class GameListComponent : BaseViewModel
     public ICollectionView GamesCollectionView { get; }
 
     public ObservableCollection<GameListItemViewModel> Games { get; }
+
+    public int GamesFound
+    {
+        get => _gamesFound;
+        set
+        {
+            if (value == _gamesFound) return;
+            _gamesFound = value;
+            OnPropertyChanged();
+        }
+    }
 
     public string HomeTeamNameFilter
     {
@@ -212,6 +224,8 @@ public class GameListComponent : BaseViewModel
             remainsResults--;
             return true;
         };
+        
+        GamesFound = GamesCollectionView.Cast<object>().Count();
     }
 
     private void RemoveAdvancedFilters()

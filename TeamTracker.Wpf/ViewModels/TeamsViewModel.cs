@@ -175,6 +175,7 @@ public class TeamsViewModel : BaseViewModel
         {
             TeamList.Teams.Add(team);
         }
+        TeamList.SetFiltersToDefault();
     }
 
     private void DeleteTeam_Execute(object obj)

@@ -12,6 +12,7 @@
 
     <UserControl.Resources>
         <converters:InverseBoolToVisibilityConverter x:Key="InverseBoolToVisibilityConverter" />
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
 
         <Style x:Key="TeamListBox" TargetType="ListBox">
             <Setter Property="BorderThickness" Value="0" />
@@ -215,15 +216,28 @@
                 Padding="5">
 
             <Grid>
-                <TextBlock Text="No teams found"
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                
+                <TextBlock Grid.Row="0" Text="No teams found"
                            Panel.ZIndex="1"
                            Foreground="{StaticResource BrushGrey}"
                            FontSize="18"
                            Padding="15"
                            Visibility="{Binding ElementName=TeamsList, Path=HasItems,
                            Converter={StaticResource InverseBoolToVisibilityConverter}}" />
+                
+                <TextBlock Grid.Row="0" Text="{Binding TeamsFound, StringFormat=Teams found: {0}}"
+                           Panel.ZIndex="1"
+                           Foreground="{StaticResource BrushGrey}"
+                           FontSize="18"
+                           Padding="5"
+                           Visibility="{Binding ElementName=TeamsList, Path=HasItems,
+                           Converter={StaticResource BooleanToVisibilityConverter}}" />
 
-                <ListBox x:Name="TeamsList"
+                <ListBox Grid.Row="1" x:Name="TeamsList"
                          ItemsSource="{Binding TeamsCollectionView}"
                          SelectedItem="{Binding SelectedTeam}"
                          SelectionMode="Single"

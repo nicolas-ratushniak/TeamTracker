@@ -34,6 +34,7 @@ public class TeamListComponent : BaseViewModel
     private int _minPoints;
     private int _maxPoints;
     private bool _isAdvancedFilterActive;
+    private int _teamsFound;
 
     public ICommand ShowMostWinsCommand { get; }
     public ICommand ShowMostPointsCommand { get; }
@@ -44,6 +45,17 @@ public class TeamListComponent : BaseViewModel
     public ICollectionView TeamsCollectionView { get; }
 
     public ObservableCollection<TeamListItemViewModel> Teams { get; }
+
+    public int TeamsFound
+    {
+        get => _teamsFound;
+        set
+        {
+            if (value == _teamsFound) return;
+            _teamsFound = value;
+            OnPropertyChanged();
+        }
+    }
 
     public int MinMembers
     {
@@ -211,25 +223,7 @@ public class TeamListComponent : BaseViewModel
         FilterTeams();
     }
 
-    private void OnSortStrategyNameChanged()
-    {
-        TeamsCollectionView.SortDescriptions.Clear();
-
-        var newSortDescription = SortStrategyName switch
-        {
-            "Team Name Asc" => new SortDescription(nameof(SelectedTeam.FullName), ListSortDirection.Ascending),
-            "Team Name Desc" => new SortDescription(nameof(SelectedTeam.FullName), ListSortDirection.Descending),
-            "Points Asc" => new SortDescription(nameof(SelectedTeam.Points), ListSortDirection.Ascending),
-            "Points Desc" => new SortDescription(nameof(SelectedTeam.Points), ListSortDirection.Descending),
-            "Members Asc" => new SortDescription(nameof(SelectedTeam.Members), ListSortDirection.Ascending),
-            "Members Desc" => new SortDescription(nameof(SelectedTeam.Members), ListSortDirection.Descending),
-            _ => new SortDescription()
-        };
-
-        TeamsCollectionView.SortDescriptions.Add(newSortDescription);
-    }
-
-    private void FilterTeams()
+    public void FilterTeams()
     {
         var remainsResults = _teamsFilter.ResultsToShowCount ?? int.MaxValue;
 
@@ -285,6 +279,26 @@ public class TeamListComponent : BaseViewModel
             remainsResults--;
             return true;
         };
+
+        TeamsFound = TeamsCollectionView.Cast<object>().Count();
+    }
+
+    private void OnSortStrategyNameChanged()
+    {
+        TeamsCollectionView.SortDescriptions.Clear();
+
+        var newSortDescription = SortStrategyName switch
+        {
+            "Team Name Asc" => new SortDescription(nameof(SelectedTeam.FullName), ListSortDirection.Ascending),
+            "Team Name Desc" => new SortDescription(nameof(SelectedTeam.FullName), ListSortDirection.Descending),
+            "Points Asc" => new SortDescription(nameof(SelectedTeam.Points), ListSortDirection.Ascending),
+            "Points Desc" => new SortDescription(nameof(SelectedTeam.Points), ListSortDirection.Descending),
+            "Members Asc" => new SortDescription(nameof(SelectedTeam.Members), ListSortDirection.Ascending),
+            "Members Desc" => new SortDescription(nameof(SelectedTeam.Members), ListSortDirection.Descending),
+            _ => new SortDescription()
+        };
+
+        TeamsCollectionView.SortDescriptions.Add(newSortDescription);
     }
 
     private void RemoveAdvancedFilters()

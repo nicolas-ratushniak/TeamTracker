@@ -177,6 +177,7 @@ public class GamesViewModel : BaseViewModel
         {
             GameList.Games.Add(game);
         }
+        GameList.SetFiltersToDefault();
     }
 
     private void OnSelectedGameChanged(object? sender, EventArgs e)
