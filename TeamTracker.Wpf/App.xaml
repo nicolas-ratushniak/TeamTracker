@@ -1,0 +1,416 @@
+﻿<Application x:Class="TeamTracker.Wpf.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+
+             xmlns:viewModels="clr-namespace:TeamTracker.Wpf.ViewModels"
+             xmlns:views="clr-namespace:TeamTracker.Wpf.Views"
+             xmlns:controls="clr-namespace:TeamTracker.Wpf.Controls"
+             xmlns:converters="clr-namespace:TeamTracker.Wpf.Converters">
+
+    <Application.Resources>
+        <converters:InverseBoolToVisibilityConverter x:Key="InverseBoolToVisibilityConverter" />
+        
+        <Color x:Key="ColorAccent">#5CBAB8</Color>
+        <Color x:Key="ColorMinor">#C1F376</Color>
+        <Color x:Key="ColorMinorFocused">#5FC314</Color>
+        <Color x:Key="GreyColor">#858a8c</Color>
+        <Color x:Key="LightGreyColor">#dee0e0</Color>
+
+        <!--Brushes-->
+        <SolidColorBrush x:Key="BrushAccent" Color="{StaticResource ColorAccent}" />
+        <SolidColorBrush x:Key="BrushMinor" Color="{StaticResource ColorMinor}" />
+        <SolidColorBrush x:Key="BrushMinorFocused" Color="{StaticResource ColorMinorFocused}" />
+        <SolidColorBrush x:Key="BrushGrey" Color="{StaticResource GreyColor}" />
+        <SolidColorBrush x:Key="BrushLightGrey" Color="{StaticResource LightGreyColor}" />
+
+        <!-- Text -->
+        <Style x:Key="Title" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="32" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+        </Style>
+
+        <Style TargetType="TextBlock">
+            <Setter Property="FontSize" Value="18" />
+        </Style>
+
+        <Style x:Key="ErrorMessage" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="16" />
+            <Setter Property="Foreground" Value="Crimson" />
+            <Setter Property="TextWrapping" Value="Wrap" />
+        </Style>
+
+        <Style x:Key="AccentText" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="{StaticResource BrushAccent}" />
+            <Setter Property="FontWeight" Value="500" />
+            <Setter Property="FontSize" Value="18" />
+        </Style>
+        
+        <Style x:Key="Paragraph" TargetType="TextBlock">
+            <Setter Property="FontFamily" Value="Verdana"/>
+            <Setter Property="LineHeight" Value="22"/>
+            <Setter Property="FontSize" Value="16" />
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="Margin" Value="0,0,0,15"/>
+        </Style>
+        
+        <Style x:Key="H1" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="28" />
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Margin" Value="0,0,0,25"/>
+        </Style>
+        
+        <Style x:Key="H2" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="{StaticResource BrushAccent}"/>
+            <Setter Property="FontSize" Value="26" />
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Margin" Value="0,20,0,5"/>
+        </Style>
+        
+        <Style x:Key="H3" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="{StaticResource BrushMinorFocused}"/>
+            <Setter Property="FontSize" Value="20" />
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="FontWeight" Value="Regular"/>
+            <Setter Property="FontStyle" Value="Italic"/>
+            <Setter Property="Margin" Value="0,20,0,20"/>
+        </Style>
+        
+        <Style x:Key="BulletListItem" TargetType="Label">
+            <Setter Property="FontSize" Value="18" />
+            <Setter Property="Margin" Value="0,7"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Label">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <Ellipse Grid.Row="0" Grid.Column="0"
+                                     Height="8"
+                                     Width="8"
+                                     HorizontalAlignment="Center"
+                                     VerticalAlignment="Center"
+                                     Fill="{StaticResource BrushAccent}"
+                                     Margin="15,10,25,10"/>
+                            
+                            <TextBlock Grid.Row="0" Grid.RowSpan="2" Grid.Column="1"
+                                       Text="{TemplateBinding Content}"
+                                       TextWrapping="Wrap"/>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Buttons -->
+        <Style x:Key="NiceButton" TargetType="Button">
+            <Setter Property="Background" Value="{StaticResource BrushAccent}" />
+            <Setter Property="Foreground" Value="#FFFFFF" />
+            <Setter Property="FontSize" Value="16" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border Background="{TemplateBinding Background}"
+                                Opacity="{TemplateBinding Opacity}"
+                                CornerRadius="5">
+                            <ContentPresenter Margin="17,7"
+                                              HorizontalAlignment="Center" />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Opacity" Value="0.8" />
+                    <Setter Property="Cursor" Value="Hand" />
+                </Trigger>
+
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Opacity" Value="0.8" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="CancelButton" TargetType="Button" BasedOn="{StaticResource NiceButton}">
+            <Setter Property="Background" Value="{StaticResource BrushLightGrey}" />
+            <Setter Property="Foreground" Value="Black" />
+            <Setter Property="FontWeight" Value="Regular" />
+        </Style>
+
+        <Style x:Key="DangerButton" TargetType="Button" BasedOn="{StaticResource NiceButton}">
+            <Setter Property="Background" Value="#ed5b51" />
+            <Setter Property="FontWeight" Value="Regular" />
+        </Style>
+
+        <Style x:Key="AdvancedButton" TargetType="Button">
+            <Setter Property="FontSize" Value="16" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="Background" Value="#ffffff" />
+            <Setter Property="Foreground" Value="{StaticResource BrushAccent}" />
+            <Setter Property="BorderThickness" Value="2" />
+            <Setter Property="BorderBrush" Value="{StaticResource BrushAccent}" />
+
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border Background="{TemplateBinding BorderBrush}"
+                                CornerRadius="5"
+                                Opacity="{TemplateBinding Opacity}"
+                                Padding="2">
+                            <Border Background="{TemplateBinding Background}"
+                                    CornerRadius="3">
+                                <ContentPresenter Margin="17,7"
+                                                  HorizontalAlignment="Center" />
+                            </Border>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="{StaticResource BrushAccent}" />
+                    <Setter Property="Foreground" Value="#ffffff" />
+                    <Setter Property="Cursor" Value="Hand" />
+                </Trigger>
+
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Opacity" Value="0.8" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="AdvancedCancelButton" TargetType="Button" BasedOn="{StaticResource AdvancedButton}">
+            <Setter Property="Foreground" Value="{StaticResource BrushMinorFocused}" />
+            <Setter Property="BorderBrush" Value="{StaticResource BrushMinorFocused}" />
+
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="{StaticResource BrushMinorFocused}" />
+                    <Setter Property="Foreground" Value="#ffffff" />
+                    <Setter Property="Cursor" Value="Hand" />
+                </Trigger>
+
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Opacity" Value="0.8" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- RadioButtons -->
+        <Style x:Key="NiceRadioButton" TargetType="RadioButton">
+            <Setter Property="FontSize" Value="20" />
+            <Setter Property="Background" Value="{StaticResource BrushMinor}" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type RadioButton}">
+                        <Border Background="{TemplateBinding Background}"
+                                Padding="35,10">
+                            <ContentPresenter />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsChecked" Value="True">
+                    <Setter Property="Background" Value="{StaticResource BrushMinorFocused}" />
+                    <Setter Property="Foreground" Value="#FFFFFF" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- TextBox -->
+        <Style x:Key="NiceTextBox" TargetType="TextBox">
+            <Setter Property="FontSize" Value="16" />
+            <Setter Property="BorderBrush" Value="{StaticResource BrushGrey}" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="1"
+                                CornerRadius="5"
+                                Padding="5">
+                            <ScrollViewer Name="PART_ContentHost" />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsKeyboardFocusWithin" Value="True">
+                    <Setter Property="BorderBrush" Value="Black" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- PlaceholderTextBox -->
+        <Style TargetType="{x:Type controls:PlaceholderTextBox}">
+            <Setter Property="BorderBrush" Value="{StaticResource BrushGrey}" />
+            <Setter Property="FontSize" Value="18" />
+            <Setter Property="Foreground" Value="Black" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type controls:PlaceholderTextBox}">
+                        <Border BorderBrush="{TemplateBinding BorderBrush}"
+                                Background="{TemplateBinding Background}"
+                                BorderThickness="1"
+                                CornerRadius="5"
+                                Padding="5">
+                            <Grid>
+                                <TextBlock
+                                    Text="{Binding Placeholder, RelativeSource={RelativeSource TemplatedParent}}"
+                                    VerticalAlignment="Center"
+                                    Margin="3,0,0,0"
+                                    FontSize="{TemplateBinding FontSize}"
+                                    Foreground="{TemplateBinding Foreground}"
+                                    Opacity="0.5"
+                                    Panel.ZIndex="1"
+                                    IsHitTestVisible="False"
+                                    Visibility="{Binding IsTyping, RelativeSource={RelativeSource TemplatedParent},
+                                    Converter={StaticResource InverseBoolToVisibilityConverter}}" />
+                                <TextBox
+                                    Text="{Binding Text, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged}"
+                                    VerticalAlignment="Center"
+                                    Foreground="{TemplateBinding Foreground}"
+                                    Background="Transparent"
+                                    BorderThickness="0"
+                                    FontSize="{TemplateBinding FontSize}" />
+                            </Grid>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsKeyboardFocusWithin" Value="True">
+                    <Setter Property="BorderBrush" Value="Black" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- Border -->
+        <Style x:Key="NiceBorder" TargetType="Border">
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="BorderBrush" Value="{StaticResource BrushGrey}" />
+            <Setter Property="CornerRadius" Value="5" />
+            <Setter Property="Padding" Value="5"></Setter>
+            <Style.Triggers>
+                <Trigger Property="IsKeyboardFocusWithin" Value="True">
+                    <Setter Property="BorderBrush" Value="Black" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- ToggleButton -->
+        <Style x:Key="NiceToggleButton" TargetType="ToggleButton">
+            <Setter Property="Background" Value="{StaticResource BrushMinor}" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ToggleButton">
+                        <Border Style="{StaticResource NiceBorder}"
+                                BorderBrush="{StaticResource BrushMinorFocused}"
+                                Opacity="{TemplateBinding Opacity}"
+                                Background="{TemplateBinding Background}">
+                            <Polygon Points="0,0 6,10 12,0"
+                                     Fill="{StaticResource BrushMinorFocused}"
+                                     HorizontalAlignment="Right"
+                                     VerticalAlignment="Center"
+                                     Margin="0,0,10,0" />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsChecked" Value="True">
+                    <Setter Property="Opacity" Value="0.8" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- ComboBox -->
+        <Style x:Key="NiceCombobox" TargetType="ComboBox">
+            <Setter Property="Foreground" Value="Black" />
+            <Setter Property="FontSize" Value="18" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ComboBox">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+
+                            <ToggleButton Grid.Row="0" Style="{StaticResource NiceToggleButton}"
+                                          IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, 
+                                          RelativeSource={RelativeSource TemplatedParent}}" />
+
+                            <ContentPresenter Grid.Row="0"
+                                              VerticalAlignment="Center"
+                                              Margin="10,0,0,0"
+                                              IsHitTestVisible="False"
+                                              Content="{Binding SelectionBoxItem,
+                                              RelativeSource={RelativeSource TemplatedParent}}" />
+
+                            <Popup Grid.Row="1"
+                                   IsOpen="{Binding IsDropDownOpen, Mode=TwoWay, 
+                                   RelativeSource={RelativeSource TemplatedParent}}"
+                                   ClipToBounds="True"
+                                   AllowsTransparency="True"
+                                   PopupAnimation="Slide"
+                                   VerticalOffset="1"
+                                   StaysOpen="False">
+                                <Border Style="{StaticResource NiceBorder}"
+                                        BorderBrush="#14a0e0"
+                                        Width="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=Grid}}"
+                                        MaxHeight="{TemplateBinding MaxDropDownHeight}"
+                                        Background="{StaticResource BrushMinor}">
+                                    <Grid>
+                                        <ScrollViewer x:Name="DropDownScrollViewer">
+                                            <ItemsPresenter
+                                                KeyboardNavigation.DirectionalNavigation="Contained" />
+                                        </ScrollViewer>
+                                    </Grid>
+                                </Border>
+                            </Popup>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+
+        <!-- Binding views to related view models -->
+        <DataTemplate DataType="{x:Type viewModels:TeamsViewModel}">
+            <views:TeamsView />
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewModels:GamesViewModel}">
+            <views:GamesView />
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewModels:GameCreateViewModel}">
+            <views:GameCreateView />
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewModels:HelpViewModel}">
+            <views:HelpView />
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewModels:TeamCreateViewModel}">
+            <views:TeamCreateView />
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewModels:TeamUpdateViewModel}">
+            <views:TeamUpdateView />
+        </DataTemplate>
+
+    </Application.Resources>
+</Application>

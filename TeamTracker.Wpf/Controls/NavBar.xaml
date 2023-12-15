@@ -1,0 +1,57 @@
+﻿<UserControl x:Class="TeamTracker.Wpf.Controls.NavBar"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+
+             xmlns:navigation="clr-namespace:TeamTracker.Wpf.Navigation"
+             xmlns:converters="clr-namespace:TeamTracker.Wpf.Converters"
+             mc:Ignorable="d"
+             d:DesignHeight="100" d:DesignWidth="600">
+
+    <UserControl.Resources>
+        <converters:EqualsToBoolConverter x:Key="EqualsToBoolConverter" />
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <Grid Background="{StaticResource BrushMinor}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <RadioButton Grid.Column="0"
+                         Style="{StaticResource NiceRadioButton}"
+                         IsChecked="{Binding CurrentNavBarOption, Mode=OneWay,
+                         Converter={StaticResource EqualsToBoolConverter},
+                         ConverterParameter={x:Static navigation:ViewType.Teams}}"
+                         Command="{Binding Path=NavigationService.UpdateCurrentViewTypeCommand}"
+                         CommandParameter="{x:Static navigation:ViewType.Teams}"
+                         Content="Teams" />
+            
+            <RadioButton Grid.Column="1"
+                         Style="{StaticResource NiceRadioButton}"
+                         IsChecked="{Binding CurrentNavBarOption, Mode=OneWay,
+                         Converter={StaticResource EqualsToBoolConverter},
+                         ConverterParameter={x:Static navigation:ViewType.Games}}"
+                         Command="{Binding Path=NavigationService.UpdateCurrentViewTypeCommand}"
+                         CommandParameter="{x:Static navigation:ViewType.Games}"
+                         Content="Games" />
+            
+            <RadioButton Grid.Column="3"
+                         Style="{StaticResource NiceRadioButton}"
+                         IsChecked="{Binding CurrentNavBarOption, Mode=OneWay,
+                         Converter={StaticResource EqualsToBoolConverter},
+                         ConverterParameter={x:Static navigation:ViewType.Help}}"
+                         Command="{Binding Path=NavigationService.UpdateCurrentViewTypeCommand}"
+                         CommandParameter="{x:Static navigation:ViewType.Help}"
+                         Content="Help" />
+        </Grid>
+    </Grid>
+</UserControl>

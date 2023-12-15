@@ -33,3 +33,8 @@ packages/
 # Logs and temporary files
 *.log
 *.tmp
+
+# User Specific
+Test*/
+*Db*/
+IDE_INFO.txt
